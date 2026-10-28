@@ -4,25 +4,28 @@
 The **Virtual Dark Store Work-Study & Simulation Platform** is a 3D simulation and industrial engineering measurement environment built in Unity. It simulates grocery micro-fulfillment ("dark store") operations to automate industrial time-and-motion studies, elemental cycle time analysis, and work-sampling observations.
 
 ## Current Status
-- **Current Phase**: Phase 2 (Dark Store Topology, Inventory Model & SKU-Location Mapping)
+- **Current Phase**: Phase 3 (Order Engine & Fulfillment Simulation)
 - **Status**: Completed (2026-10-28)
-- **Next Step**: Phase 3 (Order Engine & Fulfillment Simulation)
+- **Next Step**: Phase 4 (Desktop Interactive Mode & Work-Study Instrumentation)
 
 ## Features
-### Completed (Phase 0, Phase 1 & Phase 2)
+### Completed (Phase 0, Phase 1, Phase 2 & Phase 3)
 - **Baseline Audit (Phase 0)**: Unity 6 (`6000.6.7f1`) and URP environment verified; comprehensive documentation established.
 - **Clean URP 3D Scene (Phase 1)**: `Assets/Scenes/DarkStore_Phase1.unity` constructed with 4 picking aisles, 24m x 28m concrete warehouse envelope, boundary colliders, ambient high-bay lighting, and dispatch packing bench.
 - **Desktop Locomotion (Phase 1)**: `DesktopPickerController.cs` with CharacterController, WASD movement, mouse pitch/yaw look, sprint, and gravity.
-- **AI Navigation (Phase 1)**: `Assets/Scenes/DarkStore_Phase1_NavMesh.asset` baked using `UnityEngine.AI.NavMeshBuilder` from 72 collider sources.
+- **AI Navigation (Phase 1)**: `Assets/Scenes/DarkStore_Phase1_NavMesh.asset` baked using `UnityEngine.AI.NavMeshBuilder` from 144 collider sources.
 - **Pure Domain Topology (Phase 2)**: `Sku.cs`, `ShelfSlot.cs`, `Shelf.cs`, `Aisle.cs`, and `StoreConfiguration.cs` completely decoupled from GameObjects.
 - **Verified Product Catalog (Phase 2)**: 72 distinct, verified dark-store SKUs across 8 departments (`VerifiedSampleCatalog.cs`).
 - **Store & Inventory Manager (Phase 2)**: `StoreManager.cs` managing 288 shelf slots (4 aisles * 2 sides * 3 bays * 3 tiers * 4 slots) with 72 SKUs mapped 1:1 with zero collisions and verified bidirectional lookups.
-- **Automated Test Suite (Phase 2)**: 8 EditMode tests passing (100% pass rate) in `Assets/Tests/Editor/Domain/StoreTopologyTests.cs`.
+- **Order Engine & Pick Validation (Phase 3)**: Pure domain entities `Order.cs` and `OrderItem.cs` strictly validating picks against the active SKU; wrong or missing items never silently count as correct picks.
+- **Order Dispatch & Lifecycle Manager (Phase 3)**: `OrderManager.cs` handling automatic sample order dispatch, pick action validation, packing completion, and lifecycle event notifications.
+- **Visual Shelf Products & Raycast Interaction (Phase 3)**: 72 physical pickable item boxes spawned across shelves with category materials (`PickableItemVisual.cs`), raycast selection via `PickerInteraction.cs` with `[E]` and LMB triggers.
+- **Simulation HUD (Phase 3)**: `SimulationHUD.cs` screen-space terminal with central reticle, dynamic interaction prompt, target SKU & slot location, live distance to bin in meters, and color-coded feedback banners (green pick, red mismatch alert, gold completion).
+- **Automated Test Suite**: 15 EditMode tests passing (100% pass rate) covering store topology, SKU integrity, pick validation, premature packing rejection, and end-to-end order fulfillment.
 
-### In Progress / Planned (Phase 3 - Phase 5)
-- Order generation and pick list dispatch engine.
-- Interactive reticle raycasting for SKU picking, barcode scanning, and tote placement.
-- Real-time WorkStudy elemental state machine and stopwatch instrumentation.
+### Planned (Phase 4 - Phase 5)
+- Real-time WorkStudy elemental state machine (`TRAVEL`, `SEARCH`, `PICK`, `SCAN`, `PLACE`, `STAGE`, `IDLE`).
+- Virtual barcode scanner verification and cart tote deposit mechanics.
 - Automated CSV/JSON telemetry exporters for industrial time studies and work-sampling.
 
 ### Deferred (Phase 6)
@@ -69,15 +72,16 @@ Inspected and verified from `Packages/manifest.json`:
 | **Look** | `Mouse Delta` | First-person look / pitch & yaw |
 | **Sprint** | `Left Shift` | Fast picker locomotion |
 | **Cursor Lock/Unlock** | `Escape` / `Left Click` | Unlock or lock mouse cursor to game window |
-| **Interact / Pick (Planned Phase 4)** | `E` or `Left Click` | Grab target SKU from shelf bin via reticle raycast |
+| **Interact / Pick / Pack** | `E` or `Left Click` | Pick hovered SKU from shelf or complete order at packing bench |
+| **New Sample Order** | `N` | Dispatch a new sample 3-item order when idle or completed |
 | **Scan Item (Planned Phase 4)** | `F` or `Right Click` | Trigger virtual barcode scanner verification |
 | **Place in Cart (Planned Phase 4)** | `Q` or `Left Click` on Tote | Transfer picked item into cart tote |
 
 ## Architecture
 The platform enforces clean decoupling between the presentation/input layer and the simulation/work-study core:
-- **Presentation Layer**: Desktop Controller (`DesktopPickerController.cs`) and environment colliders.
-- **Domain Topology**: Pure C# data models (`Sku`, `ShelfSlot`, `Shelf`, `Aisle`, `StoreConfiguration`) completely decoupled from GameObjects.
-- **Management Layer**: `StoreManager.cs` orchestrating 288 shelf slots, 72 SKUs mapped 1:1, and bidirectional dictionary lookups.
+- **Presentation Layer**: Desktop Controller (`DesktopPickerController.cs`), `PickerInteraction.cs`, `PickableItemVisual.cs`, and `SimulationHUD.cs`.
+- **Domain Topology & Inventory**: Pure C# data models (`Sku`, `ShelfSlot`, `Shelf`, `Aisle`, `StoreConfiguration`) completely decoupled from GameObjects.
+- **Fulfillment Engine**: Pure domain entities `Order.cs` and `OrderItem.cs` managed by `OrderManager.cs` and `StoreManager.cs`.
 - **WorkStudy Core (Planned Phase 4)**: Tracks elemental states (`TRAVEL`, `SEARCH`, `PICK`, `SCAN`, `PLACE`, `STAGE`, `IDLE`), logs cycle metrics, samples activity states, and exports deterministic CSV/JSON records.
 - See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for complete details.
 
@@ -88,11 +92,11 @@ The platform enforces clean decoupling between the presentation/input layer and 
 
 ## Testing
 - Automated unit testing via Unity Test Framework (`com.unity.test-framework` `1.4.6`).
-- **Current Status**: **8 TESTS EXECUTED AND PASSED** (0 failures). Evidence recorded in `TestResults-EditMode.xml`.
+- **Current Status**: **15 TESTS EXECUTED AND PASSED** (0 failures). Evidence recorded in `TestResults-EditMode.xml`.
 - See [docs/TESTING.md](docs/TESTING.md) for test execution instructions and full test breakdown.
 
 ## Known Limitations
-- Order dispatch and picking interaction are scheduled for Phase 3 and Phase 4.
+- Industrial elemental state machine and stopwatch instrumentation are scheduled for Phase 4.
 - 3D product visual packaging models will replace placeholder colliders in Phase 4.
 - VR support is deferred to Phase 6 per the desktop-first requirement.
 

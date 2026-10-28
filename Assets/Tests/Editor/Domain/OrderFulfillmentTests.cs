@@ -52,7 +52,9 @@ namespace VirtualDarkStore.Tests.Domain
             Assert.IsTrue(item.IsFulfilled);
 
             // Overpick attempt should be rejected
-            Assert.Throws<InvalidOperationException>(() => item.RecordPick(1));
+            bool overpick = item.RecordPick(1);
+            Assert.IsFalse(overpick);
+            Assert.AreEqual(2, item.PickedQuantity);
         }
 
         [Test]
@@ -162,7 +164,7 @@ namespace VirtualDarkStore.Tests.Domain
         public void OrderManager_CompleteFulfillmentCycle_EndToEnd()
         {
             // Pick 3 specific verified SKUs from the store catalog
-            var skuIds = new List<string> { "BEV-001", "DAI-001", "BAK-001" };
+            var skuIds = new List<string> { "SKU-0001", "SKU-0011", "SKU-0021" };
             var order = orderManager.StartSpecificOrder("ORD-E2E-001", skuIds);
 
             Assert.IsNotNull(order);
@@ -175,27 +177,27 @@ namespace VirtualDarkStore.Tests.Domain
             var wrongResult = orderManager.AttemptPick("WRONG-SKU-999");
             Assert.AreEqual(PickResult.WrongItem, wrongResult);
             Assert.AreEqual(0, order.Items[0].PickedQuantity);
-            Assert.AreEqual("BEV-001", order.CurrentTargetItem.SkuId);
+            Assert.AreEqual("SKU-0001", order.CurrentTargetItem.SkuId);
 
-            // 2. Pick Item 1 (BEV-001)
-            var pick1 = orderManager.AttemptPick("BEV-001");
+            // 2. Pick Item 1 (SKU-0001)
+            var pick1 = orderManager.AttemptPick("SKU-0001");
             Assert.AreEqual(PickResult.Success, pick1);
             Assert.IsTrue(order.Items[0].IsFulfilled);
-            Assert.AreEqual("DAI-001", order.CurrentTargetItem.SkuId);
+            Assert.AreEqual("SKU-0011", order.CurrentTargetItem.SkuId);
 
             // 3. Attempt Premature Packing
             bool prematurePack = orderManager.CompletePacking(out string prematureReason);
             Assert.IsFalse(prematurePack);
             Assert.IsNotNull(prematureReason);
 
-            // 4. Pick Item 2 (DAI-001)
-            var pick2 = orderManager.AttemptPick("DAI-001");
+            // 4. Pick Item 2 (SKU-0011)
+            var pick2 = orderManager.AttemptPick("SKU-0011");
             Assert.AreEqual(PickResult.Success, pick2);
             Assert.IsTrue(order.Items[1].IsFulfilled);
-            Assert.AreEqual("BAK-001", order.CurrentTargetItem.SkuId);
+            Assert.AreEqual("SKU-0021", order.CurrentTargetItem.SkuId);
 
-            // 5. Pick Item 3 (BAK-001)
-            var pick3 = orderManager.AttemptPick("BAK-001");
+            // 5. Pick Item 3 (SKU-0021)
+            var pick3 = orderManager.AttemptPick("SKU-0021");
             Assert.AreEqual(PickResult.Success, pick3);
             Assert.IsTrue(order.Items[2].IsFulfilled);
             Assert.IsTrue(order.IsAllItemsPicked);

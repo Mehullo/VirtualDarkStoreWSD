@@ -14,7 +14,7 @@ namespace VirtualDarkStore.Management
     public class StoreManager : MonoBehaviour
     {
         private static StoreManager instance;
-        public static StoreManager Instance => instance;
+        public static StoreManager Instance => instance != null ? instance : (instance = FindAnyObjectByType<StoreManager>());
 
         [Header("Store Configuration")]
         [SerializeField] private StoreConfiguration configuration;
@@ -58,6 +58,7 @@ namespace VirtualDarkStore.Management
         /// </summary>
         public void InitializeStore(StoreConfiguration config = null, List<Sku> catalog = null)
         {
+            instance = this;
             configuration = config ?? configuration ?? StoreConfiguration.CreateDefault();
 
             aisles.Clear();

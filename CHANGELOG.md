@@ -6,6 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-28
+### Added
+- **Order Engine & Domain Models (Phase 3)**:
+  - `Order.cs`: Pure domain entity with line item list, order status progression (`Pending`, `InProgress`, `AwaitingPacking`, `Completed`), and strict validation logic.
+  - `OrderItem.cs`: Line item tracking required and fulfilled quantity, target shelf slot ID, and target world position.
+  - `OrderManager.cs`: Singleton manager handling automated/manual order dispatch (`StartSampleOrder`, `StartSpecificOrder`), pick attempt validation (`AttemptPick` returning `PickResult`), packing completion (`CompletePacking`), and lifecycle event broadcasting.
+- **Physical Shelf Products & Picker Raycast Interaction (Phase 3)**:
+  - `PickableItemVisual.cs`: Component attached to physical shelf products with BoxCollider, category material shading, and visual disable on pick.
+  - `PickerInteraction.cs`: First-person reticle raycast interaction (2.8m reach, sorted `RaycastAll`) detecting shelf items and packing station with `[E]` / LMB pick triggers and `[N]` new order trigger.
+  - 72 physical pickable product boxes spawned across shelves in `Assets/Scenes/DarkStore_Phase1.unity` with 8 distinct category materials (`Mat_Prod_Beverages`, `Mat_Prod_Dairy`, `Mat_Prod_Bakery`, `Mat_Prod_Produce`, `Mat_Prod_Snacks`, `Mat_Prod_Canned`, `Mat_Prod_PersonalCare`, `Mat_Prod_Household`).
+- **Screen-Space Simulation HUD (Phase 3)**:
+  - `SimulationHUD.cs`: IMGUI HUD with central reticle, dynamic interaction prompt, active order terminal, target item name, slot ID, live distance to bin in meters, controls guide bar, and color-coded toast banners (green pick, red mismatch alert, gold completion).
+- **Automated Verification Suite (Phase 3)**:
+  - `OrderFulfillmentTests.cs`: 7 unit and integration tests verifying item picking, wrong SKU rejection, null/empty SKU rejection, sequential advancement, premature packing rejection, awaiting-packing transition, and end-to-end full sample order fulfillment cycle.
+
+### Verified
+- **15/15 EditMode tests passed** (0 failures, 100% pass rate) via Unity Test Runner CLI (`TestResults-EditMode.xml`).
+- Verified that wrong or missing SKU pick attempts strictly fail and never silently count as correct.
+- Verified that premature order packing attempts before fulfilling all pick list items are strictly rejected.
+- Verified end-to-end sample order cycle: Start order -> Navigate -> Locate SKU -> Pick -> Next item -> Packing -> Complete.
+- Rebaked NavMesh with 144 collider sources in `Assets/Scenes/DarkStore_Phase1_NavMesh.asset`.
+
 ## [0.2.0] - 2026-10-28
 ### Added
 - **Dark Store Scene Blockout (Phase 1)**:

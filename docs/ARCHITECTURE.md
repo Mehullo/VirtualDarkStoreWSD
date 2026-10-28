@@ -66,10 +66,24 @@ The platform strictly decouples **Simulation & Work-Study Logic** from the **Int
 - **Verified Catalog (`VerifiedSampleCatalog`)**:
   - Deterministic catalog of 72 verified grocery SKUs across 8 departments.
 
-### 2.3 Interaction Layer (`Assets/Scripts/Player/` & `Assets/Scripts/Environment/`)
+### 2.3 Order & Fulfillment Simulation Engine (`Assets/Scripts/Domain/`, `Assets/Scripts/Management/`, `Assets/Scripts/Interaction/`, `Assets/Scripts/UI/`)
+- **Order Domain Models**:
+  - `Order`: Encapsulates order identity, line items, sequential target progression, and strict pick validation logic (`ValidateAndPick`). Ensures incorrect or missing items strictly fail validation and never silently advance or count as fulfilled.
+  - `OrderItem`: Represents an order line item with SKU metadata, target slot address, world position, required quantity, and picked quantity.
+- **OrderManager**:
+  - Central singleton manager handling automated/manual order dispatch (`StartSampleOrder`, `StartSpecificOrder`), pick attempt routing (`AttemptPick`), and packing finalization (`CompletePacking`).
+  - Broadcasts decoupled lifecycle events (`OnOrderStarted`, `OnItemPicked`, `OnPickFailed`, `OnOrderCompleted`).
+- **Physical Shelf Products & Visuals**:
+  - `PickableItemVisual`: Placed on shelves at slot coordinates with BoxCollider, category material shading, and pick disable/reset state.
+- **Picker Raycast Interaction**:
+  - `PickerInteraction`: Camera-center raycasting (`Physics.RaycastAll` sorted by distance, 2.8m reach) to select hovered shelf products and packing benches; executes picks and packing finalization.
+- **Simulation HUD**:
+  - `SimulationHUD`: Screen-space IMGUI terminal displaying active order status, current target SKU, shelf slot address, live distance in meters, central crosshair reticle, dynamic interaction prompts, and color-coded feedback banners (green pick, red mismatch alert, gold completion).
+
+### 2.4 Interaction Layer (`Assets/Scripts/Player/` & `Assets/Scripts/Environment/`)
 - **Desktop First-Person Rig**:
-  - Input System Action bindings for Move (WASD), Look (Mouse Delta), Interact/Pick (E / Left Click), Scan (Right Click / F), Drop (Q).
-  - Physics raycasting for pickup and placement.
+  - Input System Action bindings for Move (WASD), Look (Mouse Delta), Interact/Pick/Pack (`E` / Left Click), New Order (`N`).
+  - Physics raycasting for shelf item grab and packing bench interaction.
 - **VR Rig (Deferred)**:
   - OpenXR / XR Interaction Toolkit integration mapped to the identical `IPlayerController` / `IInteractable` interfaces.
 

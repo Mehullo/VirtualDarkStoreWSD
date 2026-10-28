@@ -21,7 +21,7 @@ namespace VirtualDarkStore.Management
     public class OrderManager : MonoBehaviour
     {
         private static OrderManager instance;
-        public static OrderManager Instance => instance;
+        public static OrderManager Instance => instance != null ? instance : (instance = FindAnyObjectByType<OrderManager>());
 
         [Header("Runtime State")]
         [SerializeField] private Order activeOrder;
