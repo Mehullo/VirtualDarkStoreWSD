@@ -11,6 +11,7 @@ using VirtualDarkStore.Interaction;
 using VirtualDarkStore.Management;
 using VirtualDarkStore.Player;
 using VirtualDarkStore.UI;
+using VirtualDarkStore.WorkStudy;
 
 namespace VirtualDarkStore.Editor
 {
@@ -90,7 +91,13 @@ namespace VirtualDarkStore.Editor
             var hudObj = new GameObject("[SimulationHUD]");
             hudObj.AddComponent<SimulationHUD>();
 
-            // 9. Physical Shelf Products
+            // 9. Work-Study Instrumentation & State Machine
+            var workStudyObj = new GameObject("[WorkStudyManager]");
+            workStudyObj.AddComponent<WorkEventLogger>();
+            workStudyObj.AddComponent<ActivityClassifier>();
+            workStudyObj.AddComponent<WorkStudyResultsUI>();
+
+            // 10. Physical Shelf Products
             BuildShelfProducts(envRoot);
 
             // Mark navigation static and bake NavMesh

@@ -170,3 +170,63 @@ This log tracks all architectural and engineering changes to the Virtual Dark St
 - **Known Issues**: None in Phase 3 scope. Industrial work-study instrumentation and sampling are scheduled for Phase 4/5.
 - **Next Step**: Phase 4 - Desktop Interactive Mode & Work-Study Instrumentation.
 
+---
+
+## Entry: 2026-10-28T16:20:00+05:30
+- **Date**: 2026-10-28T16:20:00+05:30
+- **Phase**: Phase 4 (Desktop Interactive Mode & Work-Study Instrumentation)
+- **Goal**: Implement WorkEvent, WorkEventLogger, and ActivityClassifier state machine covering all 8 industrial activities (`Walking`, `Waiting`, `Searching`, `Approaching`, `Picking`, `MovingBetweenLocations`, `Packing`, `OrderCompleted`) with strictly measurable physical parameters, non-negative durations, and monotonic ordered timestamps. Enforce strict prohibition of uninstrumented eye-gaze/fatigue/physiological claims. Run sample order and inspect generated events.
+- **Changes**:
+  1. Created `ActivityType.cs` defining 8 activities: `Walking`, `Waiting`, `Searching`, `Approaching`, `Picking`, `MovingBetweenLocations`, `Packing`, `OrderCompleted`.
+  2. Created pure domain model `WorkEvent.cs`:
+     - Holds strictly measurable fields: `Id`, `Activity`, `StartTime`, `EndTime`, `Duration`, `Position`, `LocationName`, `RelatedSku`, `RelatedOrder`, `Distance`.
+     - Validates invariants: rejects negative start time ($t_{start} \ge 0$), inverted timestamps ($t_{end} \ge t_{start}$), negative duration ($duration \ge 0$), and negative distance ($distance \ge 0$).
+  3. Created `WorkEventLogger.cs`:
+     - Central in-memory repository managing recorded work events.
+     - Enforces monotonic non-decreasing start timestamps ($t_{start, i} \ge t_{start, i-1}$) and non-negative durations.
+     - Implements `VerifyIntegrity(out string failureReason)` automated validator.
+  4. Created `ActivityClassifier.cs`:
+     - State machine and classifier monitoring picker movement, velocity, target slot distance, packing station distance, camera raycasts, and order lifecycle events.
+     - Explicit measurable classification rules:
+       - `Waiting`: picker stationary ($v < 0.15\text{ m/s}$) while unengaged.
+       - `Walking`: picker moving ($v \ge 0.15\text{ m/s}$) without active order target.
+       - `MovingBetweenLocations`: picker moving ($v \ge 0.15\text{ m/s}$) towards target outside approach zone ($d > 3.0\text{ m}$).
+       - `Approaching`: picker moving ($v \ge 0.15\text{ m/s}$) within target approach radius ($d \le 3.0\text{ m}$).
+       - `Searching`: picker stationary ($v < 0.15\text{ m/s}$) within $3.0\text{ m}$ of target rack bay with camera raycast oriented towards shelving geometry, prior to item acquisition. Zero eye-gaze or physiological estimation claims.
+       - `Picking`: discrete physical retrieval event validated against SKU.
+       - `Packing`: picker positioned at packing bench ($d \le 3.0\text{ m}$) with order awaiting packing.
+       - `OrderCompleted`: terminal event logged upon order completion and dispatch.
+  5. Updated `SimulationHUD.cs`:
+     - Added real-time classified activity display and logged event counter to the top-left order terminal.
+  6. Updated `DarkStoreSceneBuilder.cs`:
+     - Added `[WorkStudyManager]` GameObject containing `WorkEventLogger` and `ActivityClassifier` to scene hierarchy.
+     - Rebuilt scene `Assets/Scenes/DarkStore_Phase1.unity`.
+  7. Authored comprehensive automated test suite in `Assets/Tests/Editor/WorkStudy/WorkStudyInstrumentationTests.cs`:
+     - Unit tests for duration calculation and invariant enforcement.
+     - Monotonic timestamp ordering and integrity validation tests.
+     - Measurable decision matrix tests for all 8 activity rules.
+     - End-to-end sample order fulfillment simulation generating and inspecting 13 ordered, non-negative duration work events.
+- **Files Changed**:
+  - `Assets/Scripts/WorkStudy/ActivityType.cs` [NEW]
+  - `Assets/Scripts/WorkStudy/WorkEvent.cs` [NEW]
+  - `Assets/Scripts/WorkStudy/WorkEventLogger.cs` [NEW]
+  - `Assets/Scripts/WorkStudy/ActivityClassifier.cs` [NEW]
+  - `Assets/Scripts/UI/SimulationHUD.cs` [MODIFY]
+  - `Assets/Scripts/Editor/DarkStoreSceneBuilder.cs` [MODIFY]
+  - `Assets/Tests/Editor/WorkStudy/WorkStudyInstrumentationTests.cs` [NEW]
+  - `Assets/Scenes/DarkStore_Phase1.unity` [MODIFY]
+  - `TestResults-EditMode.xml` [MODIFY]
+- **Commands / Tools**:
+  - `Unity.exe -batchmode -runTests -projectPath . -testPlatform EditMode -testResults TestResults-EditMode.xml -logFile test_phase4.log`
+  - `Unity.exe -batchmode -executeMethod VirtualDarkStore.Editor.DarkStoreSceneBuilder.BuildDarkStorePhase1Scene -quit -projectPath . -logFile build_scene_phase4.log`
+- **Verification**:
+  - Executed EditMode test suite: **20 tests executed, 20 passed, 0 failed** (100% pass rate).
+  - Verified sample order run generated 13 work-study events across 6 distinct activity types (`Waiting`, `MovingBetweenLocations`, `Approaching`, `Searching`, `Picking`, `Packing`, `OrderCompleted`).
+  - Verified monotonic start timestamp ordering ($0.00\text{s} \le 0.34\text{s} \le 4.00\text{s} \le 5.50\text{s} \le 6.00\text{s} \le 8.50\text{s} \le 12.20\text{s} \le 12.70\text{s} \le 17.50\text{s} \le 18.70\text{s}$).
+  - Verified non-negative duration invariant for every logged event ($\Delta t \ge 0$).
+  - Verified zero claims of uninstrumented eye-gaze, fatigue, or physiological measurements.
+- **Result**: Phase 4 fully completed and verified with automated test and event log evidence.
+- **Known Issues**: None in Phase 4 scope. Work-sampling engine and automated CSV/JSON file exports are scheduled for Phase 5.
+- **Next Step**: Phase 5 - Work-Sampling & Automated Exporters (CSV/JSON).
+
+

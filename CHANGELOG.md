@@ -6,6 +6,35 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-28
+### Added
+- **Work-Study Telemetry & Measurement Event Schema (Phase 4)**:
+  - `ActivityType.cs`: Enum defining all 8 industrial work-study activities: `Walking`, `Waiting`, `Searching`, `Approaching`, `Picking`, `MovingBetweenLocations`, `Packing`, `OrderCompleted`.
+  - `WorkEvent.cs`: Immutable measurement record capturing strictly measurable telemetry (`Id`, `Activity`, `StartTime`, `EndTime`, `Duration`, `Position`, `LocationName`, `RelatedSku`, `RelatedOrder`, `Distance`). Strictly validates non-negative duration and chronological invariants.
+  - `WorkEventLogger.cs`: Central in-memory repository managing recorded work events with monotonic timestamp ordering enforcement and runtime integrity validation (`VerifyIntegrity`).
+- **Activity State Machine & Classifier (Phase 4)**:
+  - `ActivityClassifier.cs`: Continuous state machine and activity classifier using explicit physical measurement rules:
+    - `Waiting`: stationary picker ($v < 0.15\text{ m/s}$) while unengaged.
+    - `Walking`: moving picker ($v \ge 0.15\text{ m/s}$) with no active destination.
+    - `MovingBetweenLocations`: moving picker ($v \ge 0.15\text{ m/s}$) towards target outside approach zone ($d > 3.0\text{ m}$).
+    - `Approaching`: moving picker ($v \ge 0.15\text{ m/s}$) within target approach radius ($d \le 3.0\text{ m}$).
+    - `Searching`: stationary picker ($v < 0.15\text{ m/s}$) within $3.0\text{ m}$ of target rack bay with camera raycast oriented towards shelving geometry, prior to item acquisition. Zero uninstrumented eye-gaze or cognitive load claims.
+    - `Picking`: discrete physical retrieval event validated against SKU.
+    - `Packing`: picker positioned at packing bench ($d \le 3.0\text{ m}$) with order awaiting packing.
+    - `OrderCompleted`: terminal event logged upon order completion and dispatch.
+- **HUD & Scene Hierarchy Integration (Phase 4)**:
+  - `SimulationHUD.cs`: Displays real-time classified activity state and logged event counter in the picker terminal.
+  - `DarkStoreSceneBuilder.cs`: Added `[WorkStudyManager]` containing `WorkEventLogger` and `ActivityClassifier` to scene hierarchy.
+- **Automated Verification Suite (Phase 4)**:
+  - `WorkStudyInstrumentationTests.cs`: 5 unit and integration tests verifying duration math, negative/inverted timestamp rejection, monotonic logger ordering, rule evaluation, and end-to-end sample order run with 13 inspected events.
+
+### Verified
+- **20/20 EditMode tests passed** (0 failures, 100% pass rate) via Unity Test Runner CLI (`TestResults-EditMode.xml`).
+- Verified sample order run generated 13 work-study events across 6 distinct activity types (`Waiting`, `MovingBetweenLocations`, `Approaching`, `Searching`, `Picking`, `Packing`, `OrderCompleted`).
+- Verified monotonic start timestamp ordering ($0.00\text{s} \le 0.34\text{s} \le 4.00\text{s} \le 5.50\text{s} \le 6.00\text{s} \le 8.50\text{s} \le 12.20\text{s} \le 12.70\text{s} \le 17.50\text{s} \le 18.70\text{s}$).
+- Verified non-negative duration invariant for every logged event ($\Delta t \ge 0$).
+- Verified zero claims of uninstrumented eye-gaze, fatigue, or physiological measurements.
+
 ## [0.3.0] - 2026-10-28
 ### Added
 - **Order Engine & Domain Models (Phase 3)**:

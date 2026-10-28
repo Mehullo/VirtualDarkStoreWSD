@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<test-run id="2" testcasecount="15" result="Passed" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.1047562">
-  <test-suite type="TestSuite" id="1000" name="WSD VR Project" fullname="WSD VR Project" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.104756" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+<test-run id="2" testcasecount="24" result="Passed" total="24" passed="24" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.332358">
+  <test-suite type="TestSuite" id="1000" name="WSD VR Project" fullname="WSD VR Project" runstate="Runnable" testcasecount="24" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.332358" total="24" passed="24" failed="0" inconclusive="0" skipped="0" asserts="0">
     <properties>
       <property name="platform" value="EditMode" />
     </properties>
-    <test-suite type="Assembly" id="1027" name="VirtualDarkStore.Tests.Editor.dll" fullname="C:/Users/Mehul/OneDrive/Documents/VirtualDarkStoreWSD/Library/ScriptAssemblies/VirtualDarkStore.Tests.Editor.dll" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.092677" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <test-suite type="Assembly" id="1038" name="VirtualDarkStore.Tests.Editor.dll" fullname="C:/Users/Mehul/OneDrive/Documents/VirtualDarkStoreWSD/Library/ScriptAssemblies/VirtualDarkStore.Tests.Editor.dll" runstate="Runnable" testcasecount="24" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.316153" total="24" passed="24" failed="0" inconclusive="0" skipped="0" asserts="0">
       <properties>
-        <property name="_PID" value="23720" />
+        <property name="_PID" value="18956" />
         <property name="_APPDOMAIN" value="Unity Child Domain" />
         <property name="platform" value="EditMode" />
         <property name="EditorOnly" value="True" />
       </properties>
-      <test-suite type="TestSuite" id="1028" name="VirtualDarkStore" fullname="VirtualDarkStore" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.092047" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <test-suite type="TestSuite" id="1039" name="VirtualDarkStore" fullname="VirtualDarkStore" runstate="Runnable" testcasecount="24" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.314848" total="24" passed="24" failed="0" inconclusive="0" skipped="0" asserts="0">
         <properties />
-        <test-suite type="TestSuite" id="1029" name="Tests" fullname="VirtualDarkStore.Tests" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.091772" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <test-suite type="TestSuite" id="1040" name="Tests" fullname="VirtualDarkStore.Tests" runstate="Runnable" testcasecount="24" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.314029" total="24" passed="24" failed="0" inconclusive="0" skipped="0" asserts="0">
           <properties />
-          <test-suite type="TestSuite" id="1030" name="Domain" fullname="VirtualDarkStore.Tests.Domain" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.091494" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestSuite" id="1042" name="Domain" fullname="VirtualDarkStore.Tests.Domain" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.178735" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-suite type="TestFixture" id="1010" name="OrderFulfillmentTests" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.072240" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <test-suite type="TestFixture" id="1021" name="OrderFulfillmentTests" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.134676" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
               <properties />
-              <test-case id="1015" name="Order_FinalizePacking_RejectsPrematurePacking" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests.Order_FinalizePacking_RejectsPrematurePacking" methodname="Order_FinalizePacking_RejectsPrematurePacking" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" seed="1650659723" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.032274" asserts="0">
+              <test-case id="1026" name="Order_FinalizePacking_RejectsPrematurePacking" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests.Order_FinalizePacking_RejectsPrematurePacking" methodname="Order_FinalizePacking_RejectsPrematurePacking" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" seed="1314904394" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.063456" asserts="0">
                 <properties>
                   <property name="retryIteration" value="0" />
                   <property name="repeatIteration" value="0" />
@@ -27,7 +27,7 @@
                 <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
 ]]></output>
               </test-case>
-              <test-case id="1016" name="Order_FinalizePacking_SucceedsWhenAwaitingPacking" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests.Order_FinalizePacking_SucceedsWhenAwaitingPacking" methodname="Order_FinalizePacking_SucceedsWhenAwaitingPacking" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" seed="1425560820" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.002202" asserts="0">
+              <test-case id="1027" name="Order_FinalizePacking_SucceedsWhenAwaitingPacking" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests.Order_FinalizePacking_SucceedsWhenAwaitingPacking" methodname="Order_FinalizePacking_SucceedsWhenAwaitingPacking" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" seed="1977065483" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.003876" asserts="0">
                 <properties>
                   <property name="retryIteration" value="0" />
                   <property name="repeatIteration" value="0" />
@@ -35,7 +35,7 @@
                 <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
 ]]></output>
               </test-case>
-              <test-case id="1014" name="Order_Validation_AcceptsCorrectSku_AdvancesSequentially" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests.Order_Validation_AcceptsCorrectSku_AdvancesSequentially" methodname="Order_Validation_AcceptsCorrectSku_AdvancesSequentially" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" seed="975672588" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.002174" asserts="0">
+              <test-case id="1025" name="Order_Validation_AcceptsCorrectSku_AdvancesSequentially" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests.Order_Validation_AcceptsCorrectSku_AdvancesSequentially" methodname="Order_Validation_AcceptsCorrectSku_AdvancesSequentially" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" seed="1039666410" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.003828" asserts="0">
                 <properties>
                   <property name="retryIteration" value="0" />
                   <property name="repeatIteration" value="0" />
@@ -43,7 +43,7 @@
                 <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
 ]]></output>
               </test-case>
-              <test-case id="1013" name="Order_Validation_RejectsNullOrEmptySku" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests.Order_Validation_RejectsNullOrEmptySku" methodname="Order_Validation_RejectsNullOrEmptySku" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" seed="892255373" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.001490" asserts="0">
+              <test-case id="1024" name="Order_Validation_RejectsNullOrEmptySku" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests.Order_Validation_RejectsNullOrEmptySku" methodname="Order_Validation_RejectsNullOrEmptySku" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" seed="1954056626" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.003834" asserts="0">
                 <properties>
                   <property name="retryIteration" value="0" />
                   <property name="repeatIteration" value="0" />
@@ -51,7 +51,7 @@
                 <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
 ]]></output>
               </test-case>
-              <test-case id="1012" name="Order_Validation_RejectsWrongSku_WithoutAdvancingOrCounting" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests.Order_Validation_RejectsWrongSku_WithoutAdvancingOrCounting" methodname="Order_Validation_RejectsWrongSku_WithoutAdvancingOrCounting" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" seed="42584571" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.001738" asserts="0">
+              <test-case id="1023" name="Order_Validation_RejectsWrongSku_WithoutAdvancingOrCounting" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests.Order_Validation_RejectsWrongSku_WithoutAdvancingOrCounting" methodname="Order_Validation_RejectsWrongSku_WithoutAdvancingOrCounting" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" seed="667841420" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.003963" asserts="0">
                 <properties>
                   <property name="retryIteration" value="0" />
                   <property name="repeatIteration" value="0" />
@@ -59,7 +59,7 @@
                 <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
 ]]></output>
               </test-case>
-              <test-case id="1011" name="OrderItem_InitialState_AndPickRecording" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests.OrderItem_InitialState_AndPickRecording" methodname="OrderItem_InitialState_AndPickRecording" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" seed="545793142" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.001387" asserts="0">
+              <test-case id="1022" name="OrderItem_InitialState_AndPickRecording" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests.OrderItem_InitialState_AndPickRecording" methodname="OrderItem_InitialState_AndPickRecording" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" seed="1367648488" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.003325" asserts="0">
                 <properties>
                   <property name="retryIteration" value="0" />
                   <property name="repeatIteration" value="0" />
@@ -67,7 +67,7 @@
                 <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
 ]]></output>
               </test-case>
-              <test-case id="1017" name="OrderManager_CompleteFulfillmentCycle_EndToEnd" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests.OrderManager_CompleteFulfillmentCycle_EndToEnd" methodname="OrderManager_CompleteFulfillmentCycle_EndToEnd" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" seed="500139416" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.005582" asserts="0">
+              <test-case id="1028" name="OrderManager_CompleteFulfillmentCycle_EndToEnd" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests.OrderManager_CompleteFulfillmentCycle_EndToEnd" methodname="OrderManager_CompleteFulfillmentCycle_EndToEnd" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" seed="1398550442" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.014151" asserts="0">
                 <properties>
                   <property name="retryIteration" value="0" />
                   <property name="repeatIteration" value="0" />
@@ -83,9 +83,9 @@
 ]]></output>
               </test-case>
             </test-suite>
-            <test-suite type="TestFixture" id="1018" name="StoreTopologyTests" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.017859" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <test-suite type="TestFixture" id="1029" name="StoreTopologyTests" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.040906" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
               <properties />
-              <test-case id="1024" name="StoreManager_BidirectionalMapping_IsConsistent" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.StoreManager_BidirectionalMapping_IsConsistent" methodname="StoreManager_BidirectionalMapping_IsConsistent" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="180382058" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.002166" asserts="0">
+              <test-case id="1035" name="StoreManager_BidirectionalMapping_IsConsistent" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.StoreManager_BidirectionalMapping_IsConsistent" methodname="StoreManager_BidirectionalMapping_IsConsistent" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="1248037871" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.005645" asserts="0">
                 <properties>
                   <property name="retryIteration" value="0" />
                   <property name="repeatIteration" value="0" />
@@ -93,7 +93,7 @@
                 <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
 ]]></output>
               </test-case>
-              <test-case id="1023" name="StoreManager_EverySku_HasAValidUniqueLocation" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.StoreManager_EverySku_HasAValidUniqueLocation" methodname="StoreManager_EverySku_HasAValidUniqueLocation" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="692150616" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.002406" asserts="0">
+              <test-case id="1034" name="StoreManager_EverySku_HasAValidUniqueLocation" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.StoreManager_EverySku_HasAValidUniqueLocation" methodname="StoreManager_EverySku_HasAValidUniqueLocation" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="1586721749" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.005097" asserts="0">
                 <properties>
                   <property name="retryIteration" value="0" />
                   <property name="repeatIteration" value="0" />
@@ -101,7 +101,7 @@
                 <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
 ]]></output>
               </test-case>
-              <test-case id="1021" name="StoreManager_InitializesTopology_WithExpectedSlotCapacity" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.StoreManager_InitializesTopology_WithExpectedSlotCapacity" methodname="StoreManager_InitializesTopology_WithExpectedSlotCapacity" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="271294869" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.001368" asserts="0">
+              <test-case id="1032" name="StoreManager_InitializesTopology_WithExpectedSlotCapacity" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.StoreManager_InitializesTopology_WithExpectedSlotCapacity" methodname="StoreManager_InitializesTopology_WithExpectedSlotCapacity" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="1826934013" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.003328" asserts="0">
                 <properties>
                   <property name="retryIteration" value="0" />
                   <property name="repeatIteration" value="0" />
@@ -109,7 +109,7 @@
                 <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
 ]]></output>
               </test-case>
-              <test-case id="1022" name="StoreManager_MultipleShelfLevels_ExistInEveryBay" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.StoreManager_MultipleShelfLevels_ExistInEveryBay" methodname="StoreManager_MultipleShelfLevels_ExistInEveryBay" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="59367518" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.001644" asserts="0">
+              <test-case id="1033" name="StoreManager_MultipleShelfLevels_ExistInEveryBay" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.StoreManager_MultipleShelfLevels_ExistInEveryBay" methodname="StoreManager_MultipleShelfLevels_ExistInEveryBay" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="63980308" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.003829" asserts="0">
                 <properties>
                   <property name="retryIteration" value="0" />
                   <property name="repeatIteration" value="0" />
@@ -117,7 +117,7 @@
                 <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
 ]]></output>
               </test-case>
-              <test-case id="1026" name="StoreManager_QueryNonExistent_ReturnsFalseGracefully" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.StoreManager_QueryNonExistent_ReturnsFalseGracefully" methodname="StoreManager_QueryNonExistent_ReturnsFalseGracefully" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="835064834" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.001308" asserts="0">
+              <test-case id="1037" name="StoreManager_QueryNonExistent_ReturnsFalseGracefully" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.StoreManager_QueryNonExistent_ReturnsFalseGracefully" methodname="StoreManager_QueryNonExistent_ReturnsFalseGracefully" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="1114502099" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.003542" asserts="0">
                 <properties>
                   <property name="retryIteration" value="0" />
                   <property name="repeatIteration" value="0" />
@@ -125,7 +125,7 @@
                 <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
 ]]></output>
               </test-case>
-              <test-case id="1025" name="StoreManager_ValidateIntegrity_ReturnsTrueWithZeroErrors" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.StoreManager_ValidateIntegrity_ReturnsTrueWithZeroErrors" methodname="StoreManager_ValidateIntegrity_ReturnsTrueWithZeroErrors" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="1231741030" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.001213" asserts="0">
+              <test-case id="1036" name="StoreManager_ValidateIntegrity_ReturnsTrueWithZeroErrors" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.StoreManager_ValidateIntegrity_ReturnsTrueWithZeroErrors" methodname="StoreManager_ValidateIntegrity_ReturnsTrueWithZeroErrors" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="1087643917" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.003143" asserts="0">
                 <properties>
                   <property name="retryIteration" value="0" />
                   <property name="repeatIteration" value="0" />
@@ -133,18 +133,195 @@
                 <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
 ]]></output>
               </test-case>
-              <test-case id="1020" name="VerifiedSampleCatalog_AllSkus_HaveValidUniqueIdentifiersAndAttributes" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.VerifiedSampleCatalog_AllSkus_HaveValidUniqueIdentifiersAndAttributes" methodname="VerifiedSampleCatalog_AllSkus_HaveValidUniqueIdentifiersAndAttributes" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="480145383" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.003933" asserts="0">
+              <test-case id="1031" name="VerifiedSampleCatalog_AllSkus_HaveValidUniqueIdentifiersAndAttributes" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.VerifiedSampleCatalog_AllSkus_HaveValidUniqueIdentifiersAndAttributes" methodname="VerifiedSampleCatalog_AllSkus_HaveValidUniqueIdentifiersAndAttributes" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="102737882" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.008339" asserts="0">
                 <properties>
                   <property name="retryIteration" value="0" />
                   <property name="repeatIteration" value="0" />
                 </properties>
               </test-case>
-              <test-case id="1019" name="VerifiedSampleCatalog_Count_IsBetween50And100" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.VerifiedSampleCatalog_Count_IsBetween50And100" methodname="VerifiedSampleCatalog_Count_IsBetween50And100" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="891148722" result="Passed" start-time="2026-10-28 10:16:58Z" end-time="2026-10-28 10:16:58Z" duration="0.000855" asserts="0">
+              <test-case id="1030" name="VerifiedSampleCatalog_Count_IsBetween50And100" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.VerifiedSampleCatalog_Count_IsBetween50And100" methodname="VerifiedSampleCatalog_Count_IsBetween50And100" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="390362421" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.002007" asserts="0">
                 <properties>
                   <property name="retryIteration" value="0" />
                   <property name="repeatIteration" value="0" />
                 </properties>
-                <output><![CDATA[Saving results to: C:/Users/Mehul/AppData/LocalLow/DefaultCompany/WSD VR Project\TestResults.xml
+              </test-case>
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestSuite" id="1041" name="WorkStudy" fullname="VirtualDarkStore.Tests.WorkStudy" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.131042" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1010" name="WorkStudyCalculatorTests" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.075877" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1012" name="DeterministicScenario_CalculatesAccurateMetrics_AndReconciles" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests.DeterministicScenario_CalculatesAccurateMetrics_AndReconciles" methodname="DeterministicScenario_CalculatesAccurateMetrics_AndReconciles" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests" runstate="Runnable" seed="2099033970" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.021740" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+=== INDUSTRIAL WORK-STUDY SIMULATION RESULTS ===
+Total Task Time:   30.00 s
+Total Traveled:    33.50 m
+Successful Picks:  2
+Shelf Bay Visits:  2
+Processed Events:  12
+------------------------------------------------
+Activity Category Breakdown (Time-Study):
+  - Walking / Travel:     18.50 s  ( 61.7%)  [Moving: 15.00s, Approach: 3.50s, General: 0.00s]
+  - Searching Shelf:       5.00 s  ( 16.7%)
+  - Item Picking:          1.00 s  (  3.3%)
+  - Waiting / Idle:        2.00 s  (  6.7%)
+  - Order Packing:         3.00 s  ( 10.0%)
+  - Order Completed:       0.50 s  (  1.7%)
+------------------------------------------------
+Work-Sampling (Interval: 1.00 s, Total Samples: 31):
+  - Waiting               :    3 obs (  9.7%)
+  - Searching             :    5 obs ( 16.1%)
+  - Approaching           :    4 obs ( 12.9%)
+  - MovingBetweenLocations:   15 obs ( 48.4%)
+  - Packing               :    3 obs (  9.7%)
+  - OrderCompleted        :    1 obs (  3.2%)
+================================================
+
+]]></output>
+              </test-case>
+              <test-case id="1011" name="EmptyEventsList_ProducesZeroResults_ReconcilesSuccessfully" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests.EmptyEventsList_ProducesZeroResults_ReconcilesSuccessfully" methodname="EmptyEventsList_ProducesZeroResults_ReconcilesSuccessfully" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests" runstate="Runnable" seed="1378502403" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.007922" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1014" name="SampleOrderExecution_GeneratesFullyReconciledResults" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests.SampleOrderExecution_GeneratesFullyReconciledResults" methodname="SampleOrderExecution_GeneratesFullyReconciledResults" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests" runstate="Runnable" seed="1602031281" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.039583" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+[OrderManager] Dispatched new order: [Order ORD-0001] Status: InProgress, Items: 2, Current: 1/2
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 0.33s (0.33s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (0.0, 0.0, -8.0)
+[WorkEventLogger] Logged: [EVT-0002] MovingBetweenLocations | T: 0.33s - 4.00s (3.67s) | Dist: 9.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.2, 0.4, -1.7)
+[WorkEventLogger] Logged: [EVT-0003] Approaching | T: 4.00s - 5.50s (1.50s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.2, 0.4, -1.7)
+[OrderManager] Pick SUCCESS! Picked 'Cold Brew Coffee 330ml' (SKU-0001). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0004] Searching | T: 5.50s - 5.50s (0.00s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T01-S02 | Pos: (-7.2, 0.4, -1.7)
+[WorkEventLogger] Logged: [EVT-0005] Picking | T: 5.50s - 6.00s (0.50s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.2, 0.4, -1.7)
+[WorkEventLogger] Logged: [EVT-0006] MovingBetweenLocations | T: 6.00s - 11.00s (5.00s) | Dist: 6.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T01-S02 | Pos: (-7.2, 0.4, -1.2)
+[WorkEventLogger] Logged: [EVT-0007] Approaching | T: 11.00s - 12.20s (1.20s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T01-S02 | Pos: (-7.2, 0.4, -1.2)
+[OrderManager] Pick SUCCESS! Picked 'Sparkling Water Lemon 500ml' (SKU-0002). Order fulfilled: True
+[WorkEventLogger] Logged: [EVT-0008] Searching | T: 12.20s - 12.20s (0.00s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (-7.2, 0.4, -1.2)
+[WorkEventLogger] Logged: [EVT-0009] Picking | T: 12.20s - 12.70s (0.50s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T01-S02 | Pos: (-7.2, 0.4, -1.2)
+[WorkEventLogger] Logged: [EVT-0010] MovingBetweenLocations | T: 12.70s - 17.00s (4.30s) | Dist: 7.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0011] Approaching | T: 17.00s - 18.00s (1.00s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[OrderManager] Order 'ORD-0001' successfully completed and packed!
+[WorkEventLogger] Logged: [EVT-0012] Packing | T: 18.00s - 18.00s (0.00s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0013] OrderCompleted | T: 18.00s - 18.80s (0.80s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+=== INDUSTRIAL WORK-STUDY SIMULATION RESULTS ===
+Total Task Time:   18.80 s
+Total Traveled:    22.00 m
+Successful Picks:  2
+Shelf Bay Visits:  2
+Processed Events:  13
+------------------------------------------------
+Activity Category Breakdown (Time-Study):
+  - Walking / Travel:     16.67 s  ( 88.7%)  [Moving: 12.97s, Approach: 3.70s, General: 0.00s]
+  - Searching Shelf:       0.00 s  (  0.0%)
+  - Item Picking:          1.00 s  (  5.3%)
+  - Waiting / Idle:        0.33 s  (  1.8%)
+  - Order Packing:         0.00 s  (  0.0%)
+  - Order Completed:       0.80 s  (  4.3%)
+------------------------------------------------
+Work-Sampling (Interval: 1.00 s, Total Samples: 19):
+  - Waiting               :    1 obs (  5.3%)
+  - Approaching           :    3 obs ( 15.8%)
+  - Picking               :    1 obs (  5.3%)
+  - MovingBetweenLocations:   14 obs ( 73.7%)
+================================================
+
+]]></output>
+              </test-case>
+              <test-case id="1013" name="WorkSampling_ConfigurableInterval_MatchesDiscreteObservationRule" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests.WorkSampling_ConfigurableInterval_MatchesDiscreteObservationRule" methodname="WorkSampling_ConfigurableInterval_MatchesDiscreteObservationRule" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests" runstate="Runnable" seed="1235868893" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.003179" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1015" name="WorkStudyInstrumentationTests" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.053608" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1019" name="ActivityClassifier_EvaluatesAll8Activities_AccordingToMeasurableRules" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests.ActivityClassifier_EvaluatesAll8Activities_AccordingToMeasurableRules" methodname="ActivityClassifier_EvaluatesAll8Activities_AccordingToMeasurableRules" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests" runstate="Runnable" seed="1909383551" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.003199" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1020" name="SampleOrderFulfillment_GeneratesOrderedNonNegativeEvents" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests.SampleOrderFulfillment_GeneratesOrderedNonNegativeEvents" methodname="SampleOrderFulfillment_GeneratesOrderedNonNegativeEvents" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests" runstate="Runnable" seed="623780759" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.032321" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+[OrderManager] Dispatched new order: [Order ORD-0001] Status: InProgress, Items: 2, Current: 1/2
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 0.41s (0.41s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (0.0, 0.0, -8.0)
+[WorkEventLogger] Logged: [EVT-0002] MovingBetweenLocations | T: 0.41s - 4.00s (3.59s) | Dist: 9.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.2, 0.4, -1.7)
+[WorkEventLogger] Logged: [EVT-0003] Approaching | T: 4.00s - 5.50s (1.50s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.2, 0.4, -1.7)
+[OrderManager] Pick SUCCESS! Picked 'Cold Brew Coffee 330ml' (SKU-0001). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0004] Searching | T: 5.50s - 5.50s (0.00s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T01-S02 | Pos: (-7.2, 0.4, -1.7)
+[WorkEventLogger] Logged: [EVT-0005] Picking | T: 5.50s - 6.00s (0.50s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.2, 0.4, -1.7)
+[WorkEventLogger] Logged: [EVT-0006] MovingBetweenLocations | T: 6.00s - 8.50s (2.50s) | Dist: 4.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T01-S02 | Pos: (-7.2, 0.4, -2.8)
+[WorkEventLogger] Logged: [EVT-0007] Approaching | T: 8.50s - 12.20s (3.70s) | Dist: 2.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T01-S02 | Pos: (-7.2, 0.4, -1.2)
+[OrderManager] Pick SUCCESS! Picked 'Sparkling Water Lemon 500ml' (SKU-0002). Order fulfilled: True
+[WorkEventLogger] Logged: [EVT-0008] Searching | T: 12.20s - 12.20s (0.00s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (-7.2, 0.4, -1.2)
+[WorkEventLogger] Logged: [EVT-0009] Picking | T: 12.20s - 12.70s (0.50s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T01-S02 | Pos: (-7.2, 0.4, -1.2)
+[WorkEventLogger] Logged: [EVT-0010] MovingBetweenLocations | T: 12.70s - 17.50s (4.80s) | Dist: 8.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0011] Approaching | T: 17.50s - 18.70s (1.20s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[OrderManager] Order 'ORD-0001' successfully completed and packed!
+[WorkEventLogger] Logged: [EVT-0012] Packing | T: 18.70s - 18.70s (0.00s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0013] OrderCompleted | T: 18.70s - 19.50s (0.80s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+=== GENERATED WORK EVENTS: 13 TOTAL ===
+[EVT-0001] Waiting | T: 0.00s - 0.41s (0.41s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (0.0, 0.0, -8.0)
+[EVT-0002] MovingBetweenLocations | T: 0.41s - 4.00s (3.59s) | Dist: 9.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.2, 0.4, -1.7)
+[EVT-0003] Approaching | T: 4.00s - 5.50s (1.50s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.2, 0.4, -1.7)
+[EVT-0004] Searching | T: 5.50s - 5.50s (0.00s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T01-S02 | Pos: (-7.2, 0.4, -1.7)
+[EVT-0005] Picking | T: 5.50s - 6.00s (0.50s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.2, 0.4, -1.7)
+[EVT-0006] MovingBetweenLocations | T: 6.00s - 8.50s (2.50s) | Dist: 4.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T01-S02 | Pos: (-7.2, 0.4, -2.8)
+[EVT-0007] Approaching | T: 8.50s - 12.20s (3.70s) | Dist: 2.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T01-S02 | Pos: (-7.2, 0.4, -1.2)
+[EVT-0008] Searching | T: 12.20s - 12.20s (0.00s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (-7.2, 0.4, -1.2)
+[EVT-0009] Picking | T: 12.20s - 12.70s (0.50s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T01-S02 | Pos: (-7.2, 0.4, -1.2)
+[EVT-0010] MovingBetweenLocations | T: 12.70s - 17.50s (4.80s) | Dist: 8.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[EVT-0011] Approaching | T: 17.50s - 18.70s (1.20s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[EVT-0012] Packing | T: 18.70s - 18.70s (0.00s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (0.0, 0.0, -8.5)
+[EVT-0013] OrderCompleted | T: 18.70s - 19.50s (0.80s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+]]></output>
+              </test-case>
+              <test-case id="1016" name="WorkEvent_CalculatesDuration_AndValidatesNonNegativeValues" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests.WorkEvent_CalculatesDuration_AndValidatesNonNegativeValues" methodname="WorkEvent_CalculatesDuration_AndValidatesNonNegativeValues" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests" runstate="Runnable" seed="1955811749" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.003740" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1017" name="WorkEvent_RejectsNegativeOrInvertedTimestamps" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests.WorkEvent_RejectsNegativeOrInvertedTimestamps" methodname="WorkEvent_RejectsNegativeOrInvertedTimestamps" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests" runstate="Runnable" seed="1777401178" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.004251" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1018" name="WorkEventLogger_MaintainsMonotonicOrderedTimestamps" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests.WorkEventLogger_MaintainsMonotonicOrderedTimestamps" methodname="WorkEventLogger_MaintainsMonotonicOrderedTimestamps" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests" runstate="Runnable" seed="1035558177" result="Passed" start-time="2026-10-28 11:12:54Z" end-time="2026-10-28 11:12:54Z" duration="0.006650" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 2.00s (2.00s) | Dist: 0.00m | Order:  | SKU:  | Loc:  | Pos: (0.0, 0.0, 0.0)
+[WorkEventLogger] Logged: [EVT-0002] Walking | T: 2.00s - 5.50s (3.50s) | Dist: 3.00m | Order:  | SKU:  | Loc:  | Pos: (3.0, 0.0, 0.0)
+[WorkEventLogger] Logged: [EVT-0003] Approaching | T: 5.50s - 7.00s (1.50s) | Dist: 2.00m | Order:  | SKU:  | Loc:  | Pos: (5.0, 0.0, 0.0)
+Saving results to: C:/Users/Mehul/AppData/LocalLow/DefaultCompany/WSD VR Project\TestResults.xml
 ]]></output>
               </test-case>
             </test-suite>

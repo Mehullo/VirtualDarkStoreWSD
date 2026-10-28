@@ -4,12 +4,12 @@
 The **Virtual Dark Store Work-Study & Simulation Platform** is a 3D simulation and industrial engineering measurement environment built in Unity. It simulates grocery micro-fulfillment ("dark store") operations to automate industrial time-and-motion studies, elemental cycle time analysis, and work-sampling observations.
 
 ## Current Status
-- **Current Phase**: Phase 3 (Order Engine & Fulfillment Simulation)
+- **Current Phase**: Phase 5 (Work-Study Calculator, Results Model & Results UI)
 - **Status**: Completed (2026-10-28)
-- **Next Step**: Phase 4 (Desktop Interactive Mode & Work-Study Instrumentation)
+- **Next Step**: Phase 6 (VR Rig Integration & Desktop-VR Parity)
 
 ## Features
-### Completed (Phase 0, Phase 1, Phase 2 & Phase 3)
+### Completed (Phase 0, Phase 1, Phase 2, Phase 3, Phase 4 & Phase 5)
 - **Baseline Audit (Phase 0)**: Unity 6 (`6000.6.7f1`) and URP environment verified; comprehensive documentation established.
 - **Clean URP 3D Scene (Phase 1)**: `Assets/Scenes/DarkStore_Phase1.unity` constructed with 4 picking aisles, 24m x 28m concrete warehouse envelope, boundary colliders, ambient high-bay lighting, and dispatch packing bench.
 - **Desktop Locomotion (Phase 1)**: `DesktopPickerController.cs` with CharacterController, WASD movement, mouse pitch/yaw look, sprint, and gravity.
@@ -20,13 +20,14 @@ The **Virtual Dark Store Work-Study & Simulation Platform** is a 3D simulation a
 - **Order Engine & Pick Validation (Phase 3)**: Pure domain entities `Order.cs` and `OrderItem.cs` strictly validating picks against the active SKU; wrong or missing items never silently count as correct picks.
 - **Order Dispatch & Lifecycle Manager (Phase 3)**: `OrderManager.cs` handling automatic sample order dispatch, pick action validation, packing completion, and lifecycle event notifications.
 - **Visual Shelf Products & Raycast Interaction (Phase 3)**: 72 physical pickable item boxes spawned across shelves with category materials (`PickableItemVisual.cs`), raycast selection via `PickerInteraction.cs` with `[E]` and LMB triggers.
-- **Simulation HUD (Phase 3)**: `SimulationHUD.cs` screen-space terminal with central reticle, dynamic interaction prompt, target SKU & slot location, live distance to bin in meters, and color-coded feedback banners (green pick, red mismatch alert, gold completion).
-- **Automated Test Suite**: 15 EditMode tests passing (100% pass rate) covering store topology, SKU integrity, pick validation, premature packing rejection, and end-to-end order fulfillment.
-
-### Planned (Phase 4 - Phase 5)
-- Real-time WorkStudy elemental state machine (`TRAVEL`, `SEARCH`, `PICK`, `SCAN`, `PLACE`, `STAGE`, `IDLE`).
-- Virtual barcode scanner verification and cart tote deposit mechanics.
-- Automated CSV/JSON telemetry exporters for industrial time studies and work-sampling.
+- **Simulation HUD (Phase 3, 4 & 5)**: `SimulationHUD.cs` screen-space terminal with central reticle, dynamic interaction prompt, target SKU & slot location, live distance to bin in meters, active classified activity, logged work event counter, and controls guide with `[Tab]` results toggle.
+- **Work-Study Telemetry & Event Schema (Phase 4)**: Pure domain class `WorkEvent.cs` capturing strictly measurable values (ID, activity, start/end time, duration, position, location, related SKU/order, distance traveled). Strictly excludes uninstrumented physiological/eye-gaze claims.
+- **Monotonic Event Logger (Phase 4)**: `WorkEventLogger.cs` in-memory repository enforcing ordered timestamps and non-negative event durations with automated integrity validation.
+- **Activity State Machine & Classifier (Phase 4)**: `ActivityClassifier.cs` classifying operator movements across all 8 activities (`Walking`, `Waiting`, `Searching`, `Approaching`, `Picking`, `MovingBetweenLocations`, `Packing`, `OrderCompleted`) using explicit physical measurement rules.
+- **Work-Study Results Model (Phase 5)**: `WorkStudyResults.cs` data model holding aggregated industrial engineering metrics: total task time, walking/searching/picking/waiting/packing durations, percentages, distance, picks, shelf visits, and mathematical reconciliation validation (`VerifyReconciliation`).
+- **Work-Study Calculator & Sampling Engine (Phase 5)**: `WorkStudyCalculator.cs` pure computational engine aggregating metrics from event logs, supporting configurable interval-based work-sampling without fabricated metrics or unvalidated standards compliance claims.
+- **Work-Study Results UI (Phase 5)**: `WorkStudyResultsUI.cs` IMGUI overlay modal toggleable via `[Tab]` or shown upon order completion displaying metric cards, time-study table, work-sampling proportions, and reconciliation status badges.
+- **Automated Test Suite**: 24 EditMode tests passing (100% pass rate) covering store topology, SKU integrity, pick validation, work event invariants, activity classification, duration reconciliation ($\sum T_c = T_{total}$), percentage balance ($\sum P_c = 100\%$), and deterministic sample order fulfillment.
 
 ### Deferred (Phase 6)
 - VR rig integration (OpenXR / XR Interaction Toolkit) - deferred until Desktop simulation and measurement parity are fully verified.
@@ -92,13 +93,12 @@ The platform enforces clean decoupling between the presentation/input layer and 
 
 ## Testing
 - Automated unit testing via Unity Test Framework (`com.unity.test-framework` `1.4.6`).
-- **Current Status**: **15 TESTS EXECUTED AND PASSED** (0 failures). Evidence recorded in `TestResults-EditMode.xml`.
+- **Current Status**: **24 TESTS EXECUTED AND PASSED** (0 failures). Evidence recorded in `TestResults-EditMode.xml`.
 - See [docs/TESTING.md](docs/TESTING.md) for test execution instructions and full test breakdown.
 
 ## Known Limitations
-- Industrial elemental state machine and stopwatch instrumentation are scheduled for Phase 4.
-- 3D product visual packaging models will replace placeholder colliders in Phase 4.
-- VR support is deferred to Phase 6 per the desktop-first requirement.
+- VR hardware instrumentation and desktop-VR parity are scheduled for Phase 6.
+- All metrics represent deterministic virtual simulation telemetry; no claims of ANSI/ISO laboratory certification without empirical external validation.
 
 ## External Resources & Licenses
 All external packages and third-party assets are tracked in [docs/RESOURCE_REGISTER.md](docs/RESOURCE_REGISTER.md). Currently, only standard Unity packages are included.
@@ -116,8 +116,7 @@ All external packages and third-party assets are tracked in [docs/RESOURCE_REGIS
 - [CHANGELOG.md](CHANGELOG.md) - Version and milestone history
 
 ## Next Step
-Proceed to **Phase 3: Order Engine & Fulfillment Simulation**:
-- Define domain models (`PickOrder`, `OrderLineItem`, `OrderStatus`).
-- Implement order generator with configurable pick list sizes (1 to 10 items) and pick densities.
-- Build pick validation logic confirming target SKU against picked item.
-- Author unit tests verifying order generation validity and item validation logic.
+Proceed to **Phase 6: VR Rig Integration & Desktop-VR Parity**:
+- Integrate OpenXR / XR Interaction Toolkit into an equivalent VR rig.
+- Maintain 100% parity with desktop simulation and WorkStudy core.
+- Verify identical time-study and work-sampling data structures across both desktop and VR modalities.

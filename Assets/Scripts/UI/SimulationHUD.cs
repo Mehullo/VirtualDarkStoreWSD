@@ -260,8 +260,8 @@ namespace VirtualDarkStore.UI
 
         private void DrawOrderTerminal(OrderManager om)
         {
-            float panelWidth = 330f;
-            float panelHeight = 200f;
+            float panelWidth = 340f;
+            float panelHeight = 230f;
             Rect panelRect = new Rect(15f, 15f, panelWidth, panelHeight);
 
             GUI.DrawTexture(panelRect, panelBackground);
@@ -269,7 +269,15 @@ namespace VirtualDarkStore.UI
             GUILayout.BeginArea(new Rect(25f, 25f, panelWidth - 20f, panelHeight - 20f));
 
             GUILayout.Label("DARK STORE PICKER TERMINAL", headerStyle);
-            GUILayout.Space(4);
+            GUILayout.Space(2);
+
+            var classifier = VirtualDarkStore.WorkStudy.ActivityClassifier.Instance;
+            var logger = VirtualDarkStore.WorkStudy.WorkEventLogger.Instance;
+            if (classifier != null)
+            {
+                GUILayout.Label($"Activity: [{classifier.CurrentActivity}] | Logged Events: {(logger != null ? logger.EventCount : 0)}", bodyStyle);
+                GUILayout.Space(2);
+            }
 
             if (om == null || om.ActiveOrder == null)
             {
@@ -337,14 +345,14 @@ namespace VirtualDarkStore.UI
 
         private void DrawBottomBar()
         {
-            float width = 640f;
+            float width = 680f;
             float height = 24f;
             float x = (Screen.width - width) * 0.5f;
             float y = Screen.height - 30f;
 
             Rect barRect = new Rect(x, y, width, height);
             GUI.DrawTexture(barRect, panelBackground);
-            GUI.Label(barRect, "WASD: Walk | Shift: Sprint | Mouse: Look | E / LMB: Pick/Pack | N: New Order", bottomStyle);
+            GUI.Label(barRect, "WASD: Walk | Shift: Sprint | Mouse: Look | E/LMB: Pick/Pack | N: New Order | Tab: Study Results", bottomStyle);
         }
 
         private Texture2D MakeColorTexture(Color color)

@@ -39,18 +39,42 @@ The platform strictly decouples **Simulation & Work-Study Logic** from the **Int
 ## 2. Layer Responsibilities
 
 ### 2.1 Work-Study Core (`Assets/Scripts/WorkStudy/`)
-- **Elemental State Machine**: Tracks picker activity states according to industrial engineering standards:
-  - `IDLE`: Not actively engaging with an order.
-  - `TRAVEL_TO_SHELF`: Movement between station and target rack.
-  - `SEARCH_ITEM`: Visual search and localization in bin.
-  - `PICK_ITEM`: Grabbing item from shelf.
-  - `SCAN_VERIFY`: Scanning barcode/RFID.
-  - `PLACE_IN_TOTE`: Transferring item into pick cart/tote.
-  - `TRAVEL_TO_STAGING`: Navigating completed order to packing/dispatch.
-  - `DEPOSIT_ORDER`: Dropping tote at packing station.
-- **Continuous Metrics Engine**: Tracks cumulative distance traveled (meters), elevation/reach heights, and timestamps ($t_{start}, t_{end}$).
-- **Work-Sampling Sampler**: Periodically samples instantaneous state for proportion-of-time calculations ($p = \frac{n_i}{N}$).
-- **Telemetry Exporter**: Streams observations to local CSV/JSON files with UTC timestamps and deterministic identifiers.
+- **Activity State Machine & Classifier (`ActivityClassifier.cs`)**:
+  Classifies operator actions across 8 standardized industrial activities using strictly measurable simulation telemetry:
+  - `Walking`: Picker moving ($v \ge 0.15\text{ m/s}$) with no active target destination.
+  - `Waiting`: Picker stationary ($v < 0.15\text{ m/s}$) while unengaged with shelf searching, picking, or packing.
+  - `MovingBetweenLocations`: Picker moving ($v \ge 0.15\text{ m/s}$) towards target slot or packing station outside the approach zone ($d > 3.0\text{ m}$).
+  - `Approaching`: Picker moving ($v \ge 0.15\text{ m/s}$) within the immediate approach zone of the target rack or bench ($d \le 3.0\text{ m}$).
+  - `Searching`: Picker stationary ($v < 0.15\text{ m/s}$) within $3.0\text{ m}$ of the target shelf bay, with the center camera view ray intersecting shelf rack/tier geometry, prior to item acquisition. (Zero uninstrumented eye-gaze or cognitive load claims).
+  - `Picking`: Discrete physical acquisition event validated against target SKU (`OrderManager.AttemptPick` -> `PickResult.Success`).
+  - `Packing`: Picker positioned at packing station ($d \le 3.0\text{ m}$) with order in `AwaitingPacking` status, engaging packing bench.
+  - `OrderCompleted`: Terminal dispatch event upon order finalization (`OrderManager.CompletePacking`).
+- **Telemetry Event Schema (`WorkEvent.cs`)**:
+  Immutable measurement record containing only physically measurable fields:
+  - `Id`: Sequential string identifier (`EVT-0001`).
+  - `Activity`: Standard `ActivityType` enum.
+  - `StartTime`: Simulation start timestamp in seconds ($t_{start} \ge 0$).
+  - `EndTime`: Simulation end timestamp in seconds ($t_{end} \ge t_{start}$).
+  - `Duration`: Elapsed seconds ($t_{end} - t_{start} \ge 0$).
+  - `Position`: World Vector3 coordinates.
+  - `LocationName`: Physical location address (`SlotId` e.g. `A01-L-B01-T01-S01`, `PACK-01`, `GENERAL_FLOOR`).
+  - `RelatedSku`: SKU ID (`SKU-0001` or empty).
+  - `RelatedOrder`: Order ID (`ORD-0001` or empty).
+  - `Distance`: Cumulative horizontal distance traveled during event in meters ($\ge 0$).
+- **Monotonic Event Recorder (`WorkEventLogger.cs`)**:
+  In-memory event repository enforcing monotonic non-decreasing start timestamps ($t_{start, i} \le t_{start, i+1}$) and non-negative durations ($\Delta t \ge 0$) with runtime integrity verification (`VerifyIntegrity`).
+- **Work-Study Calculation Engine (`WorkStudyCalculator.cs`)**:
+  Pure computational engine deriving aggregated time-study metrics directly from actual event logs:
+  - Total task time: $T_{total} = \sum e_i.Duration$.
+  - Category durations: Walking, Searching, Picking, Waiting, Packing, OrderCompleted.
+  - Category percentages: $P_c = \frac{T_c}{T_{total}} \times 100\%$.
+  - Travel subcategory breakdown: General walking, macro transit, rack bay approach.
+  - Operational metrics: cumulative distance ($m$), successful picks count, distinct shelf bay visits.
+  - Configurable interval-based work-sampling: discrete observation samples at $t_k = t_0 + k \cdot \Delta t$ mapped to instantaneous active events ($p_c = \frac{n_c}{N} \times 100\%$).
+- **Results Data Model (`WorkStudyResults.cs`)**:
+  Encapsulates all aggregated time-study and work-sampling figures with built-in mathematical reconciliation verification (`VerifyReconciliation`), ensuring $\sum T_c = T_{total}$ and $\sum P_c = 100.0\%$.
+- **Results UI (`WorkStudyResultsUI.cs`)**:
+  Screen-space IMGUI modal interface toggleable via `[Tab]` or shown upon order completion displaying metric cards, time-study table, work-sampling proportions, and reconciliation status badges.
 
 ### 2.2 Domain Topology & Inventory Core (`Assets/Scripts/Domain/` & `Assets/Scripts/Management/`)
 - **Strict Visual-Domain Decoupling**: Domain models are pure C# data classes completely independent of Unity GameObjects, transforms, or renderers:

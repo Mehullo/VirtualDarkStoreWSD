@@ -9,8 +9,8 @@ Status of project phases for the Virtual Dark Store Work-Study & Simulation Plat
 | **Phase 1** | Clean URP Scene, Layout Blockout & Desktop Controller | **COMPLETED** | 2026-10-28 |
 | **Phase 2** | Dark Store Topology, Inventory Model & SKU-Location Mapping | **COMPLETED** | 2026-10-28 |
 | **Phase 3** | Order Engine & Fulfillment Simulation | **COMPLETED** | 2026-10-28 |
-| **Phase 4** | Desktop Interactive Mode & Instrumentation | PLANNED | - |
-| **Phase 5** | Work-Sampling & Automated Exporters (CSV/JSON) | PLANNED | - |
+| **Phase 4** | Desktop Interactive Mode & Instrumentation | **COMPLETED** | 2026-10-28 |
+| **Phase 5** | Work-Sampling & Automated Exporters (CSV/JSON) | **COMPLETED** | 2026-10-28 |
 | **Phase 6** | VR Rig Integration & Desktop-VR Parity | PLANNED | - |
 | **Phase 7** | Verification, Packaging & User Documentation | PLANNED | - |
 
@@ -61,14 +61,28 @@ Status of project phases for the Virtual Dark Store Work-Study & Simulation Plat
   - 15 EditMode tests executed and passing (7 new order fulfillment tests + 8 topology tests).
 
 ### Phase 4: Desktop Interactive Mode & Instrumentation
-- **Goal**: Implement first-person desktop picker controller (WASD, mouse look, raycast grab, barcode scan, cart deposit) with real-time elemental state tracking.
-- **Status**: PLANNED
-- **Prerequisites**: Phase 3 simulation engine.
+- **Goal**: Implement WorkEvent, WorkEventLogger, and ActivityClassifier state machine covering all 8 activities (`Walking`, `Waiting`, `Searching`, `Approaching`, `Picking`, `MovingBetweenLocations`, `Packing`, `OrderCompleted`) with strictly measurable physical parameters, non-negative durations, and monotonic ordered timestamps. Enforce strict prohibition of uninstrumented eye-gaze/fatigue/physiological claims. Run sample order and inspect events.
+- **Status**: **COMPLETED** (2026-10-28)
+- **Delivered**:
+  - `ActivityType.cs`: Enum defining all 8 industrial work-study activities.
+  - `WorkEvent.cs`: Immutable measurement record encapsulating ID, activity, start/end time, duration, position, location, related SKU/order, and distance traveled with strict invariant validation.
+  - `WorkEventLogger.cs`: Central monotonic event recorder validating chronological ordering and non-negative duration invariants.
+  - `ActivityClassifier.cs`: State machine and activity classifier with clear, measurable classification rules for all 8 activities (e.g. `Searching` defined as stationary within 3m of target shelf bay with raycast intersecting shelf geometry).
+  - `SimulationHUD.cs` updated to display live activity state and logged event counter.
+  - `DarkStoreSceneBuilder.cs` updated to include `[WorkStudyManager]` in scene hierarchy.
+  - `WorkStudyInstrumentationTests.cs`: 5 unit and integration tests verifying duration math, negative/inverted timestamp rejection, monotonic logger ordering, rule evaluation, and end-to-end sample order run with 13 inspected events.
+  - 20/20 EditMode tests executed and passing.
 
 ### Phase 5: Work-Sampling & Automated Exporters
-- **Goal**: Implement random/fixed work-sampling observer and export engine generating standards-compliant CSV and JSON reports.
-- **Status**: PLANNED
-- **Prerequisites**: Phase 4 desktop instrumentation.
+- **Goal**: Implement WorkStudyCalculator, results data model, and results UI. Calculate total task time, walking, searching, picking, waiting, packing, distance, picks, shelf visits, and activity percentages from actual event logs. Provide configurable interval-based work sampling and verify category duration and percentage reconciliation without fabricated metrics.
+- **Status**: **COMPLETED** (2026-10-28)
+- **Delivered**:
+  - `WorkStudyResults.cs`: Results data model holding aggregated industrial engineering metrics: total task time, walking/searching/picking/waiting/packing durations, percentages, distance, picks, shelf visits, and mathematical reconciliation validation (`VerifyReconciliation`).
+  - `WorkStudyCalculator.cs`: Pure computational engine aggregating metrics from event logs, supporting configurable interval-based work-sampling without fabricated metrics or unvalidated standards compliance claims.
+  - `WorkStudyResultsUI.cs`: Screen-space IMGUI overlay modal toggleable via `[Tab]` or shown upon order completion displaying metric cards, time-study table, work-sampling proportions, and reconciliation status badges.
+  - Scene builder updated to attach `WorkStudyResultsUI` to `[WorkStudyManager]`.
+  - `WorkStudyCalculatorTests.cs`: 4 unit and integration tests verifying duration reconciliation ($\sum T_c = T_{total}$), percentage reconciliation ($\sum P_c = 100\%$), exact pick/shelf visit counts, configurable work-sampling intervals, and full sample order evaluation.
+  - 24/24 EditMode tests executed and passing.
 
 ### Phase 6: VR Rig Integration & Desktop-VR Parity
 - **Goal**: Integrate OpenXR / XR Interaction Toolkit into an equivalent VR rig sharing the exact same WorkStudy and Simulation core.
