@@ -74,7 +74,9 @@ The platform strictly decouples **Simulation & Work-Study Logic** from the **Int
 - **Results Data Model (`WorkStudyResults.cs`)**:
   Encapsulates all aggregated time-study and work-sampling figures with built-in mathematical reconciliation verification (`VerifyReconciliation`), ensuring $\sum T_c = T_{total}$ and $\sum P_c = 100.0\%$.
 - **Results UI (`WorkStudyResultsUI.cs`)**:
-  Screen-space IMGUI modal interface toggleable via `[Tab]` or shown upon order completion displaying metric cards, time-study table, work-sampling proportions, and reconciliation status badges.
+  Screen-space IMGUI modal interface toggleable via `[Tab]` or shown upon order completion displaying metric cards, Summary Breakdown tab (visual percentage bars), Chronological Event Log tab, configurable sampling intervals ($0.5\text{ s}, 1.0\text{ s}, 2.0\text{ s}, 5.0\text{ s}$), one-click Markdown/CSV report export (`[F2]`), and reconciliation status badges.
+- **Work-Study Report Exporter (`WorkStudyReportExporter.cs`)**:
+  Exports deterministic Markdown reports (`.md`), RFC-4180 elemental event logs (`_events.csv`), and summary KPI tables (`_summary.csv`) directly from recorded `WorkEventLogger` and `WorkStudyResults` data without external Python dependencies.
 
 ### 2.2 Domain Topology & Inventory Core (`Assets/Scripts/Domain/` & `Assets/Scripts/Management/`)
 - **Strict Visual-Domain Decoupling**: Domain models are pure C# data classes completely independent of Unity GameObjects, transforms, or renderers:
@@ -104,12 +106,20 @@ The platform strictly decouples **Simulation & Work-Study Logic** from the **Int
 - **Simulation HUD**:
   - `SimulationHUD`: Screen-space IMGUI terminal displaying active order status, current target SKU, shelf slot address, live distance in meters, central crosshair reticle, dynamic interaction prompts, and color-coded feedback banners (green pick, red mismatch alert, gold completion).
 
-### 2.4 Interaction Layer (`Assets/Scripts/Player/` & `Assets/Scripts/Environment/`)
-- **Desktop First-Person Rig**:
-  - Input System Action bindings for Move (WASD), Look (Mouse Delta), Interact/Pick/Pack (`E` / Left Click), New Order (`N`).
-  - Physics raycasting for shelf item grab and packing bench interaction.
-- **VR Rig (Deferred)**:
-  - OpenXR / XR Interaction Toolkit integration mapped to the identical `IPlayerController` / `IInteractable` interfaces.
+### 2.4 Interaction Layer (`Assets/Scripts/Player/`, `Assets/Scripts/VR/` & `Assets/Scripts/Environment/`)
+- **Shared Interaction Abstraction (`IPickerInteraction.cs`)**:
+  - Exposes `HoveredItem`, `HoveredPackingStation`, `CurrentPrompt`, and `ReachDistance`.
+  - Unifies Desktop and VR interaction pipelines so `ActivityClassifier` and `SimulationHUD` process both identically.
+- **Desktop First-Person Rig (`Assets/Scripts/Player/`)**:
+  - `DesktopPickerController`: CharacterController movement (WASD), mouse pitch/yaw, gravity.
+  - `PickerInteraction`: Center-screen reticle raycast interaction with shelf items and packing bench.
+- **VR Player Rig (`Assets/Scripts/VR/`)**:
+  - `VRPlayerRig`: Master rig managing `XROrigin`, floor-level tracking origin, and child components.
+  - `VRHeadTracking`: Physical HMD tracking and head-orientation forward raycast (excludes uninstrumented physiological or eye-gaze claims).
+  - `VRControllerInput`: Spatial tracking and button inputs (trigger, grip, primary button, thumbstick) for left and right hands.
+  - `VRPickerInteraction`: Raycast and direct touch interaction validating picks against `OrderManager` and completing packing at staging benches.
+  - `VRLocomotionController`: Continuous thumbstick locomotion and discrete teleportation with exact displacement accumulation ($\Delta p$) to ensure travel metrics are preserved.
+  - `VRHardwareDetector`: Inspects connected HMD devices; marks hardware verification as `NOT RUN` when no physical headset is attached.
 
 ## 3. Telemetry Data Schemas
 
@@ -140,3 +150,14 @@ The platform strictly decouples **Simulation & Work-Study Logic** from the **Int
 1. **No External Python Dependency**: Analysis and export operate within Unity C# standard file I/O.
 2. **No Machine Learning/AI Inferences**: No neural networks or heuristic black boxes are used for time study analysis; standard industrial engineering formulas (mean, standard deviation, rating, normal time, standard time) are applied deterministically.
 3. **Headless / Batch Testable**: WorkStudy core logic must be testable via Unity Test Framework without requiring physical VR hardware.
+
+## 5. Scenario Layer (Phase 6, `Assets/Scripts/Scenarios/`)
+`ScenarioDefinition` (JSON via `ScenarioStorage`) -> `ScenarioRunner` drives a scripted virtual picker through the shared `OrderManager` + `ActivityClassifier` + `WorkEventLogger` -> `ScenarioRunResult` (recorded events + route; KPIs recomputed by `WorkStudyCalculator`) -> `ScenarioComparison` (equivalence check, KPI rows, B-A deltas) -> `RouteMapRenderer` / `ScenarioRouteVisualizer` / `ScenarioComparisonUI`. No prediction or optimisation; routing is a fixed straight-line rule via the front cross-aisle.
+
+## 6. Phase 8 Subsystems: Demo Workflow, Error Handling & Performance Budget
+- **7-Step Final Demo Controller (`DemoFlowController.cs`)**:
+  Coordinates the end-to-end 7-step demonstration (`1. SelectScenario` -> `2. SelectOrder` -> `3. StartMode` -> `4. PickProducts` -> `5. CompleteOrder` -> `6. ViewWorkStudyResults` -> `7. CompareAnotherScenario`) across Desktop, VR, and Scripted auto-run modes. Manages the in-world 3D `TargetSlotBeacon` above the active target shelf slot or packing bench and records live route trajectories.
+- **Simulation Error Handler (`SimulationErrorHandler.cs`)**:
+  Centralized non-crashing diagnostic and alert manager (`ReportError`, `ReportWarning`) ensuring invalid scenario/order selections or wrong-SKU pick attempts never cause unhandled exceptions and surface clear operator feedback in `SimulationHUD`.
+- **RTX 2050-Class Performance Manager (`PerformanceSettingsManager.cs` & `Assets/Settings/PC_RPAsset.asset`)**:
+  Enforces and audits rendering budgets tailored for RTX 2050-class hardware (4GB VRAM, 64-bit bus): SRP Batcher enabled, GPU instancing on $16/16$ shared materials, $148$ total mesh renderers, camera far clip plane $\le 45.0\text{ m}$, URP shadow distance $32.0\text{ m}$, 2 shadow cascades, $2\times$ MSAA, 1 shadow-casting directional light + 8 shadowless point lights, and camera post-processing disabled. Generates `docs/evidence/phase8/rtx2050_performance_audit.md` with interactive GPU FPS benchmarking marked `NOT RUN` when audited headlessly.

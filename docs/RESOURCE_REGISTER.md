@@ -23,7 +23,11 @@ The following assets are currently present in `Assets/` (URP Template defaults):
 
 | Asset Path | Type | Source / Origin | Purpose | Status |
 |---|---|---|---|---|
-| `Assets/Scenes/SampleScene.unity` | Unity Scene | Unity URP Template | Baseline scene configured in build settings | Verified |
+| `Assets/Scenes/DarkStore_Phase1.unity` | Unity Scene | `DarkStoreSceneBuilder.cs` | Primary 4-aisle dark store simulation scene | Verified |
+| `Assets/Scenes/DarkStore_Phase1_NavMesh.asset` | NavMeshData | `NavMeshBuilder` | Baked warehouse navigation mesh (90 static colliders) | Verified |
+| `Assets/Materials/*.mat` (16 materials) | URP Lit Materials | `DarkStoreSceneBuilder.cs` | GPU-instanced structural, signage, and 8 department SKU materials | Verified |
+| `Scenarios/scenario_A.json`, `scenario_B.json`, `scenario_demo_A.json`, `scenario_demo_B.json` | JSON Scenarios | `ScenarioStorage.cs` | Saved A/B comparison scenarios | Verified |
+| `Assets/Scenes/SampleScene.unity` | Unity Scene | Unity URP Template | Baseline template scene | Verified |
 | `Assets/Settings/PC_RPAsset.asset` | UniversalRenderPipelineAsset | Unity URP Template | High-fidelity PC render pipeline configuration | Verified |
 | `Assets/Settings/PC_Renderer.asset` | UniversalRendererData | Unity URP Template | Forward renderer for PC | Verified |
 | `Assets/Settings/Mobile_RPAsset.asset` | UniversalRenderPipelineAsset | Unity URP Template | Mobile/Standalone render pipeline configuration | Verified |

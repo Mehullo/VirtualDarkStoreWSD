@@ -1,0 +1,21 @@
+{
+    "scenarioId": "SCN-DEMO-B",
+    "scenarioName": "Demo Scenario B: 3-Item Ungrouped Backtracking",
+    "description": "Same 3-item demo order visited with inter-aisle backtracking (Aisle 1 -> Aisle 3 -> Aisle 1).",
+    "orderId": "ORD-DEMO-0001",
+    "skuSequence": [
+        "SKU-0001",
+        "SKU-0039",
+        "SKU-0008"
+    ],
+    "startPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -8.5
+    },
+    "walkSpeed": 1.399999976158142,
+    "initialWaitSeconds": 1.0,
+    "searchSeconds": 2.0,
+    "packingSeconds": 2.0,
+    "timeStep": 0.10000000149011612
+}

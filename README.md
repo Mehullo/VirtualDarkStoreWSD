@@ -1,122 +1,160 @@
 # Virtual Dark Store Work-Study & Simulation Platform
 
 ## Purpose
-The **Virtual Dark Store Work-Study & Simulation Platform** is a 3D simulation and industrial engineering measurement environment built in Unity. It simulates grocery micro-fulfillment ("dark store") operations to automate industrial time-and-motion studies, elemental cycle time analysis, and work-sampling observations.
+The **Virtual Dark Store Work-Study & Simulation Platform** is a 3D simulation and industrial engineering measurement environment built in Unity 6 (`6000.6.7f1`) with the Universal Render Pipeline (URP). It simulates grocery micro-fulfillment ("dark store") operations to automate industrial time-and-motion studies, elemental cycle time analysis, interval work-sampling observations, and deterministic A/B scenario comparisons.
+
+> **Scope & Honesty Guarantee**: This platform is an industrial engineering measurement and simulation tool—**not** an AI/ML prediction product. All outputs are **measured simulation telemetry** derived deterministically from recorded `WorkEvent` logs. No AI/ML models, synthetic dataset pipelines, uninstrumented physiological/eye-gaze claims, or fabricated FPS/benchmark numbers are included.
 
 ## Current Status
-- **Current Phase**: Phase 5 (Work-Study Calculator, Results Model & Results UI)
-- **Status**: Completed (2026-10-28)
-- **Next Step**: Phase 6 (VR Rig Integration & Desktop-VR Parity)
+- **Current Phase**: Phase 8 (Polish, RTX 2050 Optimization, Report Exporters & Final Demo Workflow)
+- **Status**: **COMPLETED** (2026-10-29)
+- **Automated Verification**: **41 / 41 EditMode Tests Passing** (`0.771s`, 0 failures, 0 warnings)
+- **Next Step**: All project phases (Phase 0 through Phase 8) are complete.
 
-## Features
-### Completed (Phase 0, Phase 1, Phase 2, Phase 3, Phase 4 & Phase 5)
-- **Baseline Audit (Phase 0)**: Unity 6 (`6000.6.7f1`) and URP environment verified; comprehensive documentation established.
-- **Clean URP 3D Scene (Phase 1)**: `Assets/Scenes/DarkStore_Phase1.unity` constructed with 4 picking aisles, 24m x 28m concrete warehouse envelope, boundary colliders, ambient high-bay lighting, and dispatch packing bench.
-- **Desktop Locomotion (Phase 1)**: `DesktopPickerController.cs` with CharacterController, WASD movement, mouse pitch/yaw look, sprint, and gravity.
-- **AI Navigation (Phase 1)**: `Assets/Scenes/DarkStore_Phase1_NavMesh.asset` baked using `UnityEngine.AI.NavMeshBuilder` from 144 collider sources.
-- **Pure Domain Topology (Phase 2)**: `Sku.cs`, `ShelfSlot.cs`, `Shelf.cs`, `Aisle.cs`, and `StoreConfiguration.cs` completely decoupled from GameObjects.
-- **Verified Product Catalog (Phase 2)**: 72 distinct, verified dark-store SKUs across 8 departments (`VerifiedSampleCatalog.cs`).
-- **Store & Inventory Manager (Phase 2)**: `StoreManager.cs` managing 288 shelf slots (4 aisles * 2 sides * 3 bays * 3 tiers * 4 slots) with 72 SKUs mapped 1:1 with zero collisions and verified bidirectional lookups.
-- **Order Engine & Pick Validation (Phase 3)**: Pure domain entities `Order.cs` and `OrderItem.cs` strictly validating picks against the active SKU; wrong or missing items never silently count as correct picks.
-- **Order Dispatch & Lifecycle Manager (Phase 3)**: `OrderManager.cs` handling automatic sample order dispatch, pick action validation, packing completion, and lifecycle event notifications.
-- **Visual Shelf Products & Raycast Interaction (Phase 3)**: 72 physical pickable item boxes spawned across shelves with category materials (`PickableItemVisual.cs`), raycast selection via `PickerInteraction.cs` with `[E]` and LMB triggers.
-- **Simulation HUD (Phase 3, 4 & 5)**: `SimulationHUD.cs` screen-space terminal with central reticle, dynamic interaction prompt, target SKU & slot location, live distance to bin in meters, active classified activity, logged work event counter, and controls guide with `[Tab]` results toggle.
-- **Work-Study Telemetry & Event Schema (Phase 4)**: Pure domain class `WorkEvent.cs` capturing strictly measurable values (ID, activity, start/end time, duration, position, location, related SKU/order, distance traveled). Strictly excludes uninstrumented physiological/eye-gaze claims.
-- **Monotonic Event Logger (Phase 4)**: `WorkEventLogger.cs` in-memory repository enforcing ordered timestamps and non-negative event durations with automated integrity validation.
-- **Activity State Machine & Classifier (Phase 4)**: `ActivityClassifier.cs` classifying operator movements across all 8 activities (`Walking`, `Waiting`, `Searching`, `Approaching`, `Picking`, `MovingBetweenLocations`, `Packing`, `OrderCompleted`) using explicit physical measurement rules.
-- **Work-Study Results Model (Phase 5)**: `WorkStudyResults.cs` data model holding aggregated industrial engineering metrics: total task time, walking/searching/picking/waiting/packing durations, percentages, distance, picks, shelf visits, and mathematical reconciliation validation (`VerifyReconciliation`).
-- **Work-Study Calculator & Sampling Engine (Phase 5)**: `WorkStudyCalculator.cs` pure computational engine aggregating metrics from event logs, supporting configurable interval-based work-sampling without fabricated metrics or unvalidated standards compliance claims.
-- **Work-Study Results UI (Phase 5)**: `WorkStudyResultsUI.cs` IMGUI overlay modal toggleable via `[Tab]` or shown upon order completion displaying metric cards, time-study table, work-sampling proportions, and reconciliation status badges.
-- **Automated Test Suite**: 24 EditMode tests passing (100% pass rate) covering store topology, SKU integrity, pick validation, work event invariants, activity classification, duration reconciliation ($\sum T_c = T_{total}$), percentage balance ($\sum P_c = 100\%$), and deterministic sample order fulfillment.
+---
 
-### Deferred (Phase 6)
-- VR rig integration (OpenXR / XR Interaction Toolkit) - deferred until Desktop simulation and measurement parity are fully verified.
+## Features Across All Phases (Phases 0–8)
+- **Baseline & Clean URP Dark Store Scene (Phases 0–1)**:
+  - `Assets/Scenes/DarkStore_Phase1.unity`: $24\text{ m} \times 28\text{ m}$ warehouse envelope, 4 picking aisles (`A01`–`A04`), 24 rack bays (3 vertical tiers per bay), aisle header signs, safety/guide floor stripes, dispatch packing bench with staging tote bins, and baked NavMesh (`Assets/Scenes/DarkStore_Phase1_NavMesh.asset`).
+- **Pure Domain Topology & 4-Aisle Inventory Mapping (Phase 2 & Phase 8 Polish)**:
+  - Pure C# domain models (`Sku`, `ShelfSlot`, `Shelf`, `Aisle`, `StoreConfiguration`) decoupled from `MonoBehaviour`.
+  - 72 verified grocery SKUs across 8 departments (`VerifiedSampleCatalog.cs`) distributed evenly across all 4 aisles (18 SKUs per aisle, 1 per bay-tier at `SlotIndex == 1`) with 1:1 bidirectional lookup and zero location collisions (`StoreManager.cs`).
+- **Order Engine, Pick Validation & Error Handling (Phase 3 & Phase 8 Polish)**:
+  - `Order.cs`, `OrderItem.cs`, and `OrderManager.cs` enforcing strict SKU validation: wrong or missing SKUs are rejected (`PickResult.WrongItem`), logged via `SimulationErrorHandler.cs`, and never silently count as fulfilled.
+  - Physical shelf product visuals (`PickableItemVisual.cs`) with proportional dimensions, 8 distinct department materials, and automatic shelf restocking (`ResetShelfVisuals()`) on new order dispatch.
+- **Work-Study Telemetry & Activity Classifier (Phase 4)**:
+  - `WorkEvent.cs` and `WorkEventLogger.cs` enforcing non-negative durations and monotonic timestamps ($t_{\text{start}, i} \ge t_{\text{start}, i-1}$).
+  - `ActivityClassifier.cs` classifying all 8 industrial activities (`Walking`, `Waiting`, `Searching`, `Approaching`, `Picking`, `MovingBetweenLocations`, `Packing`, `OrderCompleted`) using strictly measurable physical parameters (velocity threshold $0.15\text{ m/s}$, approach radius $3.0\text{ m}$, shelf collider raycast intersection).
+- **Work-Study Calculator, Results Modal & Report Exporter (Phase 5 & Phase 8 Polish)**:
+  - `WorkStudyCalculator.cs` and `WorkStudyResults.cs` computing continuous time-study breakdowns, travel distance, pick counts, distinct shelf bay visits, configurable interval work-sampling ($0.5\text{ s}, 1.0\text{ s}, 2.0\text{ s}, 5.0\text{ s}$), and mathematical reconciliation ($\sum T_c = T_{\text{total}}$, $\sum P_c = 100\%$).
+  - `WorkStudyResultsUI.cs` (`[Tab]`) with Summary Breakdown tab (visual percentage bars), Chronological Event Log tab, live sampling interval selector, and one-click export.
+  - `WorkStudyReportExporter.cs` exporting full Markdown work-study reports, RFC-4180 elemental event CSVs, and summary KPI CSV bundles (`docs/evidence/phase8/`).
+- **Scenario Engine, A/B Comparison & Route Visualization (Phase 6 & Phase 8 Polish)**:
+  - `ScenarioDefinition.cs`, `ScenarioStorage.cs`, `ScenarioRunner.cs`, `ScenarioComparison.cs`, `RouteMapRenderer.cs`, `ScenarioRouteVisualizer.cs`, and `ScenarioComparisonUI.cs` (`[F3]`).
+  - Compares identical orders under equivalent starting conditions (`SCN-A` vs `SCN-B` and `SCN-DEMO-A` vs `SCN-DEMO-B`) with top-down PNG route maps and 3D floor path rendering.
+- **VR Player Rig & Desktop-VR Parity (Phase 7)**:
+  - `VRPlayerRig.cs`, `VRHeadTracking.cs`, `VRControllerInput.cs`, `VRPickerInteraction.cs`, `VRLocomotionController.cs`, `VRHardwareDetector.cs`, and shared `IPickerInteraction.cs`.
+  - 100% shared simulation and work-study core between Desktop and VR, including exact teleportation displacement preservation ($\Delta p$).
+  - Physical VR headset verification marked **NOT RUN** where no physical HMD is attached (`docs/evidence/phase7/vr_hardware_report.md`).
+- **RTX 2050-Class Performance Budget & 7-Step Final Demo Workflow (Phase 8)**:
+  - `PerformanceSettingsManager.cs` and tuned `Assets/Settings/PC_RPAsset.asset`: SRP Batcher enabled, GPU instancing enabled across all $16/16$ shared materials, $148$ total mesh renderers, 1 shadow-casting directional light + 8 shadowless point lights, camera far clip $45.0\text{ m}$, URP shadow distance $32.0\text{ m}$, 2 shadow cascades, $2\times$ MSAA, and camera post-processing disabled. Interactive GPU FPS benchmarking is marked **NOT RUN** in headless mode (`docs/evidence/phase8/rtx2050_performance_audit.md`).
+  - `DemoFlowController.cs` and `SimulationHUD.cs` (`[F1]`): Interactive 7-step Final Demo workflow with 3D `TargetSlotBeacon` above the active target shelf slot or packing bench.
 
-## Requirements
-- **Operating System**: Windows (x64)
-- **Unity Editor**: `6000.6.7f1` (Revision: `b22767f04f04`) with Universal Render Pipeline (URP)
-- **Installed Editor Path**: `C:\Program Files\Unity\Hub\Editor\6000.6.7f1\Editor\Unity.exe`
-- **.NET SDK**: 10.0+ (Tested with 10.0.402)
-- **Git**: 2.55+
+---
 
-## Installation
-1. Clone repository to your local drive.
-2. Open **Unity Hub** and select **Add** -> **Add project from disk**.
-3. Choose the repository root (`VirtualDarkStoreWSD`).
-4. Select Unity Editor version **6000.6.7f1**.
+## Reproducible Setup Instructions
 
-## Packages
-Inspected and verified from `Packages/manifest.json`:
+### 1. System Prerequisites
+- **OS**: Windows 10/11 (x64)
+- **Unity Editor**: `6000.6.7f1` (Revision `b22767f04f04`) with Universal Render Pipeline (URP `17.6.0`)
+  - Default path: `C:\Program Files\Unity\Hub\Editor\6000.6.7f1\Editor\Unity.exe`
+- **.NET SDK**: `10.0+` (Verified with `10.0.402`)
+- **Git**: `2.55+`
 
-| Package | Version | Purpose | Verified |
-|---|---|---|---|
-| `com.unity.render-pipelines.universal` | `17.6.0` | Scriptable Render Pipeline (URP) | Yes |
-| `com.unity.inputsystem` | `1.20.1` | Input System (Keyboard, Mouse, XR) | Yes |
-| `com.unity.ugui` | `2.6.0` | Unity UI / Canvas system | Yes |
-| `com.unity.test-framework` | `1.4.6` | Unity Test Framework (EditMode & PlayMode) | Yes |
-| `com.unity.ide.visualstudio` | `2.0.28` | Visual Studio Editor integration | Yes |
-| `com.unity.ide.rider` | `3.1.0` | JetBrains Rider Editor integration | Yes |
-| `com.unity.collab-proxy` | `2.13.6` | Unity Version Control | Yes |
-| `com.unity.pipeline` | `0.9.1-exp.1` | Pipeline tools | Yes |
-| `com.unity.ai.assistant` | `2.21.0-pre.1` | Editor Assistant (Template default) | Yes |
-| `com.unity.ai.inference` | `2.6.1` | Sentis Inference (Template default; inactive per AGENTS.md) | Yes |
+### 2. Clone & Open in Unity Editor
+1. Clone this repository and open **Unity Hub**.
+2. Click **Add** -> **Add project from disk** and select the `VirtualDarkStoreWSD` root directory.
+3. Launch with Unity Editor **`6000.6.7f1`**.
+4. In the Project window, open **`Assets/Scenes/DarkStore_Phase1.unity`**.
 
-## Run the Project
-1. Open the project in Unity Editor `6000.6.7f1`.
-2. Open `Assets/Scenes/DarkStore_Phase1.unity`.
-3. Press **Play** in the Unity Editor. Use `W`,`A`,`S`,`D` to navigate aisles and `Mouse` to look around. Press `Left Shift` to sprint.
+### 3. Reproducible Scene Rebuild (CLI or Editor Menu)
+The entire dark store scene (`Assets/Scenes/DarkStore_Phase1.unity`), materials (`Assets/Materials/`), and NavMesh (`Assets/Scenes/DarkStore_Phase1_NavMesh.asset`) can be deterministically rebuilt from code at any time:
+- **Inside Unity Editor**: Menu bar -> **`Virtual Dark Store`** -> **`Build Phase 1 Dark Store Scene (With NavMesh)`**
+- **Via Headless PowerShell CLI**:
+  ```powershell
+  $p = Start-Process -FilePath "C:\Program Files\Unity\Hub\Editor\6000.6.7f1\Editor\Unity.exe" `
+    -ArgumentList "-batchmode -nographics -projectPath . -executeMethod VirtualDarkStore.Editor.DarkStoreSceneBuilder.BuildDarkStorePhase1Scene -quit -logFile Logs/SceneBuild.log" `
+    -PassThru -Wait
+  Write-Output "ExitCode: $($p.ExitCode)"
+  ```
 
-## Controls (Desktop First-Person Mode)
+### 4. Reproducible Build & Automated Test Execution (CLI)
+1. **Compile C# Assemblies (`0 Warnings, 0 Errors`)**:
+   ```powershell
+   dotnet build VirtualDarkStore.Runtime.csproj --no-restore
+   dotnet build VirtualDarkStore.Editor.csproj --no-restore
+   dotnet build VirtualDarkStore.Tests.Editor.csproj --no-restore
+   ```
+2. **Run Full 41-Test EditMode Suite**:
+   ```powershell
+   $p = Start-Process -FilePath "C:\Program Files\Unity\Hub\Editor\6000.6.7f1\Editor\Unity.exe" `
+     -ArgumentList "-batchmode -nographics -projectPath . -runTests -testPlatform EditMode -testResults TestResults-EditMode.xml -logFile Logs/TestRun.log" `
+     -PassThru -Wait
+   Write-Output "ExitCode: $($p.ExitCode)"
+   Select-String -Path TestResults-EditMode.xml -Pattern '<test-run'
+   ```
+
+---
+
+## Final Demo Instructions (7-Step Workflow)
+
+Open `Assets/Scenes/DarkStore_Phase1.unity` and press **Play** in the Unity Editor. The **Top-Right Demo Workflow Panel** (`[F1]` to toggle, `[Backquote / ~]` to unlock/lock mouse cursor for clicking UI buttons) guides you through all 7 steps:
+
+### Step 1: Select Scenario
+- In the top-right **Final Demo Workflow** panel (or via shortcuts), choose a scenario preset:
+  - **`SCN-DEMO-A` (3-Item Aisle-Grouped)**: `SKU-0001` (`A01-L-B01-T01-S01`) -> `SKU-0008` (`A01-L-B03-T02-S01`) -> `SKU-0039` (`A03-L-B01-T03-S01`).
+  - **`SCN-DEMO-B` (3-Item Ungrouped Backtracking)**: `SKU-0001` (`A01`) -> `SKU-0039` (`A03`) -> `SKU-0008` (`A01`).
+  - **`SCN-A` / `SCN-B` (4-Item Multi-Aisle)**: 4-item order across Aisles 1, 2, and 3.
+
+### Step 2: Select Order
+- Choose the order preset matching your scenario (`ORD-DEMO-0001` 3-item demo order, `ORD-0001` 4-item multi-aisle order, or a random 3-item catalog order).
+
+### Step 3: Start Desktop or VR (or Auto-Run)
+- Click **`Start Desktop`**, **`Start VR Rig`**, or **`Auto-Run Demo`** (or press **`[N]`**).
+- `OrderManager` restocks all shelf visuals, dispatches the order, and activates the cyan 3D **`TargetSlotBeacon`** above the first target shelf slot.
+
+### Step 4: Pick Products
+- **Desktop**: Navigate with `W, A, S, D` (`Left Shift` to sprint), aim the center reticle at the highlighted product box on the target shelf bay (within `2.8 m`), and press **`[E]`** or **Left Mouse Button**.
+- **VR**: Navigate via thumbstick or teleportation and pull the **Right Controller Trigger/Grip** on the target item.
+- Attempting to pick the wrong SKU triggers a non-crashing red alert banner and logs a warning without advancing the order.
+
+### Step 5: Complete Order
+- Once all line items are picked, the order status transitions to **`AwaitingPacking`** and the 3D beacon moves to the **Packing & Dispatch Station** (`(0, 0, -9.5)`).
+- Walk to the packing station, aim at the bench, and press **`[E]`** or **Left Click** (or click **`Complete Order at Packing Bench`** in the demo panel).
+
+### Step 6: View Work-Study Results & Export Report
+- Upon order completion, the **Work-Study & Work-Sampling Results Modal** (`[Tab]`) opens automatically.
+- Inspect reconciled KPI cards, continuous time-study elemental breakdown, interval work-sampling observations ($0.5\text{ s} - 5.0\text{ s}$), and the chronological `WorkEvent` log.
+- Click **`Export Report (MD + CSV)`** (or press **`[F2]`**) to write the Markdown report, elemental events CSV, and summary CSV to `docs/evidence/phase8/`.
+
+### Step 7: Compare Another Scenario
+- Click **`Step 7: Compare Scenarios [F3]`** (or press **`[F3]`**) to open the **Scenario A/B Comparison Modal**.
+- Click **`Run & Compare Demo (SCN-DEMO-A vs B)`** or **`Run & Compare 4-Item (SCN-A vs B)`** to execute both scenarios through the shared simulation core, view the side-by-side KPI delta table (`Delta = B - A`), inspect the top-down route overlay map, and toggle 3D floor paths (`Cyan` = A, `Orange` = B).
+
+---
+
+## Controls Summary
+
+### Desktop Mode
 | Action | Input Binding | Description |
 |---|---|---|
-| **Move** | `W`, `A`, `S`, `D` | Omnidirectional navigation through store aisles |
-| **Look** | `Mouse Delta` | First-person look / pitch & yaw |
-| **Sprint** | `Left Shift` | Fast picker locomotion |
-| **Cursor Lock/Unlock** | `Escape` / `Left Click` | Unlock or lock mouse cursor to game window |
-| **Interact / Pick / Pack** | `E` or `Left Click` | Pick hovered SKU from shelf or complete order at packing bench |
-| **New Sample Order** | `N` | Dispatch a new sample 3-item order when idle or completed |
-| **Scan Item (Planned Phase 4)** | `F` or `Right Click` | Trigger virtual barcode scanner verification |
-| **Place in Cart (Planned Phase 4)** | `Q` or `Left Click` on Tote | Transfer picked item into cart tote |
+| **Move / Sprint** | `W, A, S, D` / `Left Shift` | First-person navigation through store aisles |
+| **Look** | `Mouse Delta` | Camera pitch and yaw when cursor is locked |
+| **Toggle UI Cursor** | `` ` `` (`Backquote`) or `Escape` | Unlock mouse cursor to click HUD/modal buttons, or re-lock for look |
+| **Pick Item / Pack Order** | `E` or `Left Click` | Pick hovered SKU from shelf or finalize order at packing bench |
+| **Start New Order** | `N` | Dispatch selected demo order when idle or completed |
+| **Toggle Demo Guide** | `F1` | Show/hide the 7-step Final Demo Workflow panel |
+| **Export Work-Study Report** | `F2` | Export Markdown + CSV work-study bundle to `docs/evidence/phase8/` |
+| **Toggle Study Results** | `Tab` | Open/close the Work-Study & Work-Sampling Results modal |
+| **Toggle Scenario Compare** | `F3` | Open/close the Scenario A/B Comparison & Route Map modal |
 
-## Architecture
-The platform enforces clean decoupling between the presentation/input layer and the simulation/work-study core:
-- **Presentation Layer**: Desktop Controller (`DesktopPickerController.cs`), `PickerInteraction.cs`, `PickableItemVisual.cs`, and `SimulationHUD.cs`.
-- **Domain Topology & Inventory**: Pure C# data models (`Sku`, `ShelfSlot`, `Shelf`, `Aisle`, `StoreConfiguration`) completely decoupled from GameObjects.
-- **Fulfillment Engine**: Pure domain entities `Order.cs` and `OrderItem.cs` managed by `OrderManager.cs` and `StoreManager.cs`.
-- **WorkStudy Core (Planned Phase 4)**: Tracks elemental states (`TRAVEL`, `SEARCH`, `PICK`, `SCAN`, `PLACE`, `STAGE`, `IDLE`), logs cycle metrics, samples activity states, and exports deterministic CSV/JSON records.
-- See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for complete details.
+### VR Mode (OpenXR / Meta Quest)
+| Action | Input Binding | Description |
+|---|---|---|
+| **Continuous Move / Turn** | Left / Right Thumbstick | Aisle navigation and horizontal view rotation |
+| **Teleport** | Left Thumbstick Forward + Release | Point-to-point translation with exact displacement ($\Delta p$) logging |
+| **Pick / Pack** | Right Controller Trigger or Grip | Validate SKU pick at shelf or finalize order at packing bench |
 
-## Work-Study Method
-- **Time-Study**: Measures discrete elemental durations, cumulative travel distance, and cycle times for each order item pick cycle.
-- **Work-Sampling**: Periodically records the active state of the operator to calculate percentage utilization across tasks ($p = \frac{n_i}{N}$).
-- **Compliance**: Follows traditional industrial engineering time-and-motion study practices without AI/ML estimation or uninstrumented biometrics.
-
-## Testing
-- Automated unit testing via Unity Test Framework (`com.unity.test-framework` `1.4.6`).
-- **Current Status**: **24 TESTS EXECUTED AND PASSED** (0 failures). Evidence recorded in `TestResults-EditMode.xml`.
-- See [docs/TESTING.md](docs/TESTING.md) for test execution instructions and full test breakdown.
-
-## Known Limitations
-- VR hardware instrumentation and desktop-VR parity are scheduled for Phase 6.
-- All metrics represent deterministic virtual simulation telemetry; no claims of ANSI/ISO laboratory certification without empirical external validation.
-
-## External Resources & Licenses
-All external packages and third-party assets are tracked in [docs/RESOURCE_REGISTER.md](docs/RESOURCE_REGISTER.md). Currently, only standard Unity packages are included.
+---
 
 ## Documentation Index
-- [AGENTS.md](AGENTS.md) - Project constraints, non-negotiables, and operational guidelines
-- [docs/PROJECT_BRIEF.md](docs/PROJECT_BRIEF.md) - Project mission, scope, and objectives
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) - Technical architecture and data schemas
-- [docs/SETUP.md](docs/SETUP.md) - System setup, prerequisites, and launch guide
-- [docs/PHASE_STATUS.md](docs/PHASE_STATUS.md) - Lifecycle progression tracker
-- [docs/DEVELOPMENT_LOG.md](docs/DEVELOPMENT_LOG.md) - Detailed chronological audit log
-- [docs/DECISIONS.md](docs/DECISIONS.md) - Architecture Decision Records (ADRs)
-- [docs/RESOURCE_REGISTER.md](docs/RESOURCE_REGISTER.md) - Package and asset inventory
-- [docs/TESTING.md](docs/TESTING.md) - Test strategy and verification records
-- [CHANGELOG.md](CHANGELOG.md) - Version and milestone history
-
-## Next Step
-Proceed to **Phase 6: VR Rig Integration & Desktop-VR Parity**:
-- Integrate OpenXR / XR Interaction Toolkit into an equivalent VR rig.
-- Maintain 100% parity with desktop simulation and WorkStudy core.
-- Verify identical time-study and work-sampling data structures across both desktop and VR modalities.
+- [AGENTS.md](file:///c:/Users/Mehul/OneDrive/Documents/VirtualDarkStoreWSD/AGENTS.md) — Non-negotiable project rules and change discipline
+- [docs/PROJECT_BRIEF.md](file:///c:/Users/Mehul/OneDrive/Documents/VirtualDarkStoreWSD/docs/PROJECT_BRIEF.md) — Mission, scope, and operational boundaries
+- [docs/ARCHITECTURE.md](file:///c:/Users/Mehul/OneDrive/Documents/VirtualDarkStoreWSD/docs/ARCHITECTURE.md) — Decoupled architecture, state rules, and Phase 8 subsystems
+- [docs/SETUP.md](file:///c:/Users/Mehul/OneDrive/Documents/VirtualDarkStoreWSD/docs/SETUP.md) — Verified environment specs, CLI build/test commands, and RTX 2050 settings
+- [docs/PHASE_STATUS.md](file:///c:/Users/Mehul/OneDrive/Documents/VirtualDarkStoreWSD/docs/PHASE_STATUS.md) — Phase 0 through Phase 8 completion tracker
+- [docs/DEVELOPMENT_LOG.md](file:///c:/Users/Mehul/OneDrive/Documents/VirtualDarkStoreWSD/docs/DEVELOPMENT_LOG.md) — Chronological engineering log with verification evidence
+- [docs/DECISIONS.md](file:///c:/Users/Mehul/OneDrive/Documents/VirtualDarkStoreWSD/docs/DECISIONS.md) — Architecture Decision Records (`ADR 001` – `ADR 011`)
+- [docs/RESOURCE_REGISTER.md](file:///c:/Users/Mehul/OneDrive/Documents/VirtualDarkStoreWSD/docs/RESOURCE_REGISTER.md) — Verified packages, materials, scenarios, and assets
+- [docs/TESTING.md](file:///c:/Users/Mehul/OneDrive/Documents/VirtualDarkStoreWSD/docs/TESTING.md) — 41-test verification records and Phase 8 evidence summary
+- [CHANGELOG.md](file:///c:/Users/Mehul/OneDrive/Documents/VirtualDarkStoreWSD/CHANGELOG.md) — Release history (`0.0.1` through `0.8.0`)

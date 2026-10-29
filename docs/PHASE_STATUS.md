@@ -11,8 +11,9 @@ Status of project phases for the Virtual Dark Store Work-Study & Simulation Plat
 | **Phase 3** | Order Engine & Fulfillment Simulation | **COMPLETED** | 2026-10-28 |
 | **Phase 4** | Desktop Interactive Mode & Instrumentation | **COMPLETED** | 2026-10-28 |
 | **Phase 5** | Work-Sampling & Automated Exporters (CSV/JSON) | **COMPLETED** | 2026-10-28 |
-| **Phase 6** | VR Rig Integration & Desktop-VR Parity | PLANNED | - |
-| **Phase 7** | Verification, Packaging & User Documentation | PLANNED | - |
+| **Phase 6** | Scenarios, A/B Comparison, Route Visualization & KPI Comparison | **COMPLETED** | 2026-10-28 |
+| **Phase 7** | VR Rig Integration & Desktop-VR Parity | **COMPLETED** | 2026-10-28 |
+| **Phase 8** | Polish, RTX 2050 Optimization, Report Exporters & Final Demo Workflow | **COMPLETED** | 2026-10-29 |
 
 ---
 
@@ -84,12 +85,39 @@ Status of project phases for the Virtual Dark Store Work-Study & Simulation Plat
   - `WorkStudyCalculatorTests.cs`: 4 unit and integration tests verifying duration reconciliation ($\sum T_c = T_{total}$), percentage reconciliation ($\sum P_c = 100\%$), exact pick/shelf visit counts, configurable work-sampling intervals, and full sample order evaluation.
   - 24/24 EditMode tests executed and passing.
 
-### Phase 6: VR Rig Integration & Desktop-VR Parity
-- **Goal**: Integrate OpenXR / XR Interaction Toolkit into an equivalent VR rig sharing the exact same WorkStudy and Simulation core.
-- **Status**: PLANNED (Deferred until Desktop mode is verified)
-- **Prerequisites**: Phase 5 validation.
+### Phase 6: Scenarios, A/B Comparison, Route Visualization & KPI Comparison
+- **Goal**: Scenario definition, save/load, A/B comparison of the same order under equivalent starting conditions using actual recorded runs; route visualisation; KPI comparison. Measured simulation results only; no AI/optimisation.
+- **Status**: **COMPLETED** (2026-10-28)
+- **Delivered**: `Assets/Scripts/Scenarios/*`, `ScenarioComparisonUI.cs`, `ScenarioTests.cs` (5 tests), saved scenarios in `Scenarios/`, evidence in `docs/evidence/phase6/`. 29/29 EditMode tests passed. A: 55.09 s, 57.80 m; B: 44.80 s, 43.40 m (pick sequence only varied).
+- **Limitations**: scripted picker, fixed straight-line routing, headless runs, scene not regenerated (see DEVELOPMENT_LOG).
 
-### Phase 7: Verification, Packaging & User Documentation
-- **Goal**: End-to-end integration testing, performance benchmarking, user guide, and final release packaging.
-- **Status**: PLANNED
-- **Prerequisites**: Phase 6 completion.
+### Phase 7: VR Rig Integration & Desktop-VR Parity
+- **Goal**: Integrate OpenXR / XR Interaction Toolkit into an equivalent VR player rig sharing the exact same WorkStudy and Simulation core. Verify head tracking, controller input, basic pick interaction, continuous locomotion and teleportation with exact displacement preservation. Check physical headset and mark hardware verification NOT RUN if none exists.
+- **Status**: **COMPLETED** (2026-10-28)
+- **Delivered**:
+  - Package dependencies: `com.unity.xr.interaction.toolkit: 3.6.1`, `com.unity.xr.core-utils: 2.6.0`, `com.unity.xr.meta-openxr: 2.6.1`. Verified AndroidPlayer + SDK/NDK/OpenJDK.
+  - OpenXR Loader wired in `Assets/XR/XRGeneralSettingsPerBuildTarget.asset` for Standalone and Android build targets.
+  - Interaction parity interface: `IPickerInteraction.cs` unifying desktop and VR pick interaction.
+  - VR Player Rig components (`Assets/Scripts/VR/`):
+    - `VRPlayerRig.cs`: Master rig coordinating XROrigin, head tracking, dual controllers, pick interaction, and locomotion.
+    - `VRHeadTracking.cs`: HMD spatial tracking, eye-height positioning, and physical head-orientation forward ray (excludes uninstrumented physiological/eye-tracking claims).
+    - `VRControllerInput.cs`: Spatial pose tracking and button reading (trigger, grip, primary button, thumbstick) for left and right hands.
+    - `VRPickerInteraction.cs`: Raycast and direct touch interaction validating picks against `OrderManager` and completing packing at staging benches.
+    - `VRLocomotionController.cs`: Continuous thumbstick locomotion and discrete teleportation with exact displacement accumulation ($\Delta p$) to ensure travel metrics are preserved.
+    - `VRHardwareDetector.cs`: Hardware inspection utility recording device reports.
+  - Core integration: `ActivityClassifier.cs` and `SimulationHUD.cs` updated to dynamically support `VRPlayerRig` with 100% telemetry parity.
+  - Scene generation: `DarkStoreSceneBuilder.cs` updated with `BuildVRPlayerRig` and scene regenerated and saved (`Assets/Scenes/DarkStore_Phase1.unity`).
+  - Automated tests: 7 new EditMode tests in `Assets/Tests/Editor/VR/VRRigTests.cs` covering rig hierarchy, head tracking, controller input, pick validation, locomotion/teleportation displacement, full VR order fulfillment with duration/percentage reconciliation, and hardware detection.
+  - Test Suite Status: **36/36 EditMode tests executed and passing (100% pass rate in 0.915s)**.
+  - Hardware Verification: Marked **NOT RUN** (evidence saved to `docs/evidence/phase7/vr_hardware_report.md` confirming no physical HMD was attached in the current environment).
+
+### Phase 8: Polish, RTX 2050 Optimization, Report Exporters & Final Demo Workflow
+- **Goal**: Polish UI, work-study report export, store visuals, performance for RTX 2050-class hardware, error handling, scene organization, demo scenario, and reproducible setup. Execute 7-step Final Demo workflow (`1. Select scenario -> 2. Select order -> 3. Start desktop or VR -> 4. Pick products -> 5. Complete order -> 6. View work-study results -> 7. Compare another scenario`) and update all documentation without adding AI/ML or inventing FPS/benchmark numbers.
+- **Status**: **COMPLETED** (2026-10-29)
+- **Delivered**:
+  - **4-Aisle Inventory Distribution & Visual Polish**: Updated `StoreManager.cs` to distribute the 72 SKUs across all 4 aisles (`A01`–`A04`, 18 SKUs per aisle, 1 per bay-tier at `SlotIndex == 1`). Enhanced `DarkStoreSceneBuilder.cs` with all 8 department materials (`Mat_Prod_*`), proportional item geometries, aisle header signage, floor safety/guide stripes, dispatch staging tote bins, and a 3D `TargetSlotBeacon`.
+  - **Error Handling & Shelf Restock**: Created `SimulationErrorHandler.cs` for non-crashing error/warning telemetry; added `OrderManager.TryStartSpecificOrder` and `OrderManager.ResetShelfVisuals()` so shelf product boxes automatically reappear when starting a new order.
+  - **RTX 2050-Class Performance Budget**: Created `PerformanceSettingsManager.cs` and tuned `Assets/Settings/PC_RPAsset.asset` (`m_RequireDepthTexture: 0`, `m_RequireOpaqueTexture: 0`, `m_SupportsHDR: 0`, `m_MSAA: 2`, `m_MainLightShadowmapResolution: 1024`, `m_AdditionalLightShadowsSupported: 0`, `m_ShadowDistance: 32`, `m_ShadowCascadeCount: 2`, SRP Batcher enabled, GPU instancing on $16/16$ shared materials, camera far clip $\le 45\text{ m}$, post-processing disabled). Generated `docs/evidence/phase8/rtx2050_performance_audit.md` with interactive GPU FPS benchmarking honestly marked **NOT RUN**.
+  - **Work-Study Report Exporter**: Created `WorkStudyReportExporter.cs` exporting full Markdown reports, RFC-4180 elemental event CSVs, and summary KPI CSVs (`docs/evidence/phase8/demo_order_work_study_report.*`).
+  - **UI & 7-Step Final Demo Workflow**: Created `DemoFlowController.cs` and polished `SimulationHUD.cs` (`[F1]`), `WorkStudyResultsUI.cs` (`[Tab]`), and `ScenarioComparisonUI.cs` (`[F3]`). Saved `Scenarios/scenario_demo_A.json` and `Scenarios/scenario_demo_B.json` and recorded comparative evidence in `docs/evidence/phase8/demo_comparison_A_vs_B.md` (`SCN-DEMO-A`: $49.30\text{ s}, 53.20\text{ m}$ vs `SCN-DEMO-B`: $65.44\text{ s}, 75.80\text{ m}$).
+  - **Automated Verification**: Added 5 new EditMode tests in `Assets/Tests/Editor/Demo/Phase8PolishAndDemoTests.cs`. Full suite: **41/41 EditMode tests executed and passing (`0.771s`, 0 failures, 0 warnings)**.

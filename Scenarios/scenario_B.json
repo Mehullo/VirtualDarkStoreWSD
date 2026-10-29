@@ -1,0 +1,22 @@
+{
+    "scenarioId": "SCN-B",
+    "scenarioName": "Scenario B: alternate sequence",
+    "description": "Same order lines visited in a different user-defined sequence (not optimised).",
+    "orderId": "ORD-SCN-0001",
+    "skuSequence": [
+        "SKU-0003",
+        "SKU-0045",
+        "SKU-0030",
+        "SKU-0066"
+    ],
+    "startPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -8.5
+    },
+    "walkSpeed": 1.399999976158142,
+    "initialWaitSeconds": 1.0,
+    "searchSeconds": 2.0,
+    "packingSeconds": 2.0,
+    "timeStep": 0.10000000149011612
+}

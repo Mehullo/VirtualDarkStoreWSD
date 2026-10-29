@@ -62,3 +62,35 @@
 - **Context**: Running headless tests via `-runTests` from CLI requires `com.unity.test-framework` to be an explicit root dependency in `Packages/manifest.json`.
 - **Decision**: Include `"com.unity.test-framework": "1.4.6"` explicitly in `manifest.json`.
 
+
+## ADR 009: Phase 6 Re-scoped to Scenario Comparison; VR Deferred
+- **Status**: Accepted (user instruction 2026-10-28)
+- **Context**: Previous plan labelled Phase 6 as VR integration. User requested scenario definition, save/load, A/B comparison, route visualisation and KPI comparison as Phase 6.
+- **Decision**: Implement scenarios as Phase 6; VR/OpenXR parity and final packaging shift to later phases (Phase 7+). Scenario runs are produced by a scripted virtual picker driving the shared OrderManager/ActivityClassifier/WorkEventLogger; the runner never writes events itself. Scenarios vary only user-defined data (SKU visit sequence); no optimisation or AI.
+- **Consequences**: Comparisons are valid only when starting conditions are equivalent; `ScenarioComparison` flags differences. Outputs always labelled measured simulation results, not predictions.
+
+## ADR 010: VR Player Rig & Desktop-VR Parity (Phase 7)
+- **Status**: Accepted (2026-10-28)
+- **Context**: Phase 7 requires implementing a VR player rig, head tracking, controller input, basic pick interaction, and continuous locomotion/teleportation. VR must strictly act as an interaction layer and never a second simulation engine.
+- **Decision**:
+  1. Add official verified packages: `com.unity.xr.interaction.toolkit: 3.6.1`, `com.unity.xr.core-utils: 2.6.0`, and `com.unity.xr.meta-openxr: 2.6.1` with OpenXR loader configuration for Standalone and Android (Meta Quest).
+  2. Implement `IPickerInteraction` interface to decouple UI and activity classification from specific input hardware, allowing `ActivityClassifier` and `SimulationHUD` to consume events identically from either Desktop or VR rigs.
+  3. Ensure teleportation preserves displacement: when a VR picker teleports across aisles, the displacement vector $\Delta \vec{p}$ is passed as `frameDistance` to `ActivityClassifier` so travel time and distance are faithfully accumulated without dropouts.
+  4. Strictly reject uninstrumented cognitive or physiological claims: `VRHeadTracking.HeadRay` is strictly a physical head-orientation raycast, never eye-tracking.
+  5. In accordance with no-hallucination rules, `VRHardwareDetector` checks for connected HMD devices; if no physical HMD is connected in the runtime environment, hardware verification is explicitly marked `NOT RUN`.
+- **Consequences**:
+  - Full desktop-VR parity: both modes feed into the exact same `OrderManager`, `WorkEventLogger`, and `WorkStudyCalculator`.
+  - Zero simulated metrics are fabricated.
+
+## ADR 011: Phase 8 RTX 2050 Performance Budget, 4-Aisle SKU Distribution & 7-Step Demo Workflow
+- **Status**: Accepted (2026-10-29)
+- **Context**: Phase 8 requires polishing UI, work-study report exports, store visuals, performance for RTX 2050-class hardware, error handling, scene organization, and a reproducible 7-step Final Demo workflow without adding AI/ML or fabricating FPS/benchmark numbers.
+- **Decision**:
+  1. **4-Aisle Even SKU Distribution**: Update `StoreManager.AssignSkusToSlots()` to place 1 SKU per bay-tier at `SlotIndex == 1` across all 4 aisles (72 SKUs across 72 bay-tiers, 18 SKUs per aisle) so multi-aisle travel and inter-aisle backtracking (`SCN-DEMO-A` vs `SCN-DEMO-B` and `SCN-A` vs `SCN-B`) are physically exercised across the warehouse.
+  2. **RTX 2050-Class Budget & Honest Audit**: Tune `PC_RPAsset.asset` (`m_RequireDepthTexture: 0`, `m_RequireOpaqueTexture: 0`, `m_SupportsHDR: 0`, `m_MSAA: 2`, `m_ShadowDistance: 32`, `m_ShadowCascadeCount: 2`, `m_AdditionalLightShadowsSupported: 0`) and implement `PerformanceSettingsManager` to enforce SRP Batcher, GPU instancing on all 16 shared materials, camera far clip $\le 45.0\text{ m}$, and shadowless ceiling point lights. Mark interactive GPU FPS benchmarking strictly as `NOT RUN` in headless audits (`docs/evidence/phase8/rtx2050_performance_audit.md`).
+  3. **Deterministic Report Exporter & 7-Step Demo Controller**: Implement `WorkStudyReportExporter` (Markdown + RFC-4180 elemental CSV + summary CSV) and `DemoFlowController` guiding the operator through all 7 demo steps in Desktop, VR, or Scripted modes.
+- **Consequences**:
+  - Positive: Low memory-bandwidth footprint suitable for 4GB VRAM / 64-bit bus GPUs; realistic 4-aisle dark store visuals; one-click auditable Markdown and CSV reports; zero fabricated benchmarks.
+  - Negative: Updating SKU distribution from single-aisle clustering to 4-aisle distribution updates the measured distances for `SCN-A` ($82.40\text{ m}$) and `SCN-B` ($90.40\text{ m}$), which have been re-recorded in `docs/evidence/phase6/`.
+
+

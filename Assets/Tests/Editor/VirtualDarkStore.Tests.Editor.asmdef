@@ -3,8 +3,11 @@
     "rootNamespace": "VirtualDarkStore.Tests",
     "references": [
         "VirtualDarkStore.Runtime",
+        "VirtualDarkStore.Editor",
         "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner"
+        "UnityEditor.TestRunner",
+        "Unity.XR.CoreUtils",
+        "Unity.XR.Interaction.Toolkit"
     ],
     "includePlatforms": [
         "Editor"

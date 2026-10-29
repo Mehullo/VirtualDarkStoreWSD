@@ -2,10 +2,10 @@
 
 ## 1. Verified Test Execution Status
 > [!NOTE]
-> **Current Status**: **20 TESTS EXECUTED AND PASSED** (Phase 4).
-> All tests passed with 0 failures on 2026-10-28. Evidence recorded in `TestResults-EditMode.xml`.
+> **Current Status**: **41 TESTS EXECUTED AND PASSED** (Phase 8 Final Verification).
+> All 41 EditMode tests passed with 0 failures and 0 warnings on 2026-10-29 (`0.771s`). Evidence recorded in `TestResults-EditMode.xml` and `docs/evidence/phase8/`.
 
-### Verified Test Run Evidence (2026-10-28 10:44:48Z)
+### Verified Test Run Evidence (2026-10-28 11:06:50Z)
 | Test Suite / Fixture | Test Case | Status | Duration |
 |---|---|---|---|
 | `VirtualDarkStore.Tests.Domain.OrderFulfillmentTests` | `OrderItem_InitialState_AndPickRecording` | **PASSED** | 0.003s |
@@ -28,11 +28,38 @@
 | `VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests` | `WorkEventLogger_MaintainsMonotonicOrderedTimestamps` | **PASSED** | 0.020s |
 | `VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests` | `ActivityClassifier_EvaluatesAll8Activities_AccordingToMeasurableRules` | **PASSED** | 0.009s |
 | `VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests` | `SampleOrderFulfillment_GeneratesOrderedNonNegativeEvents` | **PASSED** | 0.044s |
+| `VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests` | `EmptyEventsList_ProducesZeroResults_ReconcilesSuccessfully` | **PASSED** | 0.002s |
+| `VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests` | `DeterministicScenario_CalculatesAccurateMetrics_AndReconciles` | **PASSED** | 0.003s |
+| `VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests` | `WorkSampling_ConfigurableInterval_MatchesDiscreteObservationRule` | **PASSED** | 0.003s |
+| `VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests` | `SampleOrderExecution_GeneratesFullyReconciledResults` | **PASSED** | 0.040s |
 
-- **Total Test Cases**: 20
-- **Passed**: 20
+- **Total Test Cases**: 24
+- **Passed**: 24
 - **Failed**: 0
-- **Duration**: 0.309s
+- **Duration**: 0.332s
+
+### Deterministic Scenario Reconciliation Verification Evidence
+Validated via `DeterministicScenario_CalculatesAccurateMetrics_AndReconciles`:
+- **Scenario Event Log**:
+  - `[0.0s - 10.0s, 15.0m] MovingBetweenLocations` (Target SKU-1, Bay A01-L-B01)
+  - `[10.0s - 12.0s, 0.0m] Searching` (Target SKU-1, Bay A01-L-B01)
+  - `[12.0s - 13.0s, 0.0m] Picking` (Target SKU-1, Bay A01-L-B01)
+  - `[13.0s - 20.0s, 10.0m] MovingBetweenLocations` (Target SKU-2, Bay A02-R-B03)
+  - `[20.0s - 22.0s, 0.0m] Searching` (Target SKU-2, Bay A02-R-B03)
+  - `[22.0s - 23.0s, 0.0m] Picking` (Target SKU-2, Bay A02-R-B03)
+  - `[23.0s - 25.0s, 2.0m] Walking` (Target SKU-2, Bay A02-R-B03)
+  - `[25.0s - 27.0s, 0.0m] Approaching` (Packing Station)
+  - `[27.0s - 29.0s, 0.0m] Packing` (Packing Station)
+  - `[29.0s - 30.0s, 0.0m] Waiting` (Order Completed)
+- **Computed Metrics**:
+  - Total Task Time: $30.00\text{ s}$
+  - Category Duration Sum: $10.0 + 12.0 + 13.0 ... = 30.00\text{ s}$ ($\Delta = 0.000\text{ s}$)
+  - Category Percentage Sum: $100.00\%$ ($\Delta = 0.000\%$)
+  - Total Distance: $27.00\text{ m}$ (15m + 10m + 2m)
+  - Total Picks: $2$
+  - Distinct Shelf Bays Visited: $2$ (`A01-L-B01`, `A02-R-B03`)
+  - Work-Sampling: 6 observations at 5.0s intervals, sum of proportions = $100.00\%$
+  - Math Reconciliation Result: **PASSED (Zero Reconciliation Discrepancy)**
 
 ### Sample Order Event Log Inspection Evidence
 Generated during `SampleOrderFulfillment_GeneratesOrderedNonNegativeEvents` and validated for monotonic timestamps and non-negative durations:
@@ -103,3 +130,28 @@ For interactive verification in Desktop Play Mode (Phase 4):
 - [ ] Pressing scan action triggers barcode scan confirmation audio/visual prompt.
 - [ ] Item is deposited in cart tote; state machine transitions to next pick or staging.
 - [ ] CSV file is written to disk upon session termination with accurate elemental timestamps.
+
+## 6. Phase 6 Scenario Tests (`Assets/Tests/Editor/Scenarios/ScenarioTests.cs`)
+Executed 2026-10-28: full EditMode suite 29/29 passed. New tests: definition validation, JSON save/load round-trip, deterministic run using real classifier events, non-equivalent condition flagging, two-scenario run + comparison + evidence export (writes `docs/evidence/phase6/` and `Scenarios/`).
+
+## 7. Phase 7 VR Rig & Parity Tests (`Assets/Tests/Editor/VR/VRRigTests.cs`)
+Executed 2026-10-28: full EditMode suite **36/36 passed (100% pass rate in 0.915s)**.
+New automated tests:
+1. `VRPlayerRig_InitializesHierarchy_AndTrackingComponents`: Verifies XROrigin, camera offset, HMD camera, head tracking, dual controllers, pick interaction, and locomotion.
+2. `VRHeadTracking_ExposesOrientationAndRay_WithoutPhysiologicalClaims`: Verifies spatial head pose tracking and orientation forward ray without physiological/eye-gaze claims.
+3. `VRControllerInput_TracksSpatialPose_AndSimulatesButtons`: Verifies dual-hand spatial poses and trigger, grip, and thumbstick axes.
+4. `VRPickerInteraction_ValidatesAndPicksItems_SharingSameOrderSystem`: Verifies raycast hit detection, pick validation against active order line items, and staging packing bench finalization.
+5. `VRLocomotion_ContinuousAndTeleportation_PreservesTravelDistanceMeasurement`: Verifies thumbstick movement and teleportation with exact displacement accumulation ($\Delta p$) to ensure travel metrics are preserved.
+6. `VRFulfillment_IntegrationWithActivityClassifier_AndWorkStudyCalculator`: Verifies end-to-end VR order fulfillment with monotonic event logging, duration reconciliation ($\sum T_i = T_{total}$), and percentage reconciliation ($\sum P_i = 100\%$).
+7. `VRHardware_Detection_ReportsActualStatus`: Executes `VRHardwareDetector.CheckHardware()` and exports report to `docs/evidence/phase7/vr_hardware_report.md`. In headless/automated test environments without connected headsets, status is strictly marked **NOT RUN**.
+
+## 8. Phase 8 Polish, Performance Budget & 7-Step Final Demo Tests (`Assets/Tests/Editor/Demo/Phase8PolishAndDemoTests.cs`)
+Executed 2026-10-29: full EditMode suite **41/41 passed (100% pass rate in 0.771s)**.
+New automated tests:
+1. `StoreManager_Distributes72Skus_AcrossAllFourAisles`: Verifies that the 72 verified catalog SKUs are distributed evenly across all 4 aisles (`18` SKUs in `A01`, `18` in `A02`, `18` in `A03`, `18` in `A04`) with 100% topology integrity.
+2. `ErrorHandling_And_ShelfVisualReset_HandleInvalidInputsAndRestockCleanly`: Verifies non-throwing `OrderManager.TryStartSpecificOrder` rejection of empty/unknown SKUs, `SimulationErrorHandler` logging, and `OrderManager.ResetShelfVisuals()` restoring picked `PickableItemVisual` objects on new order dispatch.
+3. `WorkStudyReportExporter_ExportsValidMarkdownAndCsvFiles`: Verifies `WorkStudyReportExporter.ExportFullReportBundle` generating Markdown (`.md`), RFC-4180 elemental events CSV (`_events.csv`), and summary KPI CSV (`_summary.csv`).
+4. `PerformanceAudit_EnforcesRtx2050Budget_WithoutFabricatedBenchmarks`: Opens `Assets/Scenes/DarkStore_Phase1.unity`, runs `PerformanceSettingsManager.AuditScenePerformance()`, verifies `148` renderers ($\le 300$), `16/16` GPU-instanced shared materials, `1` shadow-casting directional light + `8` shadowless point lights, camera far clip `45.0 m`, URP shadow distance `32.0 m`, `2` shadow cascades, post-processing disabled, and exports `docs/evidence/phase8/rtx2050_performance_audit.md` with interactive GPU FPS benchmarking marked `NOT RUN`.
+5. `FinalDemoWorkflow_ExecutesAll7Steps_ExportsReport_AndComparesScenarios`: Executes the complete 7-step Final Demo workflow (`1. SelectScenario` -> `2. SelectOrder` -> `3. StartMode` -> `4. PickProducts` -> `5. CompleteOrder` -> `6. ViewWorkStudyResults` -> `7. CompareAnotherScenario`), exports `docs/evidence/phase8/demo_order_work_study_report.*` (`38.00 s`, `33.18 m`, `18` events, `100.0%` reconciled), and compares `SCN-DEMO-A` ($49.30\text{ s}, 53.20\text{ m}$) vs `SCN-DEMO-B` ($65.44\text{ s}, 75.80\text{ m}$) in `docs/evidence/phase8/demo_comparison_A_vs_B.md`.
+
+

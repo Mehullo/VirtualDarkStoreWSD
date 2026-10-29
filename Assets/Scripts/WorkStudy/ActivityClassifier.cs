@@ -36,6 +36,7 @@ namespace VirtualDarkStore.WorkStudy
         [Header("References")]
         [SerializeField] private Transform pickerTransform;
         [SerializeField] private PickerInteraction pickerInteraction;
+        [SerializeField] private VirtualDarkStore.VR.VRPickerInteraction vrPickerInteraction;
         [SerializeField] private WorkEventLogger eventLogger;
 
         [Header("Runtime State")]
@@ -92,17 +93,41 @@ namespace VirtualDarkStore.WorkStudy
             SubscribeOrderEvents();
         }
 
+        public void SetVRReferences(WorkEventLogger logger, OrderManager om, VirtualDarkStore.VR.VRPlayerRig vrRig)
+        {
+            eventLogger = logger;
+            if (vrRig != null)
+            {
+                pickerTransform = vrRig.transform;
+                vrPickerInteraction = vrRig.PickerInteraction;
+            }
+            SubscribeOrderEvents();
+        }
+
         public void InitializeReferences()
         {
             if (pickerTransform == null)
             {
-                var picker = FindAnyObjectByType<DesktopPickerController>();
-                if (picker != null) pickerTransform = picker.transform;
+                var vrRig = FindAnyObjectByType<VirtualDarkStore.VR.VRPlayerRig>();
+                if (vrRig != null && vrRig.gameObject.activeInHierarchy)
+                {
+                    pickerTransform = vrRig.transform;
+                    vrPickerInteraction = vrRig.PickerInteraction;
+                }
+                else
+                {
+                    var picker = FindAnyObjectByType<DesktopPickerController>();
+                    if (picker != null) pickerTransform = picker.transform;
+                }
             }
 
             if (pickerInteraction == null && pickerTransform != null)
             {
                 pickerInteraction = pickerTransform.GetComponent<PickerInteraction>();
+                if (vrPickerInteraction == null)
+                {
+                    vrPickerInteraction = pickerTransform.GetComponentInChildren<VirtualDarkStore.VR.VRPickerInteraction>();
+                }
             }
 
             if (eventLogger == null)
@@ -180,7 +205,8 @@ namespace VirtualDarkStore.WorkStudy
             bool isLookingAtShelf = CheckIsLookingAtShelf();
 
             // Check if at packing bench
-            bool isAtPackingBench = pickerInteraction != null && pickerInteraction.HoveredPackingStation != null;
+            bool isAtPackingBench = (pickerInteraction != null && pickerInteraction.HoveredPackingStation != null)
+                || (vrPickerInteraction != null && vrPickerInteraction.HoveredPackingStation != null);
 
             Step(currentTime, currentPos, speed, isLookingAtShelf, isAtPackingBench, frameDistance);
         }

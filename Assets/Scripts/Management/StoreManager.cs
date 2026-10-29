@@ -185,22 +185,29 @@ namespace VirtualDarkStore.Management
         private void AssignSkusToSlots()
         {
             int skuIndex = 0;
+            int maxSlotsPerTier = configuration != null ? Mathf.Max(1, configuration.SlotsPerTier) : 4;
 
-            // Iterate deterministically through all available shelf slots
-            foreach (var aisle in aisles)
+            // Distribute SKUs evenly across all aisles, bays, and tiers pass-by-pass by slot number (s = 1..maxSlotsPerTier).
+            // For the 72-SKU catalog across 4 aisles (2 sides * 3 bays * 3 tiers = 18 bay-tiers per aisle),
+            // Pass s = 1 stocks 18 SKUs in each of the 4 aisles (1 per bay-tier).
+            for (int targetSlotNum = 1; targetSlotNum <= maxSlotsPerTier && skuIndex < skus.Count; targetSlotNum++)
             {
-                foreach (var slot in aisle.GetAllSlots())
+                foreach (var aisle in aisles)
                 {
+                    foreach (var slot in aisle.GetAllSlots())
+                    {
+                        if (skuIndex >= skus.Count) break;
+                        if (slot.SlotIndex != targetSlotNum || slot.IsOccupied) continue;
+
+                        var sku = skus[skuIndex];
+                        slot.AssignSku(sku.SkuId);
+                        skuToSlotMap[sku.SkuId] = slot;
+                        slotToSkuMap[slot.SlotId] = sku;
+
+                        skuIndex++;
+                    }
                     if (skuIndex >= skus.Count) break;
-
-                    var sku = skus[skuIndex];
-                    slot.AssignSku(sku.SkuId);
-                    skuToSlotMap[sku.SkuId] = slot;
-                    slotToSkuMap[slot.SlotId] = sku;
-
-                    skuIndex++;
                 }
-                if (skuIndex >= skus.Count) break;
             }
         }
 

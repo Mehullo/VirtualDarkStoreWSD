@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using VirtualDarkStore.Domain;
+using VirtualDarkStore.Interaction;
 
 namespace VirtualDarkStore.Management
 {
@@ -115,6 +116,59 @@ namespace VirtualDarkStore.Management
             return CreateAndDispatchOrder(orderId, selectedSkus);
         }
 
+        /// <summary>
+        /// Non-throwing validation and dispatch of a specific order by explicit SKU IDs.
+        /// </summary>
+        public bool TryStartSpecificOrder(string orderId, IReadOnlyList<string> skuIds, out Order order, out string errorReason)
+        {
+            order = null;
+            errorReason = null;
+
+            var store = StoreManager.Instance;
+            if (store == null)
+            {
+                errorReason = "StoreManager is not initialized.";
+                SimulationErrorHandler.ReportError("OrderManager", errorReason);
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(orderId))
+            {
+                errorReason = "Order ID cannot be empty.";
+                SimulationErrorHandler.ReportError("OrderManager", errorReason);
+                return false;
+            }
+
+            if (skuIds == null || skuIds.Count == 0)
+            {
+                errorReason = "Order must contain at least one SKU ID.";
+                SimulationErrorHandler.ReportError("OrderManager", errorReason);
+                return false;
+            }
+
+            var selectedSkus = new List<Sku>();
+            foreach (var id in skuIds)
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                {
+                    errorReason = "Order contains an empty SKU ID.";
+                    SimulationErrorHandler.ReportError("OrderManager", errorReason);
+                    return false;
+                }
+                var sku = store.GetSku(id.Trim());
+                if (sku == null)
+                {
+                    errorReason = $"SKU '{id}' does not exist in store catalog.";
+                    SimulationErrorHandler.ReportError("OrderManager", errorReason);
+                    return false;
+                }
+                selectedSkus.Add(sku);
+            }
+
+            order = CreateAndDispatchOrder(orderId.Trim(), selectedSkus);
+            return order != null;
+        }
+
         private Order CreateAndDispatchOrder(string orderId, List<Sku> skus)
         {
             var store = StoreManager.Instance;
@@ -134,10 +188,28 @@ namespace VirtualDarkStore.Management
                 orderItems.Add(new OrderItem(sku.SkuId, sku.Name, slotId, slotPos, 1));
             }
 
+            ResetShelfVisuals();
+
             activeOrder = new Order(orderId, orderItems);
             Debug.Log($"[OrderManager] Dispatched new order: {activeOrder}");
             OnOrderStarted?.Invoke(activeOrder);
             return activeOrder;
+        }
+
+        /// <summary>
+        /// Restocks all physical shelf product visuals in the scene so previously picked items are visible again.
+        /// </summary>
+        public void ResetShelfVisuals()
+        {
+            var visuals = FindObjectsByType<PickableItemVisual>(FindObjectsInactive.Include);
+            if (visuals == null) return;
+            for (int i = 0; i < visuals.Length; i++)
+            {
+                if (visuals[i] != null)
+                {
+                    visuals[i].ResetVisual();
+                }
+            }
         }
 
         /// <summary>
@@ -165,6 +237,7 @@ namespace VirtualDarkStore.Management
             else
             {
                 Debug.LogWarning($"[OrderManager] Pick REJECTED! {failureReason}");
+                SimulationErrorHandler.ReportWarning("OrderManager", failureReason);
                 OnPickFailed?.Invoke(expectedSkuId, attemptedSkuId, failureReason);
                 return PickResult.WrongItem;
             }
@@ -180,6 +253,7 @@ namespace VirtualDarkStore.Management
             if (activeOrder == null)
             {
                 failureReason = "No order currently exists to pack.";
+                SimulationErrorHandler.ReportWarning("OrderManager", failureReason);
                 return false;
             }
 
@@ -192,6 +266,7 @@ namespace VirtualDarkStore.Management
             }
 
             Debug.LogWarning($"[OrderManager] Packing failed: {failureReason}");
+            SimulationErrorHandler.ReportWarning("OrderManager", failureReason);
             return false;
         }
     }

@@ -13,7 +13,7 @@ namespace VirtualDarkStore.Player
     /// Component managing picker raycast interaction with physical shelf SKUs and packing benches.
     /// Handles first-person center-screen reticle raycasting and [E] / LMB pick triggers.
     /// </summary>
-    public class PickerInteraction : MonoBehaviour
+    public class PickerInteraction : MonoBehaviour, IPickerInteraction
     {
         [Header("Raycast Settings")]
         [Tooltip("Maximum picking reach in meters (standard arm reach + lean: 2.8m).")]

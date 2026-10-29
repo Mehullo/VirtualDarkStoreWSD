@@ -6,6 +6,94 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-10-29
+### Added
+- **Phase 8 Polish, RTX 2050 Optimization, Report Exporters & 7-Step Final Demo Workflow**:
+  - `DemoFlowController.cs`: Orchestrates the 7-step Final Demo workflow (`1. Select scenario -> 2. Select order -> 3. Start desktop or VR -> 4. Pick products -> 5. Complete order -> 6. View work-study results -> 7. Compare another scenario`), manages the 3D `TargetSlotBeacon` above the active target shelf slot or packing bench, and records live trajectories.
+  - `WorkStudyReportExporter.cs`: Deterministic exporter generating full Markdown work-study reports (`.md`), RFC-4180 elemental event logs (`_events.csv`), and summary KPI CSVs (`_summary.csv`).
+  - `PerformanceSettingsManager.cs` & tuned `Assets/Settings/PC_RPAsset.asset`: Enforces and audits RTX 2050-class rendering budget (`SRP Batcher = true`, `16/16` GPU-instanced shared materials, `148` total mesh renderers, `1` shadow-casting directional light + `8` shadowless ceiling point lights, camera far clip `45.0 m`, URP shadow distance `32.0 m`, `2` shadow cascades, `2x` MSAA, post-processing disabled). Writes `docs/evidence/phase8/rtx2050_performance_audit.md` with interactive GPU FPS benchmarking marked `NOT RUN`.
+  - `SimulationErrorHandler.cs`: Non-crashing error and warning handler integrated with `OrderManager.TryStartSpecificOrder` and `SimulationHUD`.
+  - `Phase8PolishAndDemoTests.cs`: 5 new EditMode tests verifying 4-aisle SKU distribution, error handling & shelf visual reset, Markdown/CSV report export, RTX 2050 scene budget audit, and the complete 7-step Final Demo workflow.
+- **UI & Visual Polish**:
+  - `StoreManager.cs`: Distributed all 72 catalog SKUs evenly across all 4 aisles (`18` SKUs per aisle, 1 per bay-tier at `SlotIndex == 1`).
+  - `OrderManager.cs`: Added `ResetShelfVisuals()` so picked shelf items automatically restock when starting a new order.
+  - `DarkStoreSceneBuilder.cs`: Mapped all 8 department materials (`Mat_Prod_*`), scaled product boxes by `sku.DimensionsMeters`, added aisle header signage, floor safety/guide stripes, and dispatch staging totes, and rebuilt `Assets/Scenes/DarkStore_Phase1.unity` + `DarkStore_Phase1_NavMesh.asset`.
+  - `SimulationHUD.cs`, `WorkStudyResultsUI.cs`, and `ScenarioComparisonUI.cs`: Added 7-step Demo Workflow panel (`[F1]`), full order pick checklist, Summary Breakdown vs Chronological Event Log tabs (`[Tab]`), configurable sampling intervals ($0.5\text{ s} - 5.0\text{ s}$), one-click Markdown+CSV export (`[F2]`), and one-click A/B comparison buttons (`[F3]`).
+
+### Verified
+- **41/41 EditMode tests passed** (`0.771s`, 0 failures, 0 warnings) recorded in `TestResults-EditMode.xml`.
+- `dotnet build` across `VirtualDarkStore.Runtime`, `VirtualDarkStore.Editor`, and `VirtualDarkStore.Tests.Editor`: **0 Warnings, 0 Errors**.
+- Verified demo A/B comparison (`docs/evidence/phase8/demo_comparison_A_vs_B.md`): `SCN-DEMO-A` ($49.30\text{ s}, 53.20\text{ m}$) vs `SCN-DEMO-B` ($65.44\text{ s}, 75.80\text{ m}$; $\Delta = +16.14\text{ s} / +22.60\text{ m}$).
+
+## [0.7.0] - 2026-10-28
+### Added
+- **VR Player Rig & Parity Architecture (Phase 7)**:
+  - `VRPlayerRig.cs`: Master rig coordinating XROrigin, spatial head tracking, dual controllers, pick interaction, and locomotion.
+  - `VRHeadTracking.cs`: HMD pose tracking with eye-height calibration and forward gaze raycast (strictly excluding uninstrumented physiological or eye-gaze claims).
+  - `VRControllerInput.cs`: OpenXR / Input System controller tracking for left and right hands, exposing triggers, grips, primary buttons, and thumbstick axes.
+  - `VRPickerInteraction.cs`: Raycast and direct touch interaction validating picks against `OrderManager` and completing packing at staging benches.
+  - `VRLocomotionController.cs`: Continuous thumbstick locomotion and discrete teleportation with exact displacement accumulation ($\Delta p$) to preserve industrial travel distance metrics.
+  - `VRHardwareDetector.cs`: Hardware inspection utility reporting connected VR devices or marking verification as `NOT RUN`.
+  - `IPickerInteraction.cs`: Shared abstraction implemented by both `PickerInteraction` (desktop) and `VRPickerInteraction` (VR).
+- **Core Integration & Parity (Phase 7)**:
+  - `ActivityClassifier.cs` and `SimulationHUD.cs`: Updated to dynamically support `VRPlayerRig` and `IPickerInteraction`, achieving 100% telemetry parity.
+  - `DarkStoreSceneBuilder.cs`: Added `BuildVRPlayerRig` and regenerated scene `DarkStore_Phase1.unity`.
+  - Packages: Added `com.unity.xr.interaction.toolkit: 3.6.1`, `com.unity.xr.core-utils: 2.6.0`, and `com.unity.xr.meta-openxr: 2.6.1`. Verified AndroidPlayer + SDK/NDK/OpenJDK.
+  - OpenXR Loaders configured in `Assets/XR/XRGeneralSettingsPerBuildTarget.asset`.
+- **Automated Verification Suite (Phase 7)**:
+  - `VRRigTests.cs`: 7 new unit and integration tests (36/36 tests passing in full test suite):
+    - Rig hierarchy and tracking component initialization.
+    - Head tracking orientation and forward ray without physiological claims.
+    - Controller input pose tracking and button simulations.
+    - Pick interaction validating against `OrderManager` and completing packing.
+    - Locomotion displacement preservation for continuous move and teleportation.
+    - Complete VR order fulfillment run with duration/percentage reconciliation.
+    - Hardware detection: marked `NOT RUN` (evidence saved to `docs/evidence/phase7/vr_hardware_report.md`).
+
+## [0.6.0] - 2026-10-28
+### Added
+- **Scenarios & A/B Comparison (Phase 6)**:
+  - `ScenarioDefinition.cs`: Serializable scenario configuration defining SKU visit sequences, start position, walk speed, search time, packing time, and time step.
+  - `ScenarioStorage.cs`: JSON serialization and file persistence for scenarios and run results.
+  - `ScenarioRunner.cs`: Headless scenario execution driving a simulated picker through `OrderManager`, `ActivityClassifier`, and `WorkEventLogger`.
+  - `ScenarioComparison.cs`: Comparative analysis engine calculating KPI deltas (B minus A) and activity distribution between runs under equivalent starting conditions. All outputs labelled as measured simulation results, not predictions.
+  - `RouteMapRenderer.cs`: Rasterized top-down 2D route map PNG generator.
+  - `ScenarioRouteVisualizer.cs`: In-world line renderer for spatial path inspection.
+  - `ScenarioComparisonUI.cs`: Screen-space IMGUI modal (toggleable via `[F3]`) displaying A/B KPI tables and route maps.
+  - `ScenarioTests.cs`: 5 automated tests verifying definition validation, save/load, deterministic runner, equivalence checks, and evidence export (`docs/evidence/phase6/`).
+
+## [0.5.0] - 2026-10-28
+### Added
+- **Work-Study Calculator & Industrial Metrics Engine (Phase 5)**:
+  - `WorkStudyResults.cs`: Results data model storing continuous time-study metrics (total task time, travel breakdown, picking, searching, waiting, packing, total distance, total picks, distinct shelf bay visits, activity percentages) and configurable discrete work-sampling observations. Includes mathematical reconciliation engine `VerifyReconciliation(out string reason)`.
+  - `WorkStudyCalculator.cs`: Computational engine aggregating raw `WorkEvent` sequences into reconciled industrial metrics. Identifies distinct shelf visits by parsing rack bay identifiers, groups travel time into moving vs approaching, and computes simulation-based interval work sampling without unverified standards claims.
+- **Interactive Work-Study Results UI Modal (Phase 5)**:
+  - `WorkStudyResultsUI.cs`: Screen-space IMGUI modal displaying overview cards (Total Task Time, Travel Distance, Picks, Shelf Visits), detailed Time-Study category breakdown with percentage distribution, Work-Sampling observation proportions, and real-time reconciliation badges (`RECONCILED: YES / NO`).
+  - Automatically pops up upon order completion and is toggleable at any time with `[Tab]`.
+  - `SimulationHUD.cs`: Updated controls bar to include `Tab: Study Results`.
+- **Scene & Editor Integration (Phase 5)**:
+  - `DarkStoreSceneBuilder.cs`: Updated scene generation pipeline to attach `WorkStudyResultsUI` to `[WorkStudyManager]`.
+  - Rebuilt scene `Assets/Scenes/DarkStore_Phase1.unity`.
+- **Automated Verification Suite (Phase 5)**:
+  - `WorkStudyCalculatorTests.cs`: 4 automated unit and integration tests:
+    - `EmptyEventsList_ProducesZeroResults_ReconcilesSuccessfully`
+    - `DeterministicScenario_CalculatesAccurateMetrics_AndReconciles`
+    - `WorkSampling_ConfigurableInterval_MatchesDiscreteObservationRule`
+    - `SampleOrderExecution_GeneratesFullyReconciledResults`
+
+### Verified
+- **24/24 EditMode tests passed** (0 failures, 100% pass rate in 0.332s) recorded in `TestResults-EditMode.xml`.
+- Exact mathematical reconciliation validated on deterministic test scenario:
+  - Total task time: 30.00s
+  - Category durations sum: 30.00s ($\Delta = 0.000\text{s}$)
+  - Category percentages sum: 100.00% ($\Delta = 0.000\%$)
+  - Total distance: 27.00m
+  - Total picks: 2
+  - Distinct shelf visits: 2
+  - Work-sampling proportions sum: 100.00%
+- Verified sample order run generated fully reconciled industrial metrics ($\text{Reconciled} = \text{true}$).
+- Zero unverified ANSI/ISO claims and zero fabricated improvement numbers.
+
 ## [0.4.0] - 2026-10-28
 ### Added
 - **Work-Study Telemetry & Measurement Event Schema (Phase 4)**:
@@ -97,3 +185,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Executable path: `C:\Program Files\Unity\Hub\Editor\6000.6.7f1\Editor\Unity.exe`.
 - Package dependencies: Universal Render Pipeline `17.6.0`, Input System `1.20.1`, uGUI `2.6.0`.
 - Repository status: Baseline project verified without modifying application code.
+
