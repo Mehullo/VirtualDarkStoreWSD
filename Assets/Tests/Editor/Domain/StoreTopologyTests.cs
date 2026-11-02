@@ -63,6 +63,32 @@ namespace VirtualDarkStore.Tests.Domain
         }
 
         [Test]
+        public void VerifiedSampleCatalog_QuickCommerceCatalog_Contains144UniqueSkus()
+        {
+            var catalog = VerifiedSampleCatalog.CreateQuickCommerceCatalog();
+            Assert.IsNotNull(catalog);
+            Assert.AreEqual(144, catalog.Count, "Quick commerce catalog must contain exactly 144 SKUs.");
+
+            var seenIds = new HashSet<string>(System.StringComparer.OrdinalIgnoreCase);
+            var seenBarcodes = new HashSet<string>(System.StringComparer.OrdinalIgnoreCase);
+
+            foreach (var sku in catalog)
+            {
+                Assert.IsFalse(string.IsNullOrWhiteSpace(sku.SkuId), "SKU ID cannot be empty.");
+                Assert.IsFalse(string.IsNullOrWhiteSpace(sku.Name), $"SKU {sku.SkuId} name cannot be empty.");
+                Assert.IsFalse(string.IsNullOrWhiteSpace(sku.Barcode), $"SKU {sku.SkuId} barcode cannot be empty.");
+                Assert.IsFalse(string.IsNullOrWhiteSpace(sku.Category), $"SKU {sku.SkuId} category cannot be empty.");
+                Assert.Greater(sku.WeightKg, 0f, $"SKU {sku.SkuId} weight must be positive.");
+                Assert.Greater(sku.DimensionsMeters.x, 0f, $"SKU {sku.SkuId} width must be positive.");
+                Assert.Greater(sku.DimensionsMeters.y, 0f, $"SKU {sku.SkuId} height must be positive.");
+                Assert.Greater(sku.DimensionsMeters.z, 0f, $"SKU {sku.SkuId} depth must be positive.");
+
+                Assert.IsTrue(seenIds.Add(sku.SkuId), $"Duplicate SKU ID found: {sku.SkuId}");
+                Assert.IsTrue(seenBarcodes.Add(sku.Barcode), $"Duplicate Barcode found: {sku.Barcode}");
+            }
+        }
+
+        [Test]
         public void StoreManager_InitializesTopology_WithExpectedSlotCapacity()
         {
             var config = StoreConfiguration.CreateDefault();

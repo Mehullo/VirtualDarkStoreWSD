@@ -163,6 +163,45 @@ namespace VirtualDarkStore.Domain
             return true;
         }
 
+        /// <summary>
+        /// Reorders line items according to an optimized pick sequence prior to picking.
+        /// Preserves item quantities and target slot bindings. Strictly rejects reordering if picking has begun.
+        /// </summary>
+        public bool TryReorderItems(IReadOnlyList<string> orderedSkuIds, out string error)
+        {
+            error = null;
+            if (currentItemIndex > 0)
+            {
+                error = "Cannot reorder pick sequence after picking has already commenced.";
+                return false;
+            }
+
+            if (orderedSkuIds == null || orderedSkuIds.Count != items.Count)
+            {
+                error = $"Reorder count ({orderedSkuIds?.Count ?? 0}) does not match item count ({items.Count}).";
+                return false;
+            }
+
+            var availableItems = new List<OrderItem>(items);
+            var reordered = new List<OrderItem>(items.Count);
+
+            foreach (var sku in orderedSkuIds)
+            {
+                int matchIndex = availableItems.FindIndex(it => string.Equals(it.SkuId, sku, StringComparison.OrdinalIgnoreCase));
+                if (matchIndex < 0)
+                {
+                    error = $"SKU '{sku}' in reorder sequence does not exist in active order items.";
+                    return false;
+                }
+                reordered.Add(availableItems[matchIndex]);
+                availableItems.RemoveAt(matchIndex);
+            }
+
+            items = reordered;
+            currentItemIndex = 0;
+            return true;
+        }
+
         public override string ToString() => $"[Order {orderId}] Status: {status}, Items: {items.Count}, Current: {currentItemIndex + 1}/{items.Count}";
     }
 }

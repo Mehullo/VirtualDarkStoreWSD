@@ -7,6 +7,7 @@ namespace VirtualDarkStore.Domain
     /// <summary>
     /// Pure domain entity representing a specific physical slot / bin location on a shelf tier.
     /// Has a deterministic unique SlotId (e.g., "A01-L-B01-T01-S01") and references its assigned SKU.
+    /// Implements machine-readable structured store location mapping (Store -> Aisle -> Side -> Bay -> Shelf Level -> Slot).
     /// </summary>
     [Serializable]
     public class ShelfSlot
@@ -29,6 +30,8 @@ namespace VirtualDarkStore.Domain
         public Vector3 WorldPosition => worldPosition;
         public string AssignedSkuId => assignedSkuId;
         public bool IsOccupied => !string.IsNullOrEmpty(assignedSkuId);
+
+        public StoreLocation Location => new StoreLocation(aisleNumber, side, bayIndex, tierLevel, slotIndex);
 
         public ShelfSlot() { }
 
@@ -56,8 +59,7 @@ namespace VirtualDarkStore.Domain
 
         public static string GenerateSlotId(int aisle, ShelfSide side, int bay, int tier, int slot)
         {
-            char sideChar = side == ShelfSide.Left ? 'L' : 'R';
-            return $"A{aisle:D2}-{sideChar}-B{bay:D2}-T{tier:D2}-S{slot:D2}";
+            return StoreLocation.Format(aisle, side, bay, tier, slot);
         }
 
         public override string ToString() => $"[Slot: {slotId}] SKU: {assignedSkuId ?? "EMPTY"}";

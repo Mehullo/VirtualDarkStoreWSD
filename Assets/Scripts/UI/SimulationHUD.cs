@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
@@ -27,6 +28,20 @@ namespace VirtualDarkStore.UI
         [Header("UI Settings")]
         [SerializeField] private float bannerDuration = 4.0f;
         [SerializeField] private bool showDemoPanel = true;
+
+        [Header("Controlled Order Generation & Routing")]
+        [SerializeField] private int currentGenerationSeed = 1001;
+        [SerializeField] private int currentGenerationItemCount = 3;
+        [SerializeField] private DuplicateSkuPolicy currentDuplicatePolicy = DuplicateSkuPolicy.DisallowDuplicates;
+        private string lastRoutingSummary = string.Empty;
+
+        [Header("Multi-Order Simulation Setup")]
+        [SerializeField] private int simulationOrderCount = 5;
+        [SerializeField] private int simulationItemCount = 8;
+        [SerializeField] private int simulationSeed = 1001;
+        private string orderCountStr = "5";
+        private string itemCountStr = "8";
+        private string seedStr = "1001";
 
         private string activeBannerMessage = string.Empty;
         private Color bannerColor = Color.white;
@@ -137,16 +152,170 @@ namespace VirtualDarkStore.UI
             }
 
 #if ENABLE_INPUT_SYSTEM
-            if (Keyboard.current != null && Keyboard.current.f1Key.wasPressedThisFrame)
+            if (Keyboard.current != null)
             {
-                showDemoPanel = !showDemoPanel;
+                if (Keyboard.current.f1Key.wasPressedThisFrame) showDemoPanel = !showDemoPanel;
+                if (Keyboard.current.gKey.wasPressedThisFrame) TriggerGenerateControlledOrder();
+                if (Keyboard.current.oKey.wasPressedThisFrame) TriggerOptimizeRoute();
+                if (Keyboard.current.f4Key.wasPressedThisFrame) TriggerRunOperationalComparison();
             }
 #else
-            if (Input.GetKeyDown(KeyCode.F1))
-            {
-                showDemoPanel = !showDemoPanel;
-            }
+            if (Input.GetKeyDown(KeyCode.F1)) showDemoPanel = !showDemoPanel;
+            if (Input.GetKeyDown(KeyCode.G)) TriggerGenerateControlledOrder();
+            if (Input.GetKeyDown(KeyCode.O)) TriggerOptimizeRoute();
+            if (Input.GetKeyDown(KeyCode.F4)) TriggerRunOperationalComparison();
 #endif
+        }
+
+        public void TriggerGenerateControlledOrder()
+        {
+            var om = OrderManager.Instance;
+            if (om == null) return;
+            var config = new OrderGenerationConfig(currentGenerationSeed, currentGenerationItemCount, 1, currentDuplicatePolicy);
+            if (om.TryDispatchGeneratedOrder(config, out var order, out var error))
+            {
+                ShowBanner($"[Phase 11] Generated Order {order.OrderId} (Seed {currentGenerationSeed}, {order.TotalItemCount} items)", new Color(0.2f, 0.9f, 0.5f));
+            }
+            else
+            {
+                ShowBanner($"Order Generation Failed: {error}", Color.red);
+            }
+        }
+
+        public void TriggerGenerateMultiOrderSimulation()
+        {
+            var om = OrderManager.Instance;
+            var store = StoreManager.Instance;
+            if (om == null || store == null)
+            {
+                ShowBanner("Cannot start simulation: OrderManager or StoreManager missing.", Color.red);
+                return;
+            }
+
+            if (!int.TryParse(orderCountStr, out int parsedOrders))
+            {
+                ShowBanner($"Validation Error: Orders input '{orderCountStr}' must be an integer.", Color.red);
+                return;
+            }
+
+            if (!int.TryParse(itemCountStr, out int parsedItems))
+            {
+                ShowBanner($"Validation Error: Items input '{itemCountStr}' must be an integer.", Color.red);
+                return;
+            }
+
+            if (!int.TryParse(seedStr, out int parsedSeed))
+            {
+                ShowBanner($"Validation Error: Seed input '{seedStr}' must be an integer.", Color.red);
+                return;
+            }
+
+            simulationOrderCount = parsedOrders;
+            simulationItemCount = parsedItems;
+            simulationSeed = parsedSeed;
+
+            var config = new OrderGenerationConfig(
+                seed: simulationSeed,
+                itemCount: simulationItemCount,
+                orderCount: simulationOrderCount,
+                duplicatePolicy: currentDuplicatePolicy);
+
+            if (!config.Validate(store, out string valError))
+            {
+                ShowBanner($"Validation Error: {valError}", Color.red);
+                return;
+            }
+
+            if (om.TryStartMultiOrderSimulation(config, out var sim, out string err))
+            {
+                int totalItems = sim.TotalOrdersCount * config.ItemCount;
+                ShowBanner($"[SIMULATION] Started: {sim.TotalOrdersCount} Orders × {config.ItemCount} Items ({totalItems} total items, Seed {config.Seed}). Order 1/{sim.TotalOrdersCount} Dispatched.", new Color(0.2f, 1.0f, 0.5f));
+            }
+            else
+            {
+                ShowBanner($"Simulation Failed: {err}", Color.red);
+            }
+        }
+
+        public void TriggerOptimizeRoute()
+        {
+            var om = OrderManager.Instance;
+            if (om == null || om.ActiveOrder == null)
+            {
+                ShowBanner("No active order to optimize.", Color.yellow);
+                return;
+            }
+
+            var result = om.OptimizeActiveOrderRoute();
+            lastRoutingSummary = result.StatusMessage;
+            if (result.Success)
+            {
+                ShowBanner($"[Phase 12] {result.StatusMessage}", new Color(0.3f, 0.9f, 1f));
+            }
+            else
+            {
+                ShowBanner($"Routing: {result.StatusMessage}", Color.yellow);
+            }
+        }
+
+        public void TriggerRunOperationalComparison()
+        {
+            var om = OrderManager.Instance;
+            var logger = WorkEventLogger.Instance;
+            var classifier = ActivityClassifier.Instance;
+            var store = StoreManager.Instance;
+
+            if (om == null || logger == null || classifier == null || store == null)
+            {
+                ShowBanner("Cannot run study: Core simulation managers missing.", Color.red);
+                return;
+            }
+
+            try
+            {
+                // Controlled cross-aisle order: Aisle 1 -> Aisle 3 -> Aisle 1 -> Aisle 4
+                var baselineSkus = new List<string> { "SKU-0001", "SKU-0039", "SKU-0008", "SKU-0066" };
+
+                var runA = VirtualDarkStore.Scenarios.OperationalCycleRunner.RunCycle(
+                    skuSequence: baselineSkus,
+                    orderId: "ORD-STUDY-001",
+                    isOptimized: false,
+                    algorithmicCost: 65.2f,
+                    orderManager: om,
+                    logger: logger,
+                    classifier: classifier);
+
+                var stops = new List<Vector3>();
+                foreach (var sku in baselineSkus)
+                {
+                    if (store.TryResolveSkuLocation(sku, out _, out var pos)) stops.Add(pos);
+                }
+
+                var matrix = VirtualDarkStore.Routing.TravelCostMatrix.Build(new Vector3(-4.0f, 0f, -8.8f), stops, new Vector3(2.0f, 0f, -8.8f));
+                var optResult = new VirtualDarkStore.Routing.OrToolsRouteOptimizer().OptimizeRoute(matrix, baselineSkus);
+                var optimizedSkus = optResult.Success ? optResult.SkuSequence : baselineSkus;
+
+                var runB = VirtualDarkStore.Scenarios.OperationalCycleRunner.RunCycle(
+                    skuSequence: optimizedSkus,
+                    orderId: "ORD-STUDY-001",
+                    isOptimized: true,
+                    algorithmicCost: optResult.TotalCost,
+                    orderManager: om,
+                    logger: logger,
+                    classifier: classifier);
+
+                var comp = new VirtualDarkStore.Scenarios.OperationalComparison(runA, runB);
+                string evidenceDir = System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.dataPath, "..", "docs", "evidence", "phase14"));
+                comp.ExportReportBundle(evidenceDir, "baseline_vs_optimized_report");
+
+                float savedMeters = runA.measuredPlayerDistance - runB.measuredPlayerDistance;
+                float savedSec = runA.totalCycleDuration - runB.totalCycleDuration;
+                ShowBanner($"[Phase 14] Study Complete! Saved {savedSec:F1}s ({savedMeters:F1}m). Report in docs/evidence/phase14/", new Color(0.2f, 1.0f, 0.4f));
+            }
+            catch (Exception ex)
+            {
+                ShowBanner($"Comparison failed: {ex.Message}", Color.red);
+            }
         }
 
         public void ShowBanner(string message, Color color)
@@ -377,6 +546,12 @@ namespace VirtualDarkStore.UI
                 GUILayout.Label($"Activity: [{classifier.CurrentActivity}]  |  Events: {(logger != null ? logger.EventCount : 0)}  |  Dist: {classifier.CumulativeTotalDistance:F1}m", bodyStyle);
             }
 
+            var opMgr = VirtualDarkStore.Management.OperationalCycleManager.Instance;
+            if (opMgr != null)
+            {
+                GUILayout.Label($"Cycle Stage: [{opMgr.CurrentStage}] {(opMgr.UseOptimizedRouting ? "(OPT ROUTE)" : "(BASELINE)")}", subHeaderStyle);
+            }
+
             GUILayout.Space(4);
 
             if (om == null || om.ActiveOrder == null)
@@ -388,6 +563,12 @@ namespace VirtualDarkStore.UI
             }
 
             var order = om.ActiveOrder;
+            if (om.HasActiveSimulation && om.ActiveSimulation != null)
+            {
+                var sim = om.ActiveSimulation;
+                GUILayout.Label($"SIMULATION: {sim.SimulationId}", subHeaderStyle);
+                GUILayout.Label($"Progress: Order {sim.CurrentOrderIndex + 1}/{sim.TotalOrdersCount} ({sim.CompletedOrdersCount} completed) | {sim.Config.ItemCount} items/order", targetStyle);
+            }
             GUILayout.Label($"Order: {order.OrderId}  |  Status: {order.Status.ToString().ToUpper()}", subHeaderStyle);
 
             if (order.Status == OrderStatus.InProgress)
@@ -447,7 +628,7 @@ namespace VirtualDarkStore.UI
             if (demo == null) return;
 
             float panelWidth = 370f;
-            float panelHeight = 325f;
+            float panelHeight = 445f;
             float x = Screen.width - panelWidth - 14f;
             float y = 14f;
 
@@ -491,6 +672,64 @@ namespace VirtualDarkStore.UI
                 demo.SelectOrderPreset(next);
             }
             GUILayout.EndHorizontal();
+
+            // SIMULATION SETUP (Configurable Multi-Order Simulation)
+            GUILayout.Space(2);
+            GUILayout.Label("SIMULATION SETUP", subHeaderStyle);
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Orders:", GUILayout.Width(46f));
+            if (GUILayout.Button("-", GUILayout.Width(18f)))
+            {
+                simulationOrderCount = Mathf.Max(1, simulationOrderCount - 1);
+                orderCountStr = simulationOrderCount.ToString();
+            }
+            orderCountStr = GUILayout.TextField(orderCountStr, GUILayout.Width(30f));
+            if (int.TryParse(orderCountStr, out int ocVal) && ocVal > 0) simulationOrderCount = ocVal;
+            if (GUILayout.Button("+", GUILayout.Width(18f)))
+            {
+                simulationOrderCount++;
+                orderCountStr = simulationOrderCount.ToString();
+            }
+
+            GUILayout.Label("Items:", GUILayout.Width(38f));
+            if (GUILayout.Button("-", GUILayout.Width(18f)))
+            {
+                simulationItemCount = Mathf.Max(1, simulationItemCount - 1);
+                itemCountStr = simulationItemCount.ToString();
+            }
+            itemCountStr = GUILayout.TextField(itemCountStr, GUILayout.Width(30f));
+            if (int.TryParse(itemCountStr, out int icVal) && icVal > 0) simulationItemCount = icVal;
+            if (GUILayout.Button("+", GUILayout.Width(18f)))
+            {
+                simulationItemCount++;
+                itemCountStr = simulationItemCount.ToString();
+            }
+
+            GUILayout.Label("Seed:", GUILayout.Width(36f));
+            seedStr = GUILayout.TextField(seedStr, GUILayout.Width(44f));
+            if (int.TryParse(seedStr, out int sdVal)) simulationSeed = sdVal;
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Generate Simulation", GUILayout.Width(152f)))
+            {
+                TriggerGenerateMultiOrderSimulation();
+            }
+            if (GUILayout.Button("Opt [O]", GUILayout.Width(58f)))
+            {
+                TriggerOptimizeRoute();
+            }
+            if (GUILayout.Button("1-Ord [G]", GUILayout.Width(62f)))
+            {
+                TriggerGenerateControlledOrder();
+            }
+            GUILayout.EndHorizontal();
+
+            if (!string.IsNullOrEmpty(lastRoutingSummary))
+            {
+                GUILayout.Label(lastRoutingSummary, bodyStyle);
+            }
 
             GUILayout.Space(3);
 
@@ -546,6 +785,12 @@ namespace VirtualDarkStore.UI
             }
             GUILayout.EndHorizontal();
 
+            GUILayout.Space(2);
+            if (GUILayout.Button("Phase 14: Run Baseline vs Opt Study [F4]", GUILayout.Width(340f)))
+            {
+                TriggerRunOperationalComparison();
+            }
+
             GUILayout.EndArea();
         }
 
@@ -567,14 +812,14 @@ namespace VirtualDarkStore.UI
 
         private void DrawBottomBar()
         {
-            float width = 840f;
+            float width = 960f;
             float height = 24f;
             float x = (Screen.width - width) * 0.5f;
             float y = Screen.height - 28f;
 
             Rect barRect = new Rect(x, y, width, height);
             GUI.DrawTexture(barRect, panelBackground);
-            GUI.Label(barRect, "WASD: Walk | Shift: Sprint | Mouse: Look | E/LMB: Pick/Pack | N: New Order | F1: Demo Panel | Tab: Study Report | F3: Compare Scenarios", bottomStyle);
+            GUI.Label(barRect, "WASD: Walk | Shift: Sprint | Mouse: Look | E/LMB: Pick/Pack | N: Sample | G: Gen Order | O: Opt Route | F4: A/B Study | F1: Demo | Tab: Report", bottomStyle);
         }
 
         private Texture2D MakeColorTexture(Color color)

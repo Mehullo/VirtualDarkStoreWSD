@@ -103,5 +103,105 @@ namespace VirtualDarkStore.Domain
 
             return skus;
         }
+
+        /// <summary>
+        /// Provides an expanded deterministic catalog of 144 verified grocery SKUs tailored for realistic quick-commerce dark stores.
+        /// Builds upon the base 72-SKU catalog with 72 additional items across all 8 micro-fulfillment categories.
+        /// Ensures high shelf occupancy across all 6 aisles (A01-A06), both sides (L/R), all bays, and multiple tiers.
+        /// </summary>
+        public static List<Sku> CreateQuickCommerceCatalog()
+        {
+            var skus = CreateCatalog(); // Base 72 SKUs (SKU-0001 to SKU-0072)
+
+            // Category 1: Beverages (+9 SKUs -> 19 total)
+            skus.Add(new Sku("SKU-0073", "Cold Pressed Orange Carrot 330ml", "890100000073", "Beverages", 0.36f, new Vector3(0.06f, 0.17f, 0.06f)));
+            skus.Add(new Sku("SKU-0074", "Sparkling Mineral Water 1L", "890100000074", "Beverages", 1.05f, new Vector3(0.08f, 0.28f, 0.08f)));
+            skus.Add(new Sku("SKU-0075", "Iced Green Tea Peach 500ml", "890100000075", "Beverages", 0.52f, new Vector3(0.07f, 0.22f, 0.07f)));
+            skus.Add(new Sku("SKU-0076", "Cold Brew Oat Latte 250ml", "890100000076", "Beverages", 0.28f, new Vector3(0.06f, 0.13f, 0.06f)));
+            skus.Add(new Sku("SKU-0077", "Lemon Lime Soda Can 330ml", "890100000077", "Beverages", 0.35f, new Vector3(0.06f, 0.12f, 0.06f)));
+            skus.Add(new Sku("SKU-0078", "Tonic Water Slimline 4-Pack", "890100000078", "Beverages", 1.10f, new Vector3(0.12f, 0.13f, 0.12f)));
+            skus.Add(new Sku("SKU-0079", "Pressed Pomegranate Juice 750ml", "890100000079", "Beverages", 0.82f, new Vector3(0.08f, 0.24f, 0.08f)));
+            skus.Add(new Sku("SKU-0080", "Still Artesian Water 500ml", "890100000080", "Beverages", 0.52f, new Vector3(0.06f, 0.21f, 0.06f)));
+            skus.Add(new Sku("SKU-0081", "Herbal Infusion Berry 500ml", "890100000081", "Beverages", 0.51f, new Vector3(0.07f, 0.21f, 0.07f)));
+
+            // Category 2: Dairy & Alternatives (+9 SKUs -> 19 total)
+            skus.Add(new Sku("SKU-0082", "Low Fat Milk 1L", "890100000082", "Dairy & Alternatives", 1.03f, new Vector3(0.08f, 0.22f, 0.08f)));
+            skus.Add(new Sku("SKU-0083", "Organic Soy Milk Unsweetened 1L", "890100000083", "Dairy & Alternatives", 1.02f, new Vector3(0.08f, 0.22f, 0.08f)));
+            skus.Add(new Sku("SKU-0084", "Strawberry Yogurt Tub 450g", "890100000084", "Dairy & Alternatives", 0.48f, new Vector3(0.10f, 0.09f, 0.10f)));
+            skus.Add(new Sku("SKU-0085", "Unsalted Butter 250g", "890100000085", "Dairy & Alternatives", 0.26f, new Vector3(0.12f, 0.06f, 0.06f)));
+            skus.Add(new Sku("SKU-0086", "Parmesan Grated Wedge 150g", "890100000086", "Dairy & Alternatives", 0.16f, new Vector3(0.08f, 0.15f, 0.04f)));
+            skus.Add(new Sku("SKU-0087", "Whipping Cream 35% 250ml", "890100000087", "Dairy & Alternatives", 0.27f, new Vector3(0.07f, 0.11f, 0.07f)));
+            skus.Add(new Sku("SKU-0088", "Coconut Yogurt Mango 350g", "890100000088", "Dairy & Alternatives", 0.38f, new Vector3(0.09f, 0.08f, 0.09f)));
+            skus.Add(new Sku("SKU-0089", "Gouda Cheese Slices 200g", "890100000089", "Dairy & Alternatives", 0.22f, new Vector3(0.12f, 0.15f, 0.03f)));
+            skus.Add(new Sku("SKU-0090", "Barista Coconut Milk 1L", "890100000090", "Dairy & Alternatives", 1.02f, new Vector3(0.08f, 0.22f, 0.08f)));
+
+            // Category 3: Bakery & Breakfast (+9 SKUs -> 17 total)
+            skus.Add(new Sku("SKU-0091", "Brioche Burger Buns 4-Pack", "890100000091", "Bakery & Breakfast", 0.28f, new Vector3(0.18f, 0.10f, 0.18f)));
+            skus.Add(new Sku("SKU-0092", "Cinnamon Raisin Bagels 4-Pack", "890100000092", "Bakery & Breakfast", 0.36f, new Vector3(0.12f, 0.22f, 0.12f)));
+            skus.Add(new Sku("SKU-0093", "Blueberry Muffins 2-Pack", "890100000093", "Bakery & Breakfast", 0.22f, new Vector3(0.16f, 0.09f, 0.09f)));
+            skus.Add(new Sku("SKU-0094", "Muesli Fruit & Seed 750g", "890100000094", "Bakery & Breakfast", 0.78f, new Vector3(0.14f, 0.24f, 0.07f)));
+            skus.Add(new Sku("SKU-0095", "Corn Flakes Crispy 500g", "890100000095", "Bakery & Breakfast", 0.58f, new Vector3(0.19f, 0.28f, 0.07f)));
+            skus.Add(new Sku("SKU-0096", "Whole Grain English Muffins 4-Pack", "890100000096", "Bakery & Breakfast", 0.26f, new Vector3(0.11f, 0.18f, 0.11f)));
+            skus.Add(new Sku("SKU-0097", "Chocolate Hazelnut Spread 350g", "890100000097", "Bakery & Breakfast", 0.52f, new Vector3(0.08f, 0.12f, 0.08f)));
+            skus.Add(new Sku("SKU-0098", "Strawberry Jam Conserve 340g", "890100000098", "Bakery & Breakfast", 0.51f, new Vector3(0.08f, 0.12f, 0.08f)));
+            skus.Add(new Sku("SKU-0099", "Rye Sourdough Slices 500g", "890100000099", "Bakery & Breakfast", 0.52f, new Vector3(0.12f, 0.13f, 0.20f)));
+
+            // Category 4: Snacks & Confectionery (+9 SKUs -> 19 total)
+            skus.Add(new Sku("SKU-0100", "Kettle Cooked Salt & Vinegar 150g", "890100000100", "Snacks & Confectionery", 0.17f, new Vector3(0.16f, 0.27f, 0.07f)));
+            skus.Add(new Sku("SKU-0101", "Roasted Cashews Salted 180g", "890100000101", "Snacks & Confectionery", 0.19f, new Vector3(0.11f, 0.17f, 0.05f)));
+            skus.Add(new Sku("SKU-0102", "Milk Chocolate Hazelnut 100g", "890100000102", "Snacks & Confectionery", 0.11f, new Vector3(0.08f, 0.18f, 0.01f)));
+            skus.Add(new Sku("SKU-0103", "Multigrain Pita Chips 175g", "890100000103", "Snacks & Confectionery", 0.19f, new Vector3(0.15f, 0.25f, 0.06f)));
+            skus.Add(new Sku("SKU-0104", "Fruit Gummies Sour Mix 140g", "890100000104", "Snacks & Confectionery", 0.15f, new Vector3(0.10f, 0.15f, 0.03f)));
+            skus.Add(new Sku("SKU-0105", "Dark Chocolate Sea Salt Caramels 120g", "890100000105", "Snacks & Confectionery", 0.14f, new Vector3(0.12f, 0.16f, 0.04f)));
+            skus.Add(new Sku("SKU-0106", "Protein Bar Salted Caramel 60g", "890100000106", "Snacks & Confectionery", 0.07f, new Vector3(0.05f, 0.14f, 0.02f)));
+            skus.Add(new Sku("SKU-0107", "Wasabi Peas Crunchy 150g", "890100000107", "Snacks & Confectionery", 0.16f, new Vector3(0.10f, 0.16f, 0.04f)));
+            skus.Add(new Sku("SKU-0108", "Roasted Sunflower Seeds 200g", "890100000108", "Snacks & Confectionery", 0.21f, new Vector3(0.11f, 0.18f, 0.04f)));
+
+            // Category 5: Pantry & Canned Goods (+9 SKUs -> 19 total)
+            skus.Add(new Sku("SKU-0109", "Organic Coconut Milk Can 400ml", "890100000109", "Pantry & Canned Goods", 0.45f, new Vector3(0.08f, 0.11f, 0.08f)));
+            skus.Add(new Sku("SKU-0110", "Kidney Beans Dark Red 400g", "890100000110", "Pantry & Canned Goods", 0.45f, new Vector3(0.08f, 0.11f, 0.08f)));
+            skus.Add(new Sku("SKU-0111", "Sweet Corn Kernels Can 340g", "890100000111", "Pantry & Canned Goods", 0.40f, new Vector3(0.08f, 0.10f, 0.08f)));
+            skus.Add(new Sku("SKU-0112", "Fusilli Pasta Tricolore 500g", "890100000112", "Pantry & Canned Goods", 0.52f, new Vector3(0.13f, 0.21f, 0.06f)));
+            skus.Add(new Sku("SKU-0113", "Jasmine Fragrant Rice 1kg", "890100000113", "Pantry & Canned Goods", 1.03f, new Vector3(0.15f, 0.25f, 0.08f)));
+            skus.Add(new Sku("SKU-0114", "Basil Pesto Genovese Jar 190g", "890100000114", "Pantry & Canned Goods", 0.34f, new Vector3(0.07f, 0.10f, 0.07f)));
+            skus.Add(new Sku("SKU-0115", "Tomato Paste Concentrated Tube 150g", "890100000115", "Pantry & Canned Goods", 0.18f, new Vector3(0.05f, 0.18f, 0.04f)));
+            skus.Add(new Sku("SKU-0116", "Balsamic Vinegar of Modena 250ml", "890100000116", "Pantry & Canned Goods", 0.45f, new Vector3(0.06f, 0.21f, 0.06f)));
+            skus.Add(new Sku("SKU-0117", "Iodized Table Salt Dispenser 500g", "890100000117", "Pantry & Canned Goods", 0.54f, new Vector3(0.07f, 0.15f, 0.07f)));
+
+            // Category 6: Fresh Produce (+9 SKUs -> 17 total)
+            skus.Add(new Sku("SKU-0118", "Mixed Salad Greens Box 180g", "890100000118", "Fresh Produce", 0.22f, new Vector3(0.18f, 0.10f, 0.18f)));
+            skus.Add(new Sku("SKU-0119", "Red Bell Peppers 2-Pack", "890100000119", "Fresh Produce", 0.36f, new Vector3(0.14f, 0.10f, 0.18f)));
+            skus.Add(new Sku("SKU-0120", "Hass Avocados Prepack 4-Pack", "890100000120", "Fresh Produce", 0.65f, new Vector3(0.14f, 0.12f, 0.22f)));
+            skus.Add(new Sku("SKU-0121", "Seedless Mandarins Net Bag 750g", "890100000121", "Fresh Produce", 0.78f, new Vector3(0.16f, 0.22f, 0.15f)));
+            skus.Add(new Sku("SKU-0122", "Crisp Yellow Onions Bag 1kg", "890100000122", "Fresh Produce", 1.05f, new Vector3(0.16f, 0.26f, 0.15f)));
+            skus.Add(new Sku("SKU-0123", "Fresh Garlic Bulbs 3-Pack", "890100000123", "Fresh Produce", 0.18f, new Vector3(0.08f, 0.20f, 0.08f)));
+            skus.Add(new Sku("SKU-0124", "Fresh Basil Leaves Punnet 30g", "890100000124", "Fresh Produce", 0.06f, new Vector3(0.12f, 0.05f, 0.12f)));
+            skus.Add(new Sku("SKU-0125", "Baby Carrots Snack Pack 400g", "890100000125", "Fresh Produce", 0.43f, new Vector3(0.13f, 0.20f, 0.05f)));
+            skus.Add(new Sku("SKU-0126", "Fresh Ginger Root Pack 200g", "890100000126", "Fresh Produce", 0.22f, new Vector3(0.12f, 0.07f, 0.14f)));
+
+            // Category 7: Personal Care (+9 SKUs -> 17 total)
+            skus.Add(new Sku("SKU-0127", "Conditioner Hair Repair 400ml", "890100000127", "Personal Care", 0.45f, new Vector3(0.07f, 0.20f, 0.05f)));
+            skus.Add(new Sku("SKU-0128", "Antibacterial Wet Wipes 40-Pack", "890100000128", "Personal Care", 0.24f, new Vector3(0.10f, 0.17f, 0.05f)));
+            skus.Add(new Sku("SKU-0129", "Antiperspirant Roll-On 50ml", "890100000129", "Personal Care", 0.09f, new Vector3(0.05f, 0.11f, 0.05f)));
+            skus.Add(new Sku("SKU-0130", "Cotton Rounds Soft 80-Pack", "890100000130", "Personal Care", 0.08f, new Vector3(0.08f, 0.19f, 0.08f)));
+            skus.Add(new Sku("SKU-0131", "Sensitive Toothpaste Mint 75ml", "890100000131", "Personal Care", 0.11f, new Vector3(0.05f, 0.18f, 0.04f)));
+            skus.Add(new Sku("SKU-0132", "Gentle Hand Sanitizer Gel 100ml", "890100000132", "Personal Care", 0.12f, new Vector3(0.05f, 0.12f, 0.04f)));
+            skus.Add(new Sku("SKU-0133", "Moisturizing Face Cream 50ml", "890100000133", "Personal Care", 0.14f, new Vector3(0.06f, 0.06f, 0.06f)));
+            skus.Add(new Sku("SKU-0134", "Gentle Dental Floss 50m", "890100000134", "Personal Care", 0.03f, new Vector3(0.04f, 0.05f, 0.02f)));
+            skus.Add(new Sku("SKU-0135", "Exfoliating Body Scrub 200ml", "890100000135", "Personal Care", 0.25f, new Vector3(0.08f, 0.08f, 0.08f)));
+
+            // Category 8: Household Cleaning (+9 SKUs -> 17 total)
+            skus.Add(new Sku("SKU-0136", "Glass & Surface Cleaner Spray 500ml", "890100000136", "Household Cleaning", 0.58f, new Vector3(0.09f, 0.24f, 0.06f)));
+            skus.Add(new Sku("SKU-0137", "Toilet Bowl Cleaner Gel 750ml", "890100000137", "Household Cleaning", 0.85f, new Vector3(0.09f, 0.27f, 0.06f)));
+            skus.Add(new Sku("SKU-0138", "Fabric Softener Floral 1L", "890100000138", "Household Cleaning", 1.05f, new Vector3(0.10f, 0.25f, 0.07f)));
+            skus.Add(new Sku("SKU-0139", "Aluminum Foil Roll 30m", "890100000139", "Household Cleaning", 0.32f, new Vector3(0.05f, 0.32f, 0.05f)));
+            skus.Add(new Sku("SKU-0140", "Cling Wrap Film 50m", "890100000140", "Household Cleaning", 0.25f, new Vector3(0.05f, 0.32f, 0.05f)));
+            skus.Add(new Sku("SKU-0141", "Rubber Cleaning Gloves Medium", "890100000141", "Household Cleaning", 0.09f, new Vector3(0.12f, 0.22f, 0.02f)));
+            skus.Add(new Sku("SKU-0142", "Biodegradable Trash Bags 50L 15-Pack", "890100000142", "Household Cleaning", 0.35f, new Vector3(0.09f, 0.21f, 0.09f)));
+            skus.Add(new Sku("SKU-0143", "Stainless Steel Scourer 2-Pack", "890100000143", "Household Cleaning", 0.06f, new Vector3(0.08f, 0.14f, 0.04f)));
+            skus.Add(new Sku("SKU-0144", "Floor Cleaner Liquid Pine 1L", "890100000144", "Household Cleaning", 1.06f, new Vector3(0.10f, 0.25f, 0.07f)));
+
+            return skus;
+        }
     }
 }

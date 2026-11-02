@@ -5,6 +5,95 @@ All notable changes to the Virtual Dark Store Work-Study & Simulation Platform w
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to Semantic Versioning.
 
 ## [Unreleased]
+### Added
+- **Configurable Multi-Order Simulation**:
+  - `MultiOrderSimulation.cs`: Domain model coordinating ordered batches of independent orders, tracking active order progression, completed orders, and overall status.
+  - `OrderGenerationConfig.cs`: Added `Validate()` enforcing $N \ge 1$ orders, $K \ge 1$ items/order, and capacity boundaries without silent clamping.
+  - `OrderManager.cs`: Added `TryStartMultiOrderSimulation`, `StopMultiOrderSimulation`, and sequential multi-order progression upon packing completion at the packing bench.
+  - `SimulationHUD.cs`: Added "SIMULATION SETUP" interface with Number of Orders, Items per Order, Seed controls, and `[Generate Simulation]` button; updated order terminal to show simulation progress.
+  - `OperationalCycleRunner.cs`: Added `RunMultiOrderSimulation` executing multi-order batches headlessly with simulated picker motion, compiling individual order telemetry and aggregate work-study metrics.
+  - `MultiOrderSimulationTests.cs`: 7 automated EditMode tests validating Cases 1 through 6 (single order, 5 orders of 8 items = 40 items, reproducibility, seed variation, input validation, sequential execution, and aggregate work-study).
+- **Shelf Population (144 SKUs Across Usable Racks)**:
+  - `VerifiedSampleCatalog.CreateQuickCommerceCatalog()`: Expanded deterministic catalog of 144 verified grocery SKUs across all 8 micro-fulfillment categories with realistic barcodes (`890100000001`–`890100000144`), weights, and dimensions.
+  - `StoreManager.cs`: Dynamic catalog resolution loading 144 SKUs for $\ge 6$-aisle quick-commerce stores and preserving 72 SKUs for 4-aisle baseline stores.
+  - `DarkStoreSceneBuilder.cs`: Populates 144 physical pickable items (`PickableItemVisual`) across all 6 aisles (`A01`–`A06`), Left/Right racks, all 3 bays, and multiple tiers with matching shelf tickets.
+  - NavMesh baked with 174 collider sources.
+  - Hardware budget compliance: 284 scene mesh renderers ($\le 300$ budget ceiling) for RTX 2050 GPU performance.
+  - `StructuredStoreLocationTests.cs` & `StoreTopologyTests.cs`: 2 new unit/integration tests validating 144 SKUs, 1:1 bidirectional mapping, and broad cross-aisle/tier shelf coverage.
+- **Physical Location Labels & Store Signage**:
+  - `PhysicalLocationLabel.cs`: Component rendering lightweight, high-contrast World Space Canvas signage synchronized with the `StoreLocation` domain hierarchy (`Store -> Aisle -> Side -> Bay -> Shelf Level -> Slot`).
+  - Overhead Aisle Header Signboards (`AISLE A01` ... `AISLE A06`) on front and rear entrance beams.
+  - End-Cap Rack Placards (`A01-L` / `A01-R`) mounted on front rack uprights facing the cross-aisle.
+  - Bay Grouping Placards (`A01-L-B01` | `BAY 01 • LEFT`) mounted atop each bay at eye level ($Y = 2.15\text{ m}$) facing the corridor.
+  - Shelf Level Badges (`LEVEL 01`, `LEVEL 02`, `LEVEL 03`) aligned with shelf tier beam lips.
+  - Product Slot Tickets (`A01-L-B01-T01-S01` / `SKU-0001`) mounted flush on shelf beams directly below each stocked item.
+  - `PickerInteraction.cs` & `VRPickerInteraction.cs`: Updated desktop and VR prompts to display the exact slot location ID on item hover (`[E / LMB] Pick: <SkuName> (<SkuId>) [<SlotId>]`).
+  - `PhysicalLocationLabelTests.cs`: 5 automated EditMode tests verifying World Space canvas setup, non-blocking graphics, zero colliders, domain hierarchy alignment, SKU 1:1 mapping, and picker prompt display.
+
+### Verified
+- **84/84 EditMode tests passed** (`9.56s`, 0 failures, 0 warnings) recorded in `TestResults-MultiOrderCheck2.xml`.
+- Scene `DarkStore_Phase1.unity` rebuilt with 174 NavMesh collider sources and 144 active physical products.
+
+
+## [0.14.0] - 2026-11-02
+### Added
+- **Phase 13 End-to-End Operational Workflow**:
+  - `OperationalCycleManager.cs`: 7-stage operational state machine (`Entry` $\to$ `CollectOrder` $\to$ `Picking` $\to$ `AwaitingPacking` $\to$ `DepositOrder` $\to$ `WalkToExit` $\to$ `Completed`), fixed store waypoints, proximity checks, and aisle metrics (`CalculateAisleMetrics` for transitions and backtracks).
+  - `PickerInteraction.cs`: Raycast prompts (`[E / LMB]`) to collect and activate orders at the collection desk and deposit orders at the packing bench.
+  - `OperationalCycleRunner.cs`: Headless, scripted virtual picker executing the full operational cycle for automated testing.
+  - Scene Integration: Attached `OperationalCycleManager` to `[WorkStudyManager]` in `DarkStore_Phase1.unity`.
+- **Phase 14 Baseline vs Optimized Work-Study Comparison**:
+  - `OperationalComparison.cs`: Comparative engine comparing Run A (Baseline) vs Run B (Optimized) under identical layout, order, start condition, and locomotion parameters.
+  - Evaluates cycle time, walking transit time, searching time, picking time, waiting time, packing time, measured travel distance, picks, shelf visits, aisle transitions, and aisle backtracking.
+  - Evidence Bundle Exporter: Writes Markdown comparison reports (`docs/evidence/phase14/baseline_vs_optimized_report.md`) and standard RFC-4180 CSV tables (`baseline_vs_optimized_report.csv`).
+  - `SimulationHUD.cs`: Operational stage banner display, shortcut key `[F4]`, and UI button `[Phase 14: Run Baseline vs Opt Study [F4]]` to trigger comparisons on demand.
+  - `OperationalWorkflowTests.cs`: 5 EditMode tests verifying cycle stage progression, monotonic non-negative event telemetry, aisle transitions and backtracking calculations, headless picker execution, and Baseline vs Optimized performance improvement.
+
+### Verified
+- **70/70 EditMode tests passed** (`7.21s`, 0 failures, 0 warnings) recorded in `TestResults-Phase13-14.xml`.
+- Empirical test report on order `ORD-STUDY-001`: Measured travel distance reduced from 96.38m to 73.18m (-24.1%), cycle time reduced from 80.54s to 63.97s (-20.6%), and aisle backtracking eliminated (from 1 to 0). Zero fabricated data.
+
+## [0.12.0] - 2026-11-02
+### Added
+- **Phase 11 Controlled Order Generation**:
+  - `OrderGenerationConfig.cs`: Configuration entity for deterministic experiments supporting integer `Seed`, `ItemCount`, `OrderCount`, `DuplicateSkuPolicy` (`DisallowDuplicates`, `AllowDuplicates`), and `OrderIdPrefix`.
+  - `OrderGenerator.cs`: Pure domain order generator using `System.Random` with explicit seeds; resolves physical shelf locations via `StoreManager.TryResolveSkuLocation`.
+  - `OrderManager.cs`: Added `TryDispatchGeneratedOrder` and `DispatchOrder(Order)`. Preserved legacy presets (`StartSampleOrder`, `StartSpecificOrder`, `TryStartSpecificOrder`) unchanged.
+  - `SimulationHUD.cs`: Interactive Seed and Item count steppers, duplicate toggle, button `[Gen (Seed)]`, and keybinding `[G]` to trigger controlled orders.
+  - `ControlledOrderGenerationTests.cs`: 8 EditMode tests verifying reproducibility, seed variation, catalog existence, physical position resolution, duplicate policies, batch generation, and dispatch.
+- **Phase 12 Navigation Cost Matrix & Routing Optimization**:
+  - `INavPathDistanceCalculator.cs`: Traversal distance abstraction decoupling path calculation from environment state.
+  - `NavMeshPathDistanceCalculator.cs`: Production calculator evaluating actual corner-to-corner path lengths via `NavMesh.CalculatePath`; flags unreachable positions explicitly (`float.PositiveInfinity`).
+  - `MockDistanceCalculator.cs`: Direct Manhattan/Euclidean calculator for deterministic unit testing.
+  - `TravelCostMatrix.cs`: Reusable square $N \times N$ matrix ($N = K + 2$) validating dimensions, zero diagonal ($Costs[i, i] == 0$), positive entries, and unreachable handling.
+  - `IRouteOptimizer.cs` & `RouteOptimizationResult.cs`: Routing contracts and measurement result structure.
+  - `BaselineRouteOptimizer.cs`: Reference optimizer preserving original order sequence for A/B comparison and safe fallback.
+  - `OrToolsRouteOptimizer.cs`: Local TSP solver powered by Google OR-Tools (`Google.OrTools.ConstraintSolver`, v9.15.6755) with fixed start (Order Desk: Node 0), fixed end (Packing Bench: Node $K+1$), and `GuidedLocalSearch`.
+  - Safety Isolation & Safe Fallback: Automatic try/catch fallback to baseline sequence if OR-Tools throws an exception, encounters an unsupported platform (e.g. Android Meta Quest standalone), or fails to find a solution.
+  - `Order.TryReorderItems`: Enables dynamically updating the active order's pick list to match the optimized sequence prior to picking while verifying multiset conservation.
+  - `SimulationHUD.cs`: UI button `[Opt (OR-Tools)]` and keybinding `[O]` to optimize active order pick sequences.
+  - `RoutingOptimizationTests.cs`: 9 EditMode tests verifying cost matrix dimensions and zero diagonal, unreachable handling, valid start/end, permutation integrity, route termination at packing, baseline availability, safe fallback, and real out-of-order backtracking reduction (>50% travel savings).
+
+### Verified
+- **65/65 EditMode tests passed** (`5.98s`, 0 failures, 0 warnings) recorded in `TestResults-Phase11-12.xml`.
+
+## [0.10.0] - 2026-11-02
+### Added
+- **Phase 9 Quick-Commerce Dark Store Environment Upgrade**:
+  - `DarkStoreSceneBuilder.cs` & `DarkStore_Phase1.unity`: Upgraded warehouse environment to 6 aisles (`A01`–`A06`, 3.0m pitch) with product-facing racks, solid closed backs between back-to-back blocks and outer walls, designated Worker Entry Zone with turnstiles, Order Collection Desk with tote dispensers, central Picking Area with $1.8\text{ m}$ corridors and front/back cross-aisles, Packing & Deposit Desk ("PACK-01"), Exit / Dispatch Handover Zone, overhead front and rear aisle labels, and $26\text{ m} \times 28\text{ m}$ perimeter boundary walls with solid `BoxCollider`s.
+  - `DarkStore_Phase1_NavMesh.asset`: Re-baked NavMesh from 102 collider sources covering all corridors, aisles, and operational desks.
+  - Physical shelf products: Distributed 72 catalog SKUs across all 6 aisles (12 SKUs per aisle).
+  - RTX 2050 Budget compliance: 212 mesh renderers ($\le 300$), 17 GPU-instanced materials ($100\%$), 10 realtime lights ($\le 12$), 1 shadow caster.
+- **Phase 10 Structured Store Location & SKU Mapping**:
+  - `StoreLocation.cs`: Pure C# machine-readable location entity strictly implementing $\text{Store} \to \text{Aisle} \to \text{Side} \to \text{Bay} \to \text{Shelf Level (Tier)} \to \text{Slot}$ (format: `A01-L-B01-T01-S01`) with robust `TryParse`, `Parse`, `Format`, component properties, and equality operators.
+  - `ShelfSlot.cs`: Integrated `StoreLocation Location` property and delegated `GenerateSlotId` to `StoreLocation.Format`.
+  - `StoreConfiguration.cs`: Added `CreateQuickCommerce6AisleConfig()` supporting 432 total slots across 6 aisles while preserving `CreateDefault()` (288 slots, 4 aisles) for legacy baseline test parity.
+  - `StoreManager.cs`: Added `TryResolveSkuLocation`, `TryResolveLocationPosition`, `TryGetSkuAtLocation`, `ValidateSkuLocationMappings`, and `ValidateLocationId`.
+  - `StructuredStoreLocationTests.cs`: 6 new EditMode tests verifying unique location IDs, valid SKU mappings, world-position resolution, missing location handling, duplicate location collision detection, and invalid mapping rejection.
+
+### Verified
+- **47/47 EditMode tests passed** (`0.799s`, 0 failures, 0 warnings) recorded in `TestResults-EditMode.xml`.
+- RTX 2050 scene budget audit (`docs/evidence/phase8/rtx2050_performance_audit.md`): PASS across all rendering and lighting metrics.
 
 ## [0.8.0] - 2026-10-29
 ### Added

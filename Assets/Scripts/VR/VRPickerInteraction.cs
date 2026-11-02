@@ -108,7 +108,7 @@ namespace VirtualDarkStore.VR
                     if (item != null && !item.IsPicked)
                     {
                         hoveredItem = item;
-                        currentPrompt = $"[Trigger] Pick: {item.SkuName} ({item.SkuId})";
+                        currentPrompt = $"[Trigger] Pick: {item.SkuName} ({item.SkuId}) [{item.SlotId}]";
                         return;
                     }
 

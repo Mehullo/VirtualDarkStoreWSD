@@ -9,7 +9,8 @@ namespace VirtualDarkStore.Management
     /// <summary>
     /// Central manager for the dark store domain topology and SKU inventory.
     /// Maintains the strict decoupling between visual scene objects and domain data.
-    /// Manages Aisle -> Shelf -> ShelfSlot hierarchy and bidirectional SKU-to-Location mapping.
+    /// Manages Store -> Aisle -> Side -> Bay -> Shelf Level (Tier) -> Slot hierarchy and bidirectional SKU-to-Location mapping.
+    /// Supports both standard 4-aisle configurations and realistic quick-commerce 6-aisle topologies (A01-A06).
     /// </summary>
     public class StoreManager : MonoBehaviour
     {
@@ -43,7 +44,7 @@ namespace VirtualDarkStore.Management
 
         private void Awake()
         {
-            if (instance != null && instance != null && instance != this)
+            if (instance != null && instance != this)
             {
                 Destroy(gameObject);
                 return;
@@ -72,7 +73,20 @@ namespace VirtualDarkStore.Management
             BuildTopology();
 
             // 2. Populate SKU catalog
-            var sampleCatalog = catalog ?? VerifiedSampleCatalog.CreateCatalog();
+            List<Sku> sampleCatalog;
+            if (catalog != null)
+            {
+                sampleCatalog = catalog;
+            }
+            else if (configuration != null && configuration.AisleCount >= 6)
+            {
+                sampleCatalog = VerifiedSampleCatalog.CreateQuickCommerceCatalog();
+            }
+            else
+            {
+                sampleCatalog = VerifiedSampleCatalog.CreateCatalog();
+            }
+
             foreach (var sku in sampleCatalog)
             {
                 RegisterSku(sku);
@@ -100,16 +114,39 @@ namespace VirtualDarkStore.Management
 
         private void BuildTopology()
         {
-            float[] aisleXPositions = { -6.0f, -2.0f, 2.0f, 6.0f };
             float[] tierYHeights = { 0.35f, 1.15f, 1.95f, 2.35f };
 
-            int aisleCount = Mathf.Min(configuration.AisleCount, aisleXPositions.Length);
+            int aisleCount = Mathf.Max(1, configuration.AisleCount);
             int baysPerSide = configuration.BaysPerAisleSide;
             int tiersPerBay = configuration.TiersPerBay;
             int slotsPerTier = configuration.SlotsPerTier;
 
             float bayLength = configuration.AisleLength / baysPerSide;
             float slotSpacingZ = bayLength / (slotsPerTier + 1);
+
+            // Calculate aisle X coordinates deterministically
+            float[] aisleXPositions;
+            if (aisleCount == 4)
+            {
+                // Exact Phase 1-8 4-aisle coordinates for 100% backward compatibility
+                aisleXPositions = new[] { -6.0f, -2.0f, 2.0f, 6.0f };
+            }
+            else if (aisleCount == 6)
+            {
+                // Quick-Commerce 6-aisle coordinates (A01-A06 with 3.0m pitch)
+                aisleXPositions = new[] { -7.5f, -4.5f, -1.5f, 1.5f, 4.5f, 7.5f };
+            }
+            else
+            {
+                // General symmetrical layout based on configured aisle corridor and rack dimensions
+                aisleXPositions = new float[aisleCount];
+                float pitch = configuration.AisleWidth + configuration.RackDepth * 2f;
+                float startX = -((aisleCount - 1) * pitch) * 0.5f;
+                for (int i = 0; i < aisleCount; i++)
+                {
+                    aisleXPositions[i] = startX + i * pitch;
+                }
+            }
 
             for (int a = 1; a <= aisleCount; a++)
             {
@@ -188,8 +225,8 @@ namespace VirtualDarkStore.Management
             int maxSlotsPerTier = configuration != null ? Mathf.Max(1, configuration.SlotsPerTier) : 4;
 
             // Distribute SKUs evenly across all aisles, bays, and tiers pass-by-pass by slot number (s = 1..maxSlotsPerTier).
-            // For the 72-SKU catalog across 4 aisles (2 sides * 3 bays * 3 tiers = 18 bay-tiers per aisle),
-            // Pass s = 1 stocks 18 SKUs in each of the 4 aisles (1 per bay-tier).
+            // For 4 aisles (72 SKUs): stocks 18 SKUs per aisle.
+            // For 6 aisles (72 SKUs): stocks 12 SKUs per aisle (6 on Left side, 6 on Right side; 1 per bay-tier).
             for (int targetSlotNum = 1; targetSlotNum <= maxSlotsPerTier && skuIndex < skus.Count; targetSlotNum++)
             {
                 foreach (var aisle in aisles)
@@ -211,7 +248,25 @@ namespace VirtualDarkStore.Management
             }
         }
 
+        /// <summary>
+        /// Validates topological and inventory mapping integrity across all SKUs, aisles, shelves, and slots.
+        /// </summary>
         public bool ValidateIntegrity(out List<string> errors)
+        {
+            return ValidateSkuLocationMappings(out errors);
+        }
+
+        /// <summary>
+        /// Phase 10 structured store location & SKU mapping validation.
+        /// Enforces:
+        /// 1. Every registered SKU is mapped to a valid, existing slot.
+        /// 2. Every slot ID conforms strictly to Store -> Aisle -> Side -> Bay -> Tier -> Slot machine-readable format.
+        /// 3. Zero duplicate slot IDs across the topology.
+        /// 4. Zero duplicate SKU-to-slot collisions.
+        /// 5. Bidirectional consistency (slot.AssignedSkuId matches sku.SkuId).
+        /// 6. World coordinates are finite, non-NaN, and within physical bounds.
+        /// </summary>
+        public bool ValidateSkuLocationMappings(out List<string> errors)
         {
             errors = new List<string>();
 
@@ -230,8 +285,32 @@ namespace VirtualDarkStore.Management
                 errors.Add($"Insufficient shelf slots ({slotLookup.Count}) for registered SKUs ({skus.Count}).");
             }
 
-            var usedSlotIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            // Check location ID format and uniqueness across all slots
+            var seenSlotIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var kvp in slotLookup)
+            {
+                string slotId = kvp.Key;
+                var slot = kvp.Value;
 
+                if (!StoreLocation.TryParse(slotId, out StoreLocation parsedLoc, out string parseErr))
+                {
+                    errors.Add($"Invalid slot ID format '{slotId}': {parseErr}");
+                }
+
+                if (!seenSlotIds.Add(slotId))
+                {
+                    errors.Add($"Duplicate slot ID detected in store topology: '{slotId}'.");
+                }
+
+                if (float.IsNaN(slot.WorldPosition.x) || float.IsNaN(slot.WorldPosition.y) || float.IsNaN(slot.WorldPosition.z) ||
+                    float.IsInfinity(slot.WorldPosition.x) || float.IsInfinity(slot.WorldPosition.y) || float.IsInfinity(slot.WorldPosition.z))
+                {
+                    errors.Add($"Slot {slotId} has invalid/non-finite world coordinates: {slot.WorldPosition}.");
+                }
+            }
+
+            // Check SKU mappings
+            var usedSlotIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var sku in skus)
             {
                 if (!skuToSlotMap.TryGetValue(sku.SkuId, out ShelfSlot slot))
@@ -264,7 +343,91 @@ namespace VirtualDarkStore.Management
             return errors.Count == 0;
         }
 
-        // Query APIs
+        /// <summary>
+        /// Validates a raw location ID string for syntax and checks if it exists in the active store topology.
+        /// </summary>
+        public bool ValidateLocationId(string locationId, out string error)
+        {
+            error = null;
+            if (string.IsNullOrWhiteSpace(locationId))
+            {
+                error = "Location ID cannot be null or empty.";
+                return false;
+            }
+
+            if (!StoreLocation.TryParse(locationId, out _, out string parseError))
+            {
+                error = parseError;
+                return false;
+            }
+
+            if (!slotLookup.ContainsKey(locationId.Trim()))
+            {
+                error = $"Location ID '{locationId}' does not exist in store topology.";
+                return false;
+            }
+
+            return true;
+        }
+
+        // Query & Resolution APIs
+
+        /// <summary>
+        /// Resolves SKU ID -> Location ID -> World Position.
+        /// Returns true if the SKU is registered and mapped to a valid physical slot.
+        /// </summary>
+        public bool TryResolveSkuLocation(string skuId, out string locationId, out Vector3 worldPosition)
+        {
+            if (string.IsNullOrEmpty(skuId))
+            {
+                locationId = null;
+                worldPosition = Vector3.zero;
+                return false;
+            }
+
+            if (skuToSlotMap.TryGetValue(skuId.Trim(), out ShelfSlot slot) && slot != null)
+            {
+                locationId = slot.SlotId;
+                worldPosition = slot.WorldPosition;
+                return true;
+            }
+
+            locationId = null;
+            worldPosition = Vector3.zero;
+            return false;
+        }
+
+        /// <summary>
+        /// Resolves Location ID -> 3D World Position.
+        /// Returns true if the location ID exists in the store topology.
+        /// </summary>
+        public bool TryResolveLocationPosition(string locationId, out Vector3 worldPosition)
+        {
+            if (string.IsNullOrEmpty(locationId))
+            {
+                worldPosition = Vector3.zero;
+                return false;
+            }
+
+            if (slotLookup.TryGetValue(locationId.Trim(), out ShelfSlot slot) && slot != null)
+            {
+                worldPosition = slot.WorldPosition;
+                return true;
+            }
+
+            worldPosition = Vector3.zero;
+            return false;
+        }
+
+        /// <summary>
+        /// Resolves Location ID -> Sku.
+        /// Returns true if a SKU is currently assigned to the given location.
+        /// </summary>
+        public bool TryGetSkuAtLocation(string locationId, out Sku sku)
+        {
+            return TryGetSkuAtSlot(locationId, out sku);
+        }
+
         public bool TryGetSlotForSku(string skuId, out ShelfSlot slot)
         {
             if (string.IsNullOrEmpty(skuId))

@@ -160,4 +160,107 @@ The platform strictly decouples **Simulation & Work-Study Logic** from the **Int
 - **Simulation Error Handler (`SimulationErrorHandler.cs`)**:
   Centralized non-crashing diagnostic and alert manager (`ReportError`, `ReportWarning`) ensuring invalid scenario/order selections or wrong-SKU pick attempts never cause unhandled exceptions and surface clear operator feedback in `SimulationHUD`.
 - **RTX 2050-Class Performance Manager (`PerformanceSettingsManager.cs` & `Assets/Settings/PC_RPAsset.asset`)**:
-  Enforces and audits rendering budgets tailored for RTX 2050-class hardware (4GB VRAM, 64-bit bus): SRP Batcher enabled, GPU instancing on $16/16$ shared materials, $148$ total mesh renderers, camera far clip plane $\le 45.0\text{ m}$, URP shadow distance $32.0\text{ m}$, 2 shadow cascades, $2\times$ MSAA, 1 shadow-casting directional light + 8 shadowless point lights, and camera post-processing disabled. Generates `docs/evidence/phase8/rtx2050_performance_audit.md` with interactive GPU FPS benchmarking marked `NOT RUN` when audited headlessly.
+  Enforces and audits rendering budgets tailored for RTX 2050-class hardware (4GB VRAM, 64-bit bus): SRP Batcher enabled, GPU instancing on $17/17$ shared materials, $212$ total mesh renderers ($\le 300$), camera far clip plane $\le 45.0\text{ m}$, URP shadow distance $32.0\text{ m}$, 2 shadow cascades, $2\times$ MSAA, 1 shadow-casting directional light + 9 shadowless point lights (total 10 lights $\le 12$), and camera post-processing disabled. Generates `docs/evidence/phase8/rtx2050_performance_audit.md` with interactive GPU FPS benchmarking marked `NOT RUN` when audited headlessly.
+
+## 7. Quick-Commerce Dark Store Environment Architecture (Phase 9)
+- **Topological Layout (6 Aisles `A01`–`A06`)**:
+  - Symmetrically spaced with $3.0\text{ m}$ pitch ($1.8\text{ m}$ corridor width $+ 2 \times 0.6\text{ m}$ rack depth) positioned at $X = -7.5\text{ m}, -4.5\text{ m}, -1.5\text{ m}, +1.5\text{ m}, +4.5\text{ m}, +7.5\text{ m}$ across $Z = -4.0\text{ m}\dots+8.0\text{ m}$.
+  - Two product-facing rack sides per aisle with $12.0\text{ m}$ length, $2.4\text{ m}$ height, and 3 bays per side ($4.0\text{ m}$ per bay).
+  - Closed backs: Solid backing divider panels placed between back-to-back rack blocks ($X = -6.0\text{ m}, -3.0\text{ m}, 0.0\text{ m}, +3.0\text{ m}, +6.0\text{ m}$) and outer warehouse perimeter racks ($X = -9.0\text{ m}, +9.0\text{ m}$).
+- **Operational Zones & Circulation Flow**:
+  - Authentic quick-commerce left-to-right circulation:
+    1. **Worker Entry Zone** ($X = -8.0\text{ m}, Z = -10.5\text{ m}$): Archway, overhead "ENTRY / RECEIVING" signboard, walkway floor pad, turnstile barrier rails with solid `BoxCollider`.
+    2. **Order Collection Desk** ($X = -4.0\text{ m}, Z = -10.0\text{ m}$): Desk table with `BoxCollider`, terminal screen, pick cart tote bins, overhead signage.
+    3. **Picking Area** ($X = -9.0\text{ m}\dots+9.0\text{ m}, Z = -4.0\text{ m}\dots+8.0\text{ m}$): 6 aisles, $1.8\text{ m}$ wide corridors, front cross-aisle ($3.0\text{ m}$ clear width), rear cross-aisle ($3.5\text{ m}$ clear width), safety boundary lines.
+    4. **Packing & Deposit Desk** ($X = +2.0\text{ m}, Z = -10.0\text{ m}$): Packing bench with `BoxCollider`, terminal screen, dispatch tote bins, floor staging pad, and `PackingStation` component ("PACK-01").
+    5. **Exit / Dispatch Handover Zone** ($X = +8.0\text{ m}, Z = -10.5\text{ m}$): Archway, overhead "EXIT / DISPATCH HANDOVER" signboard, egress walkway pad, barrier rails with solid `BoxCollider`.
+- **Aisle Labels & Orientation**:
+  - High-contrast overhead signboards at front entrances (`Aisle_01_HeaderSign`–`Aisle_06_HeaderSign`) and rear entrances (`Aisle_01_BackSign`–`Aisle_06_BackSign`).
+- **Boundaries, Collision & Navigation**:
+  - $26\text{ m} \times 28\text{ m}$ warehouse envelope, $4.5\text{ m}$ perimeter walls, and solid `BoxCollider`s on all racks, desks, barriers, and envelope boundaries.
+  - Complete `UnityEngine.AI.NavMesh` coverage across all aisles, cross corridors, entry, collection desk, packing bench, and exit.
+
+## 8. Structured Store Location & SKU Mapping Architecture (Phase 10)
+- **Machine-Readable Hierarchy**:
+  - Strictly implements: $\text{Store} \to \text{Aisle} \to \text{Side} \to \text{Bay} \to \text{Shelf Level (Tier)} \to \text{Slot}$.
+  - Machine-readable format: `A01-L-B01-T01-S01` (or optional store prefix `DS01-A01-L-B01-T01-S01`).
+- **Domain Models & API Contracts**:
+  - `StoreLocation` (`Assets/Scripts/Domain/StoreLocation.cs`): Pure C# struct encapsulating location components, `TryParse`, `Parse`, `Format`, equality operators, component accessors (`StoreId`, `AisleNumber`, `Side`, `BayIndex`, `TierLevel`, `SlotIndex`).
+  - `ShelfSlot` (`Assets/Scripts/Domain/ShelfSlot.cs`): Exposes `StoreLocation Location` and delegates `GenerateSlotId` to `StoreLocation.Format`.
+  - `StoreManager` (`Assets/Scripts/Management/StoreManager.cs`):
+    - `TryResolveSkuLocation(string skuId, out string locationId, out Vector3 worldPosition)`: Resolves SKU $\to$ Location ID $\to$ World Position.
+    - `TryResolveLocationPosition(string locationId, out Vector3 worldPosition)`: Resolves Location ID $\to$ 3D World Position.
+    - `TryGetSkuAtLocation(string locationId, out Sku sku)`: Resolves Location ID $\to$ SKU.
+    - `ValidateSkuLocationMappings(out List<string> errors)`: Enforces uniqueness, format conformity, non-collision, and finite physical 3D coordinates.
+    - `ValidateLocationId(string locationId, out string error)`: Validates syntax and presence in store topology.
+
+## 9. Controlled Order Generation Architecture (Phase 11)
+- **Domain Generation Pipeline (`Assets/Scripts/Domain/OrderGenerator.cs`)**:
+  - `OrderGenerationConfig`: Configuration object encapsulating integer `Seed`, `ItemCount`, `OrderCount`, `DuplicateSkuPolicy` (`DisallowDuplicates`, `AllowDuplicates`), and `OrderIdPrefix`.
+  - `OrderGenerator`: Deterministic order generation engine driven by `System.Random(seed + orderIndex * 31)`.
+  - Sampling Policies:
+    - `DisallowDuplicates`: Fisher-Yates sampling without replacement from available catalog SKUs.
+    - `AllowDuplicates`: Deterministic sampling with replacement.
+  - Physical Binding: Every selected SKU is resolved to its exact physical location identifier (`SlotId`) and 3D world position (`TargetWorldPosition`) via `StoreManager.TryResolveSkuLocation`.
+  - Batch Generation: `GenerateBatch(StoreManager, OrderGenerationConfig)` produces deterministic batches where each order carries a reproducible ID (`ORD-GEN-{seed}-{index:D3}`).
+- **Runtime Dispatch & State Integration (`OrderManager.cs`)**:
+  - `TryDispatchGeneratedOrder(OrderGenerationConfig, out Order, out string error)`: Validates catalog and config, instantiates order, rests shelf visuals, and triggers `OnOrderStarted`.
+  - `DispatchOrder(Order)`: Direct injection point for generated or preset orders.
+  - 100% backward-compatibility: Existing presets (`StartSampleOrder`, `StartSpecificOrder`, `TryStartSpecificOrder`) remain unchanged.
+
+## 10. Navigation Cost Matrix & Routing Optimization Architecture (Phase 12)
+- **Two-Level Decoupled Architecture**:
+  1. **Physical Pathfinding Level ($A \to B$)**: Unity NavMesh (`UnityEngine.AI.NavMesh.CalculatePath`). Accurately sums polygonal corner-to-corner path segment lengths along walkable corridors; strictly rejects misleading straight-line Euclidean shortcuts through shelving or walls. Explicitly marks unreachable nodes (`float.PositiveInfinity`).
+  2. **Sequence Optimization Level ($A \to B \to C \to D$)**: Pick-sequence visit-order optimization (Travelling Salesperson Problem / Routing Solver). Formulates a single-vehicle TSP with fixed start (Order Collection Desk: Node 0) and fixed destination (Packing Desk: Node $K+1$).
+- **Core Abstractions & Models (`Assets/Scripts/Routing/`)**:
+  - `INavPathDistanceCalculator`: Interface decoupling path evaluation from environment state.
+    - `NavMeshPathDistanceCalculator`: Production calculator utilizing `NavMesh.CalculatePath`.
+    - `MockDistanceCalculator`: Deterministic calculator for unit testing without baked NavMesh scenes.
+  - `TravelCostMatrix`: Reusable $N \times N$ matrix ($N = K + 2$) encapsulating node positions, labels, and traversable path costs. Enforces strict validation: square dimensions, zero diagonal ($Costs[i, i] == 0$), non-negative weights, and explicit unreachable handling.
+  - `IRouteOptimizer` & `RouteOptimizationResult`:
+    - `BaselineRouteOptimizer`: Reference optimizer that traverses in original catalog/order sequence ($0 \to 1 \to 2 \to \dots \to K \to K+1$). Provides guaranteed safe fallback and baseline comparative cost.
+    - `OrToolsRouteOptimizer`: Local solver utilizing Google OR-Tools (`Google.OrTools.ConstraintSolver`). Employs `RoutingIndexManager`, `RoutingModel`, millimeter-precision integer costs, and `GuidedLocalSearch` metaheuristics.
+    - Safety Isolation & Platform Fallback: Automatically catches runtime exceptions, missing native binaries, or solver failures and safely falls back to `BaselineRouteOptimizer`. Android builds (`UNITY_ANDROID`) bypass native DLL invocation to maintain Meta Quest standalone compatibility.
+    - Mathematical Honesty: Never claims global optimality unless mathematically proven (`IsOptimalProven = false` by default for heuristic solvers).
+  - `Order.TryReorderItems`: Enables dynamically updating an active order's pick list to match the optimized sequence prior to picking, enforcing strict SKU multiset conservation.
+
+## 11. End-to-End Operational Workflow Architecture (Phase 13)
+- **7-Stage Operational State Machine (`OperationalCycleManager.cs`)**:
+  - Connects store physical layout, order intake, picking circulation, packing deposit, and worker egress into one continuous operational cycle:
+    $$\text{ENTRY} \longrightarrow \text{COLLECT\_ORDER} \longrightarrow \text{PICKING} \longrightarrow \text{AWAITING\_PACKING} \longrightarrow \text{DEPOSIT\_ORDER} \longrightarrow \text{WALK\_TO\_EXIT} \longrightarrow \text{COMPLETED}$$
+  - **Standardized Physical Waypoints**:
+    - `EntryPosition`: $X = -8.0\text{ m}, Y = 0.0\text{ m}, Z = -10.5\text{ m}$ (Worker entry archway).
+    - `CollectionDeskPosition`: $X = -4.0\text{ m}, Y = 0.0\text{ m}, Z = -8.8\text{ m}$ (Order collection desk terminal).
+    - `PackingDeskPosition`: $X = +2.0\text{ m}, Y = 0.0\text{ m}, Z = -8.8\text{ m}$ (Dispatch packing bench PACK-01).
+    - `ExitPosition`: $X = +8.0\text{ m}, Y = 0.0\text{ m}, Z = -10.5\text{ m}$ (Dispatch handover egress gate).
+- **Interactive Proximity & Trigger Detection**:
+  - `PickerInteraction.cs`: Extended with forward raycasting and interaction prompts (`[E / LMB]`) to collect and activate orders at the collection desk and deposit completed totes at the packing bench.
+  - Proximity detection monitors active player position against waypoints, automatically guiding desktop and VR operators.
+- **Industrial Engineering Aisle Metrics**:
+  - `CalculateAisleMetrics`: Deterministically parses visited shelf slot location strings (e.g. `A01-L-B01-T01-S01`):
+    - **Aisle Transitions**: Number of times the picker crosses between distinct aisle corridors during the pick sequence. Consecutive picks in the same aisle collapse to zero transitions.
+    - **Aisle Backtracking**: Number of times the picker re-enters an aisle corridor that was visited and exited earlier in the pick tour.
+- **Scripted Virtual Picker Runner (`OperationalCycleRunner.cs`)**:
+  - Headless, deterministic test agent that navigates physical waypoints at realistic walking speed ($1.4\text{ m/s}$), applies shelf search pauses ($1.0\text{ s}$), executes picks, traverses to the packing bench, deposits the order, and walks to the exit.
+  - Generates verifiable, reproducible work-study telemetry for automated regression tests and headless batch simulations.
+
+## 12. Baseline vs Optimized Work-Study Comparison Architecture (Phase 14)
+- **A/B Comparison Engine (`OperationalComparison.cs`)**:
+  - Conducts empirical comparisons between Scenario A (Baseline sequence) and Scenario B (Solver-optimized sequence) under 100% identical starting conditions:
+    - Same dark store layout (`DarkStore_Phase1`).
+    - Same pick order and required SKU set.
+    - Same shelf bay physical locations.
+    - Same start position (`ENTRY`) and destination (`EXIT`).
+    - Same picker locomotion parameters and navigation system.
+    - Only the sequence of SKU stops differs.
+- **Reconciliation & Metric Delta Accounting**:
+  - Formulates side-by-side delta tables:
+    - Total operational cycle time ($s$), walking transit time ($s$), searching time ($s$), picking time ($s$), waiting/desk time ($s$), packing time ($s$).
+    - Measured horizontal travel distance ($m$) vs algorithmic solver route cost ($m$).
+    - Pick count, distinct shelf bay visits, inter-aisle transitions, and aisle backtracks.
+    - Activity distribution share percentages ($P_c = \frac{T_c}{T_{total}} \times 100\%$).
+- **Evidence Bundle Exporter**:
+  - Generates publication-ready Markdown reports (`docs/evidence/phase14/baseline_vs_optimized_report.md`) and standard RFC-4180 CSV tables (`baseline_vs_optimized_report.csv`).
+  - Contains strict methodological notices ensuring no false claims of statistical significance from single-run comparisons.
+- **HUD & Operator Runtime Triggers**:
+  - Integrated into `SimulationHUD.cs` with hotkey `[F4]` and UI button `[Phase 14: Run Baseline vs Opt Study [F4]]` for immediate interactive execution and telemetry export during live gameplay.

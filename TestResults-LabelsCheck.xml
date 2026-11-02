@@ -1,0 +1,1275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="75" result="Passed" total="75" passed="75" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-02 14:11:58Z" end-time="2026-11-02 14:12:05Z" duration="7.3565148">
+  <test-suite type="TestSuite" id="1000" name="WSD VR Project" fullname="WSD VR Project" runstate="Runnable" testcasecount="75" result="Passed" start-time="2026-11-02 14:11:58Z" end-time="2026-11-02 14:12:05Z" duration="7.356515" total="75" passed="75" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1099" name="VirtualDarkStore.Tests.Editor.dll" fullname="C:/Users/Mehul/OneDrive/Documents/VirtualDarkStoreWSD/Library/ScriptAssemblies/VirtualDarkStore.Tests.Editor.dll" runstate="Runnable" testcasecount="75" result="Passed" start-time="2026-11-02 14:11:58Z" end-time="2026-11-02 14:12:05Z" duration="7.345526" total="75" passed="75" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="36652" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1100" name="VirtualDarkStore" fullname="VirtualDarkStore" runstate="Runnable" testcasecount="75" result="Passed" start-time="2026-11-02 14:11:58Z" end-time="2026-11-02 14:12:05Z" duration="7.343843" total="75" passed="75" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1101" name="Tests" fullname="VirtualDarkStore.Tests" runstate="Runnable" testcasecount="75" result="Passed" start-time="2026-11-02 14:11:58Z" end-time="2026-11-02 14:12:05Z" duration="7.342670" total="75" passed="75" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1111" name="Demo" fullname="VirtualDarkStore.Tests.Demo" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-02 14:11:58Z" end-time="2026-11-02 14:11:59Z" duration="0.455766" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1093" name="Phase8PolishAndDemoTests" fullname="VirtualDarkStore.Tests.Demo.Phase8PolishAndDemoTests" classname="VirtualDarkStore.Tests.Demo.Phase8PolishAndDemoTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-02 14:11:58Z" end-time="2026-11-02 14:11:59Z" duration="0.454390" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1095" name="ErrorHandler_And_OrderManager_HandleInvalidInputsGracefully_AndResetVisuals" fullname="VirtualDarkStore.Tests.Demo.Phase8PolishAndDemoTests.ErrorHandler_And_OrderManager_HandleInvalidInputsGracefully_AndResetVisuals" methodname="ErrorHandler_And_OrderManager_HandleInvalidInputsGracefully_AndResetVisuals" classname="VirtualDarkStore.Tests.Demo.Phase8PolishAndDemoTests" runstate="Runnable" seed="122198605" result="Passed" start-time="2026-11-02 14:11:58Z" end-time="2026-11-02 14:11:58Z" duration="0.086025" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+[SimulationErrorHandler][ERROR] OrderManager: Order ID cannot be empty.
+[SimulationErrorHandler][ERROR] OrderManager: SKU 'SKU-NONEXISTENT-999' does not exist in store catalog.
+[OrderManager] Dispatched new order: [Order ORD-VALID-01] Status: InProgress, Items: 1, Current: 1/1
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 0.11s (0.11s) | Dist: 0.00m | Order: ORD-VALID-01 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (0.0, 0.0, -8.5)
+]]></output>
+              </test-case>
+              <test-case id="1098" name="FinalDemo_7StepWorkflow_EndToEnd_DesktopAndVR_AndScenarioComparison" fullname="VirtualDarkStore.Tests.Demo.Phase8PolishAndDemoTests.FinalDemo_7StepWorkflow_EndToEnd_DesktopAndVR_AndScenarioComparison" methodname="FinalDemo_7StepWorkflow_EndToEnd_DesktopAndVR_AndScenarioComparison" classname="VirtualDarkStore.Tests.Demo.Phase8PolishAndDemoTests" runstate="Runnable" seed="389457649" result="Passed" start-time="2026-11-02 14:11:58Z" end-time="2026-11-02 14:11:58Z" duration="0.131376" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+[SimulationErrorHandler][INFO] DemoFlow: Step 1: Selected scenario 'Demo Scenario A: 3-Item Aisle-Grouped Sequence' (SCN-DEMO-A).
+[SimulationErrorHandler][INFO] DemoFlow: Step 2: Selected order preset 'Scenario Defined Order (Matches Selected Scenario)'.
+[OrderManager] Dispatched new order: [Order ORD-DEMO-0001] Status: InProgress, Items: 3, Current: 1/3
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 0.11s (0.11s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (0.0, 0.0, -8.5)
+[SimulationErrorHandler][INFO] DemoFlow: Step 3: Started VR mode for Order 'ORD-DEMO-0001' (3 items).
+[OrderManager] Dispatched new order: [Order ORD-DEMO-0001] Status: InProgress, Items: 3, Current: 1/3
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 0.11s (0.11s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (0.0, 0.0, -8.5)
+[SimulationErrorHandler][INFO] DemoFlow: Step 3: Started Desktop mode for Order 'ORD-DEMO-0001' (3 items).
+[WorkEventLogger] Logged: [EVT-0002] MovingBetweenLocations | T: 0.11s - 1.00s (0.89s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0003] Waiting | T: 1.00s - 6.96s (5.96s) | Dist: 6.68m | Order: ORD-DEMO-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-6.5, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0004] Approaching | T: 6.96s - 9.96s (3.00s) | Dist: 1.67m | Order: ORD-DEMO-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-6.5, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Cold Brew Coffee 330ml' (SKU-0001). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0005] Searching | T: 9.96s - 9.96s (0.00s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (-6.5, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0006] Picking | T: 9.96s - 10.46s (0.50s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-6.5, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0007] MovingBetweenLocations | T: 10.46s - 16.18s (5.71s) | Dist: 6.40m | Order: ORD-DEMO-0001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (-6.5, 0.0, 4.8)
+[WorkEventLogger] Logged: [EVT-0008] Approaching | T: 16.18s - 19.18s (3.00s) | Dist: 1.60m | Order: ORD-DEMO-0001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (-6.5, 0.0, 4.8)
+[OrderManager] Pick SUCCESS! Picked 'Ginger Ale Can 330ml' (SKU-0008). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0009] Searching | T: 19.18s - 19.18s (0.00s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (-6.5, 0.0, 4.8)
+[WorkEventLogger] Logged: [EVT-0010] Picking | T: 19.18s - 19.68s (0.50s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (-6.5, 0.0, 4.8)
+[WorkEventLogger] Logged: [EVT-0011] MovingBetweenLocations | T: 19.68s - 27.76s (8.08s) | Dist: 9.05m | Order: ORD-DEMO-0001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (1.6, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0012] Approaching | T: 27.76s - 30.76s (3.00s) | Dist: 2.26m | Order: ORD-DEMO-0001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (1.6, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Extra Virgin Olive Oil 500ml' (SKU-0039). Order fulfilled: True
+[WorkEventLogger] Logged: [EVT-0013] Searching | T: 30.76s - 30.76s (0.00s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU:  | Loc: PACK-01 | Pos: (1.6, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0014] Picking | T: 30.76s - 31.26s (0.50s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (1.6, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0015] MovingBetweenLocations | T: 31.26s - 35.20s (3.94s) | Dist: 5.52m | Order: ORD-DEMO-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0016] Approaching | T: 35.20s - 37.20s (2.00s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[OrderManager] Order 'ORD-DEMO-0001' successfully completed and packed!
+[WorkEventLogger] Logged: [EVT-0017] Packing | T: 37.20s - 37.20s (0.00s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0018] OrderCompleted | T: 37.20s - 38.00s (0.80s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[OrderManager] Dispatched new order: [Order ORD-DEMO-0001] Status: InProgress, Items: 3, Current: 1/3
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 1.00s (1.00s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0002] MovingBetweenLocations | T: 1.00s - 7.19s (6.19s) | Dist: 8.66m | Order: ORD-DEMO-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-6.0, 0.0, -5.8)
+[WorkEventLogger] Logged: [EVT-0003] Approaching | T: 7.19s - 9.17s (1.99s) | Dist: 2.64m | Order: ORD-DEMO-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-6.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Cold Brew Coffee 330ml' (SKU-0001). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0004] Searching | T: 9.17s - 11.07s (1.90s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0005] Picking | T: 11.07s - 11.57s (0.50s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0006] MovingBetweenLocations | T: 11.57s - 15.57s (4.00s) | Dist: 5.60m | Order: ORD-DEMO-0001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (-6.0, 0.0, 2.4)
+[WorkEventLogger] Logged: [EVT-0007] Approaching | T: 15.57s - 17.39s (1.81s) | Dist: 2.40m | Order: ORD-DEMO-0001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (-6.0, 0.0, 4.8)
+[OrderManager] Pick SUCCESS! Picked 'Ginger Ale Can 330ml' (SKU-0008). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0008] Searching | T: 17.39s - 19.29s (1.90s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0009] Picking | T: 19.29s - 19.79s (0.50s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0010] MovingBetweenLocations | T: 19.79s - 37.50s (17.71s) | Dist: 24.80m | Order: ORD-DEMO-0001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (2.0, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0011] Approaching | T: 37.50s - 38.89s (1.39s) | Dist: 1.80m | Order: ORD-DEMO-0001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (2.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Extra Virgin Olive Oil 500ml' (SKU-0039). Order fulfilled: True
+[WorkEventLogger] Logged: [EVT-0012] Searching | T: 38.89s - 40.79s (1.90s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0013] Picking | T: 40.79s - 41.29s (0.50s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0014] MovingBetweenLocations | T: 41.29s - 44.29s (3.00s) | Dist: 4.20m | Order: ORD-DEMO-0001 | SKU:  | Loc: PACK-01 | Pos: (2.0, 0.0, -7.4)
+[WorkEventLogger] Logged: [EVT-0015] Approaching | T: 44.29s - 46.60s (2.31s) | Dist: 3.10m | Order: ORD-DEMO-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[OrderManager] Order 'ORD-DEMO-0001' successfully completed and packed!
+[WorkEventLogger] Logged: [EVT-0016] Packing | T: 46.60s - 48.50s (1.90s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0017] OrderCompleted | T: 48.50s - 49.30s (0.80s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[OrderManager] Dispatched new order: [Order ORD-DEMO-0001] Status: InProgress, Items: 3, Current: 1/3
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 1.00s (1.00s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0002] MovingBetweenLocations | T: 1.00s - 7.19s (6.19s) | Dist: 8.66m | Order: ORD-DEMO-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-6.0, 0.0, -5.8)
+[WorkEventLogger] Logged: [EVT-0003] Approaching | T: 7.19s - 9.17s (1.99s) | Dist: 2.64m | Order: ORD-DEMO-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-6.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Cold Brew Coffee 330ml' (SKU-0001). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0004] Searching | T: 9.17s - 11.07s (1.90s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0005] Picking | T: 11.07s - 11.57s (0.50s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0006] MovingBetweenLocations | T: 11.57s - 23.57s (12.00s) | Dist: 16.80m | Order: ORD-DEMO-0001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (2.0, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0007] Approaching | T: 23.57s - 24.96s (1.39s) | Dist: 1.80m | Order: ORD-DEMO-0001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (2.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Extra Virgin Olive Oil 500ml' (SKU-0039). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0008] Searching | T: 24.96s - 26.86s (1.90s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0009] Picking | T: 26.86s - 27.36s (0.50s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0010] MovingBetweenLocations | T: 27.36s - 44.66s (17.30s) | Dist: 24.22m | Order: ORD-DEMO-0001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (-6.0, 0.0, 2.4)
+[WorkEventLogger] Logged: [EVT-0011] Approaching | T: 44.66s - 46.46s (1.80s) | Dist: 2.38m | Order: ORD-DEMO-0001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (-6.0, 0.0, 4.8)
+[OrderManager] Pick SUCCESS! Picked 'Ginger Ale Can 330ml' (SKU-0008). Order fulfilled: True
+[WorkEventLogger] Logged: [EVT-0012] Searching | T: 46.46s - 48.36s (1.90s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0013] Picking | T: 48.36s - 48.86s (0.50s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0014] MovingBetweenLocations | T: 48.86s - 60.66s (11.80s) | Dist: 16.52m | Order: ORD-DEMO-0001 | SKU:  | Loc: PACK-01 | Pos: (-2.8, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0015] Approaching | T: 60.66s - 62.74s (2.09s) | Dist: 2.78m | Order: ORD-DEMO-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[OrderManager] Order 'ORD-DEMO-0001' successfully completed and packed!
+[WorkEventLogger] Logged: [EVT-0016] Packing | T: 62.74s - 64.64s (1.90s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0017] OrderCompleted | T: 64.64s - 65.44s (0.80s) | Dist: 0.00m | Order: ORD-DEMO-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[SimulationErrorHandler][INFO] DemoFlow: Step 7: Compared 'SCN-DEMO-A' (49.30s) vs 'SCN-DEMO-B' (65.44s).
+]]></output>
+              </test-case>
+              <test-case id="1097" name="PerformanceAudit_EnforcesRtx2050Budget_WithoutFabricatedBenchmarks" fullname="VirtualDarkStore.Tests.Demo.Phase8PolishAndDemoTests.PerformanceAudit_EnforcesRtx2050Budget_WithoutFabricatedBenchmarks" methodname="PerformanceAudit_EnforcesRtx2050Budget_WithoutFabricatedBenchmarks" classname="VirtualDarkStore.Tests.Demo.Phase8PolishAndDemoTests" runstate="Runnable" seed="1456724008" result="Passed" start-time="2026-11-02 14:11:58Z" end-time="2026-11-02 14:11:59Z" duration="0.182439" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1094" name="StoreManager_Distributes72Skus_AcrossAll4Aisles" fullname="VirtualDarkStore.Tests.Demo.Phase8PolishAndDemoTests.StoreManager_Distributes72Skus_AcrossAll4Aisles" methodname="StoreManager_Distributes72Skus_AcrossAll4Aisles" classname="VirtualDarkStore.Tests.Demo.Phase8PolishAndDemoTests" runstate="Runnable" seed="157529843" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.005752" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1096" name="WorkStudyReportExporter_ExportsValidMarkdownAndCsvBundle" fullname="VirtualDarkStore.Tests.Demo.Phase8PolishAndDemoTests.WorkStudyReportExporter_ExportsValidMarkdownAndCsvBundle" methodname="WorkStudyReportExporter_ExportsValidMarkdownAndCsvBundle" classname="VirtualDarkStore.Tests.Demo.Phase8PolishAndDemoTests" runstate="Runnable" seed="1363778699" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.026874" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestSuite" id="1106" name="Domain" fullname="VirtualDarkStore.Tests.Domain" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.157702" total="21" passed="21" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1042" name="OrderFulfillmentTests" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.039983" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1047" name="Order_FinalizePacking_RejectsPrematurePacking" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests.Order_FinalizePacking_RejectsPrematurePacking" methodname="Order_FinalizePacking_RejectsPrematurePacking" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" seed="1244922571" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.005675" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1048" name="Order_FinalizePacking_SucceedsWhenAwaitingPacking" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests.Order_FinalizePacking_SucceedsWhenAwaitingPacking" methodname="Order_FinalizePacking_SucceedsWhenAwaitingPacking" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" seed="494686151" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.004487" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1046" name="Order_Validation_AcceptsCorrectSku_AdvancesSequentially" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests.Order_Validation_AcceptsCorrectSku_AdvancesSequentially" methodname="Order_Validation_AcceptsCorrectSku_AdvancesSequentially" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" seed="926285261" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.003928" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1045" name="Order_Validation_RejectsNullOrEmptySku" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests.Order_Validation_RejectsNullOrEmptySku" methodname="Order_Validation_RejectsNullOrEmptySku" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" seed="1169524059" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.004639" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1044" name="Order_Validation_RejectsWrongSku_WithoutAdvancingOrCounting" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests.Order_Validation_RejectsWrongSku_WithoutAdvancingOrCounting" methodname="Order_Validation_RejectsWrongSku_WithoutAdvancingOrCounting" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" seed="1187304697" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.004215" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1043" name="OrderItem_InitialState_AndPickRecording" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests.OrderItem_InitialState_AndPickRecording" methodname="OrderItem_InitialState_AndPickRecording" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" seed="1969635688" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.003633" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1049" name="OrderManager_CompleteFulfillmentCycle_EndToEnd" fullname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests.OrderManager_CompleteFulfillmentCycle_EndToEnd" methodname="OrderManager_CompleteFulfillmentCycle_EndToEnd" classname="VirtualDarkStore.Tests.Domain.OrderFulfillmentTests" runstate="Runnable" seed="1065467898" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.010281" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+[OrderManager] Dispatched new order: [Order ORD-E2E-001] Status: InProgress, Items: 3, Current: 1/3
+[OrderManager] Pick REJECTED! Mismatched SKU! Expected 'SKU-0001' ('Cold Brew Coffee 330ml'), but attempted 'WRONG-SKU-999'.
+[SimulationErrorHandler][WARN] OrderManager: Mismatched SKU! Expected 'SKU-0001' ('Cold Brew Coffee 330ml'), but attempted 'WRONG-SKU-999'.
+[OrderManager] Pick SUCCESS! Picked 'Cold Brew Coffee 330ml' (SKU-0001). Order fulfilled: False
+[OrderManager] Packing failed: Cannot complete packing: not all items have been picked.
+[SimulationErrorHandler][WARN] OrderManager: Cannot complete packing: not all items have been picked.
+[OrderManager] Pick SUCCESS! Picked 'Whole Milk 1L' (SKU-0011). Order fulfilled: False
+[OrderManager] Pick SUCCESS! Picked 'Whole Wheat Sandwich Bread 400g' (SKU-0021). Order fulfilled: True
+[OrderManager] Order 'ORD-E2E-001' successfully completed and packed!
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1050" name="StoreTopologyTests" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.050870" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1056" name="StoreManager_BidirectionalMapping_IsConsistent" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.StoreManager_BidirectionalMapping_IsConsistent" methodname="StoreManager_BidirectionalMapping_IsConsistent" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="1051859000" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.005232" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1055" name="StoreManager_EverySku_HasAValidUniqueLocation" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.StoreManager_EverySku_HasAValidUniqueLocation" methodname="StoreManager_EverySku_HasAValidUniqueLocation" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="1201725039" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.004866" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1053" name="StoreManager_InitializesTopology_WithExpectedSlotCapacity" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.StoreManager_InitializesTopology_WithExpectedSlotCapacity" methodname="StoreManager_InitializesTopology_WithExpectedSlotCapacity" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="1446267931" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.007464" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1054" name="StoreManager_MultipleShelfLevels_ExistInEveryBay" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.StoreManager_MultipleShelfLevels_ExistInEveryBay" methodname="StoreManager_MultipleShelfLevels_ExistInEveryBay" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="1720440682" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.017352" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1058" name="StoreManager_QueryNonExistent_ReturnsFalseGracefully" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.StoreManager_QueryNonExistent_ReturnsFalseGracefully" methodname="StoreManager_QueryNonExistent_ReturnsFalseGracefully" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="1832707228" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.004029" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1057" name="StoreManager_ValidateIntegrity_ReturnsTrueWithZeroErrors" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.StoreManager_ValidateIntegrity_ReturnsTrueWithZeroErrors" methodname="StoreManager_ValidateIntegrity_ReturnsTrueWithZeroErrors" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="914222647" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.006350" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1052" name="VerifiedSampleCatalog_AllSkus_HaveValidUniqueIdentifiersAndAttributes" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.VerifiedSampleCatalog_AllSkus_HaveValidUniqueIdentifiersAndAttributes" methodname="VerifiedSampleCatalog_AllSkus_HaveValidUniqueIdentifiersAndAttributes" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="1902279753" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.001888" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1051" name="VerifiedSampleCatalog_Count_IsBetween50And100" fullname="VirtualDarkStore.Tests.Domain.StoreTopologyTests.VerifiedSampleCatalog_Count_IsBetween50And100" methodname="VerifiedSampleCatalog_Count_IsBetween50And100" classname="VirtualDarkStore.Tests.Domain.StoreTopologyTests" runstate="Runnable" seed="2100431063" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.000496" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1059" name="StructuredStoreLocationTests" fullname="VirtualDarkStore.Tests.Domain.StructuredStoreLocationTests" classname="VirtualDarkStore.Tests.Domain.StructuredStoreLocationTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.063613" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1064" name="DuplicateLocation_DetectsCollision_WhenTwoSkusAssignedSameSlot" fullname="VirtualDarkStore.Tests.Domain.StructuredStoreLocationTests.DuplicateLocation_DetectsCollision_WhenTwoSkusAssignedSameSlot" methodname="DuplicateLocation_DetectsCollision_WhenTwoSkusAssignedSameSlot" classname="VirtualDarkStore.Tests.Domain.StructuredStoreLocationTests" runstate="Runnable" seed="631750853" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.007378" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1065" name="InvalidMapping_MalformedLocationStrings_AreDetectedAndRejected" fullname="VirtualDarkStore.Tests.Domain.StructuredStoreLocationTests.InvalidMapping_MalformedLocationStrings_AreDetectedAndRejected" methodname="InvalidMapping_MalformedLocationStrings_AreDetectedAndRejected" classname="VirtualDarkStore.Tests.Domain.StructuredStoreLocationTests" runstate="Runnable" seed="2002545809" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.004784" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1063" name="MissingLocation_NonExistentSkuOrLocationId_ReturnsFalseWithoutThrowing" fullname="VirtualDarkStore.Tests.Domain.StructuredStoreLocationTests.MissingLocation_NonExistentSkuOrLocationId_ReturnsFalseWithoutThrowing" methodname="MissingLocation_NonExistentSkuOrLocationId_ReturnsFalseWithoutThrowing" classname="VirtualDarkStore.Tests.Domain.StructuredStoreLocationTests" runstate="Runnable" seed="1564143684" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.004201" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1060" name="UniqueLocationIds_AllSlotsInStore_HaveDistinctFormattedIds" fullname="VirtualDarkStore.Tests.Domain.StructuredStoreLocationTests.UniqueLocationIds_AllSlotsInStore_HaveDistinctFormattedIds" methodname="UniqueLocationIds_AllSlotsInStore_HaveDistinctFormattedIds" classname="VirtualDarkStore.Tests.Domain.StructuredStoreLocationTests" runstate="Runnable" seed="1146218930" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.031350" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1061" name="ValidSkuMappings_AllSkus_MapToOneToOneValidPhysicalLocation" fullname="VirtualDarkStore.Tests.Domain.StructuredStoreLocationTests.ValidSkuMappings_AllSkus_MapToOneToOneValidPhysicalLocation" methodname="ValidSkuMappings_AllSkus_MapToOneToOneValidPhysicalLocation" classname="VirtualDarkStore.Tests.Domain.StructuredStoreLocationTests" runstate="Runnable" seed="402851344" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.007274" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1062" name="WorldPositionResolution_SkuAndLocationId_ResolveToValidWorldCoordinates" fullname="VirtualDarkStore.Tests.Domain.StructuredStoreLocationTests.WorldPositionResolution_SkuAndLocationId_ResolveToValidWorldCoordinates" methodname="WorldPositionResolution_SkuAndLocationId_ResolveToValidWorldCoordinates" classname="VirtualDarkStore.Tests.Domain.StructuredStoreLocationTests" runstate="Runnable" seed="1740560608" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.006065" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestSuite" id="1107" name="Editor" fullname="VirtualDarkStore.Tests.Editor" runstate="Runnable" testcasecount="23" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:12:05Z" duration="6.364052" total="23" passed="23" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1110" name="Domain" fullname="VirtualDarkStore.Tests.Editor.Domain" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.053301" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1084" name="ControlledOrderGenerationTests" fullname="VirtualDarkStore.Tests.Editor.Domain.ControlledOrderGenerationTests" classname="VirtualDarkStore.Tests.Editor.Domain.ControlledOrderGenerationTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.052967" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1088" name="AllGeneratedLocations_HaveValidWorldPositions" fullname="VirtualDarkStore.Tests.Editor.Domain.ControlledOrderGenerationTests.AllGeneratedLocations_HaveValidWorldPositions" methodname="AllGeneratedLocations_HaveValidWorldPositions" classname="VirtualDarkStore.Tests.Editor.Domain.ControlledOrderGenerationTests" runstate="Runnable" seed="32811435" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.005342" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+]]></output>
+                </test-case>
+                <test-case id="1087" name="AllGeneratedSkus_ExistInStoreCatalog" fullname="VirtualDarkStore.Tests.Editor.Domain.ControlledOrderGenerationTests.AllGeneratedSkus_ExistInStoreCatalog" methodname="AllGeneratedSkus_ExistInStoreCatalog" classname="VirtualDarkStore.Tests.Editor.Domain.ControlledOrderGenerationTests" runstate="Runnable" seed="63510552" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.004272" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+]]></output>
+                </test-case>
+                <test-case id="1090" name="BatchGeneration_ProducesRequestedCountAndReproducibleSequences" fullname="VirtualDarkStore.Tests.Editor.Domain.ControlledOrderGenerationTests.BatchGeneration_ProducesRequestedCountAndReproducibleSequences" methodname="BatchGeneration_ProducesRequestedCountAndReproducibleSequences" classname="VirtualDarkStore.Tests.Editor.Domain.ControlledOrderGenerationTests" runstate="Runnable" seed="1496539732" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.005162" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+]]></output>
+                </test-case>
+                <test-case id="1086" name="DifferentSeeds_ProduceDifferentOrders" fullname="VirtualDarkStore.Tests.Editor.Domain.ControlledOrderGenerationTests.DifferentSeeds_ProduceDifferentOrders" methodname="DifferentSeeds_ProduceDifferentOrders" classname="VirtualDarkStore.Tests.Editor.Domain.ControlledOrderGenerationTests" runstate="Runnable" seed="1438933306" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.004165" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+]]></output>
+                </test-case>
+                <test-case id="1089" name="DuplicatePolicy_Disallow_ProducesDistinctSkus" fullname="VirtualDarkStore.Tests.Editor.Domain.ControlledOrderGenerationTests.DuplicatePolicy_Disallow_ProducesDistinctSkus" methodname="DuplicatePolicy_Disallow_ProducesDistinctSkus" classname="VirtualDarkStore.Tests.Editor.Domain.ControlledOrderGenerationTests" runstate="Runnable" seed="146946431" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.004023" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+]]></output>
+                </test-case>
+                <test-case id="1092" name="GeneratedOrder_DispatchesAndExecutesSuccessfully" fullname="VirtualDarkStore.Tests.Editor.Domain.ControlledOrderGenerationTests.GeneratedOrder_DispatchesAndExecutesSuccessfully" methodname="GeneratedOrder_DispatchesAndExecutesSuccessfully" classname="VirtualDarkStore.Tests.Editor.Domain.ControlledOrderGenerationTests" runstate="Runnable" seed="1153779362" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.009511" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+[OrderManager] Dispatched new order: ORD-GEN-33333-001 (2 items)
+[OrderManager] Pick SUCCESS! Picked 'Crisp Gala Apples Bag 1kg' (SKU-0053). Order fulfilled: False
+]]></output>
+                </test-case>
+                <test-case id="1091" name="PresetOrders_RemainUnchanged" fullname="VirtualDarkStore.Tests.Editor.Domain.ControlledOrderGenerationTests.PresetOrders_RemainUnchanged" methodname="PresetOrders_RemainUnchanged" classname="VirtualDarkStore.Tests.Editor.Domain.ControlledOrderGenerationTests" runstate="Runnable" seed="1511425108" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.013568" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+[OrderManager] Dispatched new order: [Order ORD-PRESET-TEST] Status: InProgress, Items: 3, Current: 1/3
+]]></output>
+                </test-case>
+                <test-case id="1085" name="SameSeed_ProducesIdenticalOrder" fullname="VirtualDarkStore.Tests.Editor.Domain.ControlledOrderGenerationTests.SameSeed_ProducesIdenticalOrder" methodname="SameSeed_ProducesIdenticalOrder" classname="VirtualDarkStore.Tests.Editor.Domain.ControlledOrderGenerationTests" runstate="Runnable" seed="1619386203" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.004216" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+            <test-suite type="TestFixture" id="1066" name="OrToolsCompatibilityCheck" fullname="VirtualDarkStore.Tests.Editor.OrToolsCompatibilityCheck" classname="VirtualDarkStore.Tests.Editor.OrToolsCompatibilityCheck" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.068041" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1067" name="MinimalOrToolsCheck" fullname="VirtualDarkStore.Tests.Editor.OrToolsCompatibilityCheck.MinimalOrToolsCheck" methodname="MinimalOrToolsCheck" classname="VirtualDarkStore.Tests.Editor.OrToolsCompatibilityCheck" runstate="Runnable" seed="706542452" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.066859" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestSuite" id="1109" name="Routing" fullname="VirtualDarkStore.Tests.Editor.Routing" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:12:04Z" duration="5.124943" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1074" name="RoutingOptimizationTests" fullname="VirtualDarkStore.Tests.Editor.Routing.RoutingOptimizationTests" classname="VirtualDarkStore.Tests.Editor.Routing.RoutingOptimizationTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:12:04Z" duration="5.124264" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1075" name="CostMatrix_CalculatesDistances_WithZeroDiagonal" fullname="VirtualDarkStore.Tests.Editor.Routing.RoutingOptimizationTests.CostMatrix_CalculatesDistances_WithZeroDiagonal" methodname="CostMatrix_CalculatesDistances_WithZeroDiagonal" classname="VirtualDarkStore.Tests.Editor.Routing.RoutingOptimizationTests" runstate="Runnable" seed="1924800910" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.008229" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+]]></output>
+                </test-case>
+                <test-case id="1076" name="CostMatrix_HandlesUnreachableNodes_Explicitly" fullname="VirtualDarkStore.Tests.Editor.Routing.RoutingOptimizationTests.CostMatrix_HandlesUnreachableNodes_Explicitly" methodname="CostMatrix_HandlesUnreachableNodes_Explicitly" classname="VirtualDarkStore.Tests.Editor.Routing.RoutingOptimizationTests" runstate="Runnable" seed="1536670160" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:11:59Z" duration="0.005187" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+]]></output>
+                </test-case>
+                <test-case id="1083" name="OrTools_OptimizesVisitSequence_WhenOutOfOrder" fullname="VirtualDarkStore.Tests.Editor.Routing.RoutingOptimizationTests.OrTools_OptimizesVisitSequence_WhenOutOfOrder" methodname="OrTools_OptimizesVisitSequence_WhenOutOfOrder" classname="VirtualDarkStore.Tests.Editor.Routing.RoutingOptimizationTests" runstate="Runnable" seed="480913815" result="Passed" start-time="2026-11-02 14:11:59Z" end-time="2026-11-02 14:12:00Z" duration="1.072593" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+]]></output>
+                </test-case>
+                <test-case id="1081" name="Routing_BaselineSequenceRemainsAvailable" fullname="VirtualDarkStore.Tests.Editor.Routing.RoutingOptimizationTests.Routing_BaselineSequenceRemainsAvailable" methodname="Routing_BaselineSequenceRemainsAvailable" classname="VirtualDarkStore.Tests.Editor.Routing.RoutingOptimizationTests" runstate="Runnable" seed="1988634105" result="Passed" start-time="2026-11-02 14:12:00Z" end-time="2026-11-02 14:12:00Z" duration="0.005027" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+]]></output>
+                </test-case>
+                <test-case id="1078" name="Routing_EveryRequiredSkuExactlyOnce" fullname="VirtualDarkStore.Tests.Editor.Routing.RoutingOptimizationTests.Routing_EveryRequiredSkuExactlyOnce" methodname="Routing_EveryRequiredSkuExactlyOnce" classname="VirtualDarkStore.Tests.Editor.Routing.RoutingOptimizationTests" runstate="Runnable" seed="989599711" result="Passed" start-time="2026-11-02 14:12:00Z" end-time="2026-11-02 14:12:01Z" duration="1.007819" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+]]></output>
+                </test-case>
+                <test-case id="1079" name="Routing_NoUnexpectedSku" fullname="VirtualDarkStore.Tests.Editor.Routing.RoutingOptimizationTests.Routing_NoUnexpectedSku" methodname="Routing_NoUnexpectedSku" classname="VirtualDarkStore.Tests.Editor.Routing.RoutingOptimizationTests" runstate="Runnable" seed="122074659" result="Passed" start-time="2026-11-02 14:12:01Z" end-time="2026-11-02 14:12:02Z" duration="1.006031" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+]]></output>
+                </test-case>
+                <test-case id="1080" name="Routing_RouteEndsAtPacking" fullname="VirtualDarkStore.Tests.Editor.Routing.RoutingOptimizationTests.Routing_RouteEndsAtPacking" methodname="Routing_RouteEndsAtPacking" classname="VirtualDarkStore.Tests.Editor.Routing.RoutingOptimizationTests" runstate="Runnable" seed="1748625226" result="Passed" start-time="2026-11-02 14:12:02Z" end-time="2026-11-02 14:12:02Z" duration="0.004530" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+]]></output>
+                </test-case>
+                <test-case id="1082" name="Routing_SolverFailure_FallsBackSafely" fullname="VirtualDarkStore.Tests.Editor.Routing.RoutingOptimizationTests.Routing_SolverFailure_FallsBackSafely" methodname="Routing_SolverFailure_FallsBackSafely" classname="VirtualDarkStore.Tests.Editor.Routing.RoutingOptimizationTests" runstate="Runnable" seed="419330022" result="Passed" start-time="2026-11-02 14:12:02Z" end-time="2026-11-02 14:12:03Z" duration="1.006065" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+]]></output>
+                </test-case>
+                <test-case id="1077" name="Routing_ValidStartAndEnd" fullname="VirtualDarkStore.Tests.Editor.Routing.RoutingOptimizationTests.Routing_ValidStartAndEnd" methodname="Routing_ValidStartAndEnd" classname="VirtualDarkStore.Tests.Editor.Routing.RoutingOptimizationTests" runstate="Runnable" seed="1255904438" result="Passed" start-time="2026-11-02 14:12:03Z" end-time="2026-11-02 14:12:04Z" duration="1.006079" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+            <test-suite type="TestSuite" id="1108" name="Scenarios" fullname="VirtualDarkStore.Tests.Editor.Scenarios" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-02 14:12:04Z" end-time="2026-11-02 14:12:05Z" duration="1.116438" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1068" name="OperationalWorkflowTests" fullname="VirtualDarkStore.Tests.Editor.Scenarios.OperationalWorkflowTests" classname="VirtualDarkStore.Tests.Editor.Scenarios.OperationalWorkflowTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-02 14:12:04Z" end-time="2026-11-02 14:12:05Z" duration="1.111551" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1071" name="AisleTransitionsAndBacktracking_CalculatesAccurately" fullname="VirtualDarkStore.Tests.Editor.Scenarios.OperationalWorkflowTests.AisleTransitionsAndBacktracking_CalculatesAccurately" methodname="AisleTransitionsAndBacktracking_CalculatesAccurately" classname="VirtualDarkStore.Tests.Editor.Scenarios.OperationalWorkflowTests" runstate="Runnable" seed="210985594" result="Passed" start-time="2026-11-02 14:12:04Z" end-time="2026-11-02 14:12:04Z" duration="0.011217" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+]]></output>
+                </test-case>
+                <test-case id="1073" name="BaselineVsOptimized_SameOrder_IdenticalStartingConditions_VariesOnlyPickSequence" fullname="VirtualDarkStore.Tests.Editor.Scenarios.OperationalWorkflowTests.BaselineVsOptimized_SameOrder_IdenticalStartingConditions_VariesOnlyPickSequence" methodname="BaselineVsOptimized_SameOrder_IdenticalStartingConditions_VariesOnlyPickSequence" classname="VirtualDarkStore.Tests.Editor.Scenarios.OperationalWorkflowTests" runstate="Runnable" seed="909674509" result="Passed" start-time="2026-11-02 14:12:04Z" end-time="2026-11-02 14:12:05Z" duration="1.048003" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 0.60s (0.60s) | Dist: 0.14m | Order:  | SKU:  | Loc: GENERAL_FLOOR | Pos: (-7.9, 0.0, -10.4)
+[WorkEventLogger] Logged: [EVT-0002] Walking | T: 0.60s - 3.70s (3.10s) | Dist: 4.21m | Order:  | SKU:  | Loc: GENERAL_FLOOR | Pos: (-4.0, 0.0, -8.8)
+[OrderManager] Dispatched new order: [Order ORD-STUDY-001] Status: InProgress, Items: 4, Current: 1/4
+[WorkEventLogger] Logged: [EVT-0003] Waiting | T: 3.70s - 4.60s (0.90s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-4.0, 0.0, -8.8)
+[WorkEventLogger] Logged: [EVT-0004] MovingBetweenLocations | T: 4.60s - 9.20s (4.60s) | Dist: 6.44m | Order: ORD-STUDY-001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.5, 0.0, -5.9)
+[WorkEventLogger] Logged: [EVT-0005] Approaching | T: 9.20s - 11.20s (2.00s) | Dist: 2.66m | Order: ORD-STUDY-001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.5, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Cold Brew Coffee 330ml' (SKU-0001). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0006] Searching | T: 11.20s - 12.60s (1.40s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (-7.5, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0007] Picking | T: 12.60s - 13.10s (0.50s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.5, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0008] MovingBetweenLocations | T: 13.10s - 24.09s (10.99s) | Dist: 15.38m | Order: ORD-STUDY-001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (-1.5, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0009] Approaching | T: 24.09s - 25.49s (1.40s) | Dist: 1.82m | Order: ORD-STUDY-001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (-1.5, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Extra Virgin Olive Oil 500ml' (SKU-0039). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0010] Searching | T: 25.49s - 26.89s (1.40s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (-1.5, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0011] Picking | T: 26.89s - 27.39s (0.50s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (-1.5, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0012] MovingBetweenLocations | T: 27.39s - 43.69s (16.30s) | Dist: 22.82m | Order: ORD-STUDY-001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (-7.5, 0.0, 2.4)
+[WorkEventLogger] Logged: [EVT-0013] Approaching | T: 43.69s - 45.49s (1.80s) | Dist: 2.38m | Order: ORD-STUDY-001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (-7.5, 0.0, 4.8)
+[OrderManager] Pick SUCCESS! Picked 'Ginger Ale Can 330ml' (SKU-0008). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0014] Searching | T: 45.49s - 46.89s (1.40s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (-7.5, 0.0, 4.8)
+[WorkEventLogger] Logged: [EVT-0015] Picking | T: 46.89s - 47.39s (0.50s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (-7.5, 0.0, 4.8)
+[WorkEventLogger] Logged: [EVT-0016] MovingBetweenLocations | T: 47.39s - 66.23s (18.84s) | Dist: 26.38m | Order: ORD-STUDY-001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (1.5, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0017] Approaching | T: 66.23s - 67.63s (1.40s) | Dist: 1.82m | Order: ORD-STUDY-001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (1.5, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Dishwashing Liquid Citrus 500ml' (SKU-0066). Order fulfilled: True
+[WorkEventLogger] Logged: [EVT-0018] Searching | T: 67.63s - 69.03s (1.40s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU:  | Loc: PACK-01 | Pos: (1.5, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0019] Picking | T: 69.03s - 69.53s (0.50s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (1.5, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0020] MovingBetweenLocations | T: 69.53s - 72.33s (2.80s) | Dist: 3.92m | Order: ORD-STUDY-001 | SKU:  | Loc: PACK-01 | Pos: (1.5, 0.0, -7.1)
+[WorkEventLogger] Logged: [EVT-0021] Approaching | T: 72.33s - 73.99s (1.66s) | Dist: 2.18m | Order: ORD-STUDY-001 | SKU:  | Loc: PACK-01 | Pos: (2.0, 0.0, -8.8)
+[OrderManager] Order 'ORD-STUDY-001' successfully completed and packed!
+[WorkEventLogger] Logged: [EVT-0022] Packing | T: 73.99s - 75.89s (1.90s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (2.0, 0.0, -8.8)
+[WorkEventLogger] Logged: [EVT-0023] OrderCompleted | T: 75.89s - 76.69s (0.80s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU:  | Loc: PACK-01 | Pos: (2.0, 0.0, -8.8)
+[WorkEventLogger] Logged: [EVT-0024] Waiting | T: 76.69s - 76.69s (0.00s) | Dist: 0.14m | Order: ORD-STUDY-001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (2.1, 0.0, -8.8)
+[WorkEventLogger] Logged: [EVT-0025] Walking | T: 76.69s - 80.44s (3.75s) | Dist: 6.10m | Order: ORD-STUDY-001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (8.0, 0.0, -10.5)
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 0.60s (0.60s) | Dist: 0.14m | Order: ORD-STUDY-001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (-7.9, 0.0, -10.4)
+[WorkEventLogger] Logged: [EVT-0002] Walking | T: 0.60s - 3.70s (3.10s) | Dist: 4.21m | Order: ORD-STUDY-001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (-4.0, 0.0, -8.8)
+[OrderManager] Dispatched new order: [Order ORD-STUDY-001] Status: InProgress, Items: 4, Current: 1/4
+[WorkEventLogger] Logged: [EVT-0003] Waiting | T: 3.70s - 4.60s (0.90s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-4.0, 0.0, -8.8)
+[WorkEventLogger] Logged: [EVT-0004] MovingBetweenLocations | T: 4.60s - 9.20s (4.60s) | Dist: 6.44m | Order: ORD-STUDY-001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.5, 0.0, -5.9)
+[WorkEventLogger] Logged: [EVT-0005] Approaching | T: 9.20s - 11.20s (2.00s) | Dist: 2.66m | Order: ORD-STUDY-001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.5, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Cold Brew Coffee 330ml' (SKU-0001). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0006] Searching | T: 11.20s - 12.60s (1.40s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (-7.5, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0007] Picking | T: 12.60s - 13.10s (0.50s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.5, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0008] MovingBetweenLocations | T: 13.10s - 17.11s (4.01s) | Dist: 5.61m | Order: ORD-STUDY-001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (-7.5, 0.0, 2.4)
+[WorkEventLogger] Logged: [EVT-0009] Approaching | T: 17.11s - 18.92s (1.80s) | Dist: 2.39m | Order: ORD-STUDY-001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (-7.5, 0.0, 4.8)
+[OrderManager] Pick SUCCESS! Picked 'Ginger Ale Can 330ml' (SKU-0008). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0010] Searching | T: 18.92s - 20.32s (1.40s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (-7.5, 0.0, 4.8)
+[WorkEventLogger] Logged: [EVT-0011] Picking | T: 20.32s - 20.82s (0.50s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (-7.5, 0.0, 4.8)
+[WorkEventLogger] Logged: [EVT-0012] MovingBetweenLocations | T: 20.82s - 37.52s (16.70s) | Dist: 23.38m | Order: ORD-STUDY-001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (-1.5, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0013] Approaching | T: 37.52s - 38.92s (1.40s) | Dist: 1.82m | Order: ORD-STUDY-001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (-1.5, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Extra Virgin Olive Oil 500ml' (SKU-0039). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0014] Searching | T: 38.92s - 40.32s (1.40s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (-1.5, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0015] Picking | T: 40.32s - 40.82s (0.50s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (-1.5, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0016] MovingBetweenLocations | T: 40.82s - 49.66s (8.84s) | Dist: 12.38m | Order: ORD-STUDY-001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (1.5, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0017] Approaching | T: 49.66s - 51.06s (1.40s) | Dist: 1.82m | Order: ORD-STUDY-001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (1.5, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Dishwashing Liquid Citrus 500ml' (SKU-0066). Order fulfilled: True
+[WorkEventLogger] Logged: [EVT-0018] Searching | T: 51.06s - 52.46s (1.40s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU:  | Loc: PACK-01 | Pos: (1.5, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0019] Picking | T: 52.46s - 52.96s (0.50s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (1.5, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0020] MovingBetweenLocations | T: 52.96s - 55.76s (2.80s) | Dist: 3.92m | Order: ORD-STUDY-001 | SKU:  | Loc: PACK-01 | Pos: (1.5, 0.0, -7.1)
+[WorkEventLogger] Logged: [EVT-0021] Approaching | T: 55.76s - 57.42s (1.66s) | Dist: 2.18m | Order: ORD-STUDY-001 | SKU:  | Loc: PACK-01 | Pos: (2.0, 0.0, -8.8)
+[OrderManager] Order 'ORD-STUDY-001' successfully completed and packed!
+[WorkEventLogger] Logged: [EVT-0022] Packing | T: 57.42s - 59.32s (1.90s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (2.0, 0.0, -8.8)
+[WorkEventLogger] Logged: [EVT-0023] OrderCompleted | T: 59.32s - 60.12s (0.80s) | Dist: 0.00m | Order: ORD-STUDY-001 | SKU:  | Loc: PACK-01 | Pos: (2.0, 0.0, -8.8)
+[WorkEventLogger] Logged: [EVT-0024] Waiting | T: 60.12s - 60.12s (0.00s) | Dist: 0.14m | Order: ORD-STUDY-001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (2.1, 0.0, -8.8)
+[WorkEventLogger] Logged: [EVT-0025] Walking | T: 60.12s - 63.87s (3.75s) | Dist: 6.10m | Order: ORD-STUDY-001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (8.0, 0.0, -10.5)
+[OperationalComparison] Exported comparison report to C:\Users\Mehul\OneDrive\Documents\VirtualDarkStoreWSD\docs\evidence\phase14\baseline_vs_optimized_report.md and C:\Users\Mehul\OneDrive\Documents\VirtualDarkStoreWSD\docs\evidence\phase14\baseline_vs_optimized_report.csv
+]]></output>
+                </test-case>
+                <test-case id="1072" name="OperationalCycleRunner_ExecutesEndToEndWorkflow_Deterministically" fullname="VirtualDarkStore.Tests.Editor.Scenarios.OperationalWorkflowTests.OperationalCycleRunner_ExecutesEndToEndWorkflow_Deterministically" methodname="OperationalCycleRunner_ExecutesEndToEndWorkflow_Deterministically" classname="VirtualDarkStore.Tests.Editor.Scenarios.OperationalWorkflowTests" runstate="Runnable" seed="870893938" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.017116" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 0.60s (0.60s) | Dist: 0.14m | Order:  | SKU:  | Loc: GENERAL_FLOOR | Pos: (-7.9, 0.0, -10.4)
+[WorkEventLogger] Logged: [EVT-0002] Walking | T: 0.60s - 3.70s (3.10s) | Dist: 4.21m | Order:  | SKU:  | Loc: GENERAL_FLOOR | Pos: (-4.0, 0.0, -8.8)
+[OrderManager] Dispatched new order: [Order ORD-TEST-001] Status: InProgress, Items: 3, Current: 1/3
+[WorkEventLogger] Logged: [EVT-0003] Waiting | T: 3.70s - 4.60s (0.90s) | Dist: 0.00m | Order: ORD-TEST-001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-4.0, 0.0, -8.8)
+[WorkEventLogger] Logged: [EVT-0004] MovingBetweenLocations | T: 4.60s - 9.20s (4.60s) | Dist: 6.44m | Order: ORD-TEST-001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.5, 0.0, -5.9)
+[WorkEventLogger] Logged: [EVT-0005] Approaching | T: 9.20s - 11.20s (2.00s) | Dist: 2.66m | Order: ORD-TEST-001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.5, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Cold Brew Coffee 330ml' (SKU-0001). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0006] Searching | T: 11.20s - 12.10s (0.90s) | Dist: 0.00m | Order: ORD-TEST-001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (-7.5, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0007] Picking | T: 12.10s - 12.60s (0.50s) | Dist: 0.00m | Order: ORD-TEST-001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.5, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0008] MovingBetweenLocations | T: 12.60s - 16.61s (4.01s) | Dist: 5.61m | Order: ORD-TEST-001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (-7.5, 0.0, 2.4)
+[WorkEventLogger] Logged: [EVT-0009] Approaching | T: 16.61s - 18.42s (1.80s) | Dist: 2.39m | Order: ORD-TEST-001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (-7.5, 0.0, 4.8)
+[OrderManager] Pick SUCCESS! Picked 'Ginger Ale Can 330ml' (SKU-0008). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0010] Searching | T: 18.42s - 19.32s (0.90s) | Dist: 0.00m | Order: ORD-TEST-001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (-7.5, 0.0, 4.8)
+[WorkEventLogger] Logged: [EVT-0011] Picking | T: 19.32s - 19.82s (0.50s) | Dist: 0.00m | Order: ORD-TEST-001 | SKU: SKU-0008 | Loc: A01-L-B03-T02-S01 | Pos: (-7.5, 0.0, 4.8)
+[WorkEventLogger] Logged: [EVT-0012] MovingBetweenLocations | T: 19.82s - 36.52s (16.70s) | Dist: 23.38m | Order: ORD-TEST-001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (-1.5, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0013] Approaching | T: 36.52s - 37.92s (1.40s) | Dist: 1.82m | Order: ORD-TEST-001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (-1.5, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Extra Virgin Olive Oil 500ml' (SKU-0039). Order fulfilled: True
+[WorkEventLogger] Logged: [EVT-0014] Searching | T: 37.92s - 38.82s (0.90s) | Dist: 0.00m | Order: ORD-TEST-001 | SKU:  | Loc: PACK-01 | Pos: (-1.5, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0015] Picking | T: 38.82s - 39.32s (0.50s) | Dist: 0.00m | Order: ORD-TEST-001 | SKU: SKU-0039 | Loc: A03-L-B01-T03-S01 | Pos: (-1.5, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0016] MovingBetweenLocations | T: 39.32s - 43.92s (4.60s) | Dist: 6.44m | Order: ORD-TEST-001 | SKU:  | Loc: PACK-01 | Pos: (-0.7, 0.0, -8.8)
+[WorkEventLogger] Logged: [EVT-0017] Approaching | T: 43.92s - 45.92s (2.00s) | Dist: 2.66m | Order: ORD-TEST-001 | SKU:  | Loc: PACK-01 | Pos: (2.0, 0.0, -8.8)
+[OrderManager] Order 'ORD-TEST-001' successfully completed and packed!
+[WorkEventLogger] Logged: [EVT-0018] Packing | T: 45.92s - 47.32s (1.40s) | Dist: 0.00m | Order: ORD-TEST-001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (2.0, 0.0, -8.8)
+[WorkEventLogger] Logged: [EVT-0019] OrderCompleted | T: 47.32s - 48.12s (0.80s) | Dist: 0.00m | Order: ORD-TEST-001 | SKU:  | Loc: PACK-01 | Pos: (2.0, 0.0, -8.8)
+[WorkEventLogger] Logged: [EVT-0020] Waiting | T: 48.12s - 48.12s (0.00s) | Dist: 0.14m | Order: ORD-TEST-001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (2.1, 0.0, -8.8)
+[WorkEventLogger] Logged: [EVT-0021] Walking | T: 48.12s - 51.87s (3.75s) | Dist: 6.10m | Order: ORD-TEST-001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (8.0, 0.0, -10.5)
+]]></output>
+                </test-case>
+                <test-case id="1070" name="OperationalEvents_RecordedMonotonically_WithZeroNegativeDurations" fullname="VirtualDarkStore.Tests.Editor.Scenarios.OperationalWorkflowTests.OperationalEvents_RecordedMonotonically_WithZeroNegativeDurations" methodname="OperationalEvents_RecordedMonotonically_WithZeroNegativeDurations" classname="VirtualDarkStore.Tests.Editor.Scenarios.OperationalWorkflowTests" runstate="Runnable" seed="2133817298" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.017703" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.57s - 0.62s (0.05s) | Dist: 0.00m | Order:  | SKU:  | Loc: ENTRY | Pos: (-8.0, 0.0, -10.5)
+[OperationalCycleManager] Cycle STARTED at ENTRY. Proceed to Order Collection Desk (X=-4.0, Z=-8.8).
+[OrderManager] Dispatched new order: ORD-GEN-55555-001 (2 items)
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.62s - 0.62s (0.00s) | Dist: 0.00m | Order: ORD-GEN-55555-001 | SKU: SKU-0005 | Loc: A01-L-B02-T02-S01 | Pos: (-8.0, 0.0, -10.5)
+[OperationalCycleManager] Preserved baseline pick sequence: [Baseline (Original Order Sequence)] Success=True, Cost=32.29m (Baseline=32.29m, Saved=0.0%), Route=0 -> 1 -> 2 -> 3, Proven=False
+[WorkEventLogger] Logged: [EVT-0003] Waiting | T: 0.62s - 0.72s (0.10s) | Dist: 0.00m | Order: ORD-GEN-55555-001 | SKU:  | Loc: ORDER_COLLECTION | Pos: (-4.0, 0.0, -8.8)
+[OperationalCycleManager] Collected order ORD-GEN-55555-001 (2 items). Proceed to pick items in sequence.
+[OrderManager] Pick SUCCESS! Picked 'Energy Drink Berry 250ml' (SKU-0005). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.72s - 0.72s (0.00s) | Dist: 0.00m | Order: ORD-GEN-55555-001 | SKU: SKU-0050 | Loc: A03-R-B02-T02-S01 | Pos: (-4.0, 0.0, -8.8)
+[WorkEventLogger] Logged: [EVT-0002] Picking | T: 0.72s - 1.22s (0.50s) | Dist: 0.00m | Order: ORD-GEN-55555-001 | SKU: SKU-0005 | Loc: A01-L-B02-T02-S01 | Pos: (-4.0, 0.0, -8.8)
+[OrderManager] Pick SUCCESS! Picked 'Cherry Tomatoes Punnet 250g' (SKU-0050). Order fulfilled: True
+[WorkEventLogger] Logged: [EVT-0003] MovingBetweenLocations | T: 1.22s - 1.22s (0.00s) | Dist: 0.00m | Order: ORD-GEN-55555-001 | SKU:  | Loc: PACK-01 | Pos: (-4.0, 0.0, -8.8)
+[WorkEventLogger] Logged: [EVT-0004] Picking | T: 1.22s - 1.72s (0.50s) | Dist: 0.00m | Order: ORD-GEN-55555-001 | SKU: SKU-0050 | Loc: A03-R-B02-T02-S01 | Pos: (-4.0, 0.0, -8.8)
+[OperationalCycleManager] All items picked! Proceed to Packing Desk (X=2.0, Z=-8.8).
+[OrderManager] Order 'ORD-GEN-55555-001' successfully completed and packed!
+[WorkEventLogger] Logged: [EVT-0005] MovingBetweenLocations | T: 1.72s - 1.72s (0.00s) | Dist: 0.00m | Order: ORD-GEN-55555-001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (-4.0, 0.0, -8.8)
+[WorkEventLogger] Logged: [EVT-0006] OrderCompleted | T: 1.72s - 2.52s (0.80s) | Dist: 0.00m | Order: ORD-GEN-55555-001 | SKU:  | Loc: PACK-01 | Pos: (-4.0, 0.0, -8.8)
+[OperationalCycleManager] Order deposited and packed at PACK-01. Walk to Exit (X=8.0, Z=-10.5).
+[WorkEventLogger] Logged: [EVT-0010] OrderCompleted | T: 2.52s - 2.57s (0.05s) | Dist: 0.00m | Order: ORD-GEN-55555-001 | SKU:  | Loc: EXIT | Pos: (8.0, 0.0, -10.5)
+[OperationalCycleManager] OPERATIONAL CYCLE COMPLETED! Total Cycle Time: 1.95s, Distance: 0.00m.
+]]></output>
+                </test-case>
+                <test-case id="1069" name="OperationalStage_FullCycleProgression_ReachesCompleted" fullname="VirtualDarkStore.Tests.Editor.Scenarios.OperationalWorkflowTests.OperationalStage_FullCycleProgression_ReachesCompleted" methodname="OperationalStage_FullCycleProgression_ReachesCompleted" classname="VirtualDarkStore.Tests.Editor.Scenarios.OperationalWorkflowTests" runstate="Runnable" seed="1217319708" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.015173" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.57s - 0.62s (0.05s) | Dist: 0.00m | Order:  | SKU:  | Loc: ENTRY | Pos: (-8.0, 0.0, -10.5)
+[OperationalCycleManager] Cycle STARTED at ENTRY. Proceed to Order Collection Desk (X=-4.0, Z=-8.8).
+[OrderManager] Dispatched new order: ORD-GEN-42001-001 (3 items)
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.62s - 0.62s (0.00s) | Dist: 0.00m | Order: ORD-GEN-42001-001 | SKU: SKU-0009 | Loc: A01-L-B03-T03-S01 | Pos: (-8.0, 0.0, -10.5)
+[OperationalCycleManager] Preserved baseline pick sequence: [Baseline (Original Order Sequence)] Success=True, Cost=45.39m (Baseline=45.39m, Saved=0.0%), Route=0 -> 1 -> 2 -> 3 -> 4, Proven=False
+[WorkEventLogger] Logged: [EVT-0003] Waiting | T: 0.62s - 0.72s (0.10s) | Dist: 0.00m | Order: ORD-GEN-42001-001 | SKU:  | Loc: ORDER_COLLECTION | Pos: (-4.0, 0.0, -8.8)
+[OperationalCycleManager] Collected order ORD-GEN-42001-001 (3 items). Proceed to pick items in sequence.
+[OrderManager] Pick SUCCESS! Picked 'Electrolyte Hydration Drink 500ml' (SKU-0009). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.72s - 0.72s (0.00s) | Dist: 0.00m | Order: ORD-GEN-42001-001 | SKU: SKU-0051 | Loc: A03-R-B02-T03-S01 | Pos: (-4.0, 0.0, -8.8)
+[WorkEventLogger] Logged: [EVT-0002] Picking | T: 0.72s - 1.22s (0.50s) | Dist: 0.00m | Order: ORD-GEN-42001-001 | SKU: SKU-0009 | Loc: A01-L-B03-T03-S01 | Pos: (-4.0, 0.0, -8.8)
+[OrderManager] Pick SUCCESS! Picked 'Avocados Ready-to-Eat 2-Pack' (SKU-0051). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0003] MovingBetweenLocations | T: 1.22s - 1.22s (0.00s) | Dist: 0.00m | Order: ORD-GEN-42001-001 | SKU: SKU-0070 | Loc: A04-R-B03-T01-S01 | Pos: (-4.0, 0.0, -8.8)
+[WorkEventLogger] Logged: [EVT-0004] Picking | T: 1.22s - 1.72s (0.50s) | Dist: 0.00m | Order: ORD-GEN-42001-001 | SKU: SKU-0051 | Loc: A03-R-B02-T03-S01 | Pos: (-4.0, 0.0, -8.8)
+[OrderManager] Pick SUCCESS! Picked 'Microfiber Cleaning Cloths 4-Pack' (SKU-0070). Order fulfilled: True
+[WorkEventLogger] Logged: [EVT-0005] MovingBetweenLocations | T: 1.72s - 1.72s (0.00s) | Dist: 0.00m | Order: ORD-GEN-42001-001 | SKU:  | Loc: PACK-01 | Pos: (-4.0, 0.0, -8.8)
+[WorkEventLogger] Logged: [EVT-0006] Picking | T: 1.72s - 2.22s (0.50s) | Dist: 0.00m | Order: ORD-GEN-42001-001 | SKU: SKU-0070 | Loc: A04-R-B03-T01-S01 | Pos: (-4.0, 0.0, -8.8)
+[OperationalCycleManager] All items picked! Proceed to Packing Desk (X=2.0, Z=-8.8).
+[OrderManager] Order 'ORD-GEN-42001-001' successfully completed and packed!
+[WorkEventLogger] Logged: [EVT-0007] MovingBetweenLocations | T: 2.22s - 2.22s (0.00s) | Dist: 0.00m | Order: ORD-GEN-42001-001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (-4.0, 0.0, -8.8)
+[WorkEventLogger] Logged: [EVT-0008] OrderCompleted | T: 2.22s - 3.02s (0.80s) | Dist: 0.00m | Order: ORD-GEN-42001-001 | SKU:  | Loc: PACK-01 | Pos: (-4.0, 0.0, -8.8)
+[OperationalCycleManager] Order deposited and packed at PACK-01. Walk to Exit (X=8.0, Z=-10.5).
+[WorkEventLogger] Logged: [EVT-0012] OrderCompleted | T: 3.02s - 3.07s (0.05s) | Dist: 0.00m | Order: ORD-GEN-42001-001 | SKU:  | Loc: EXIT | Pos: (8.0, 0.0, -10.5)
+[OperationalCycleManager] OPERATIONAL CYCLE COMPLETED! Total Cycle Time: 2.45s, Distance: 0.00m.
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestSuite" id="1105" name="Environment" fullname="VirtualDarkStore.Tests.Environment" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.043987" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1036" name="PhysicalLocationLabelTests" fullname="VirtualDarkStore.Tests.Environment.PhysicalLocationLabelTests" classname="VirtualDarkStore.Tests.Environment.PhysicalLocationLabelTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.042850" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1037" name="AisleHeaderLabel_InitializesWithCorrectLocationIdAndProperties" fullname="VirtualDarkStore.Tests.Environment.PhysicalLocationLabelTests.AisleHeaderLabel_InitializesWithCorrectLocationIdAndProperties" methodname="AisleHeaderLabel_InitializesWithCorrectLocationIdAndProperties" classname="VirtualDarkStore.Tests.Environment.PhysicalLocationLabelTests" runstate="Runnable" seed="1698077510" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.026817" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1038" name="BayRackPlacard_MatchesStructuredLocationHierarchy" fullname="VirtualDarkStore.Tests.Environment.PhysicalLocationLabelTests.BayRackPlacard_MatchesStructuredLocationHierarchy" methodname="BayRackPlacard_MatchesStructuredLocationHierarchy" classname="VirtualDarkStore.Tests.Environment.PhysicalLocationLabelTests" runstate="Runnable" seed="2035199262" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.001492" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1041" name="PickerHoverPrompt_IncludesExactSlotLocationId" fullname="VirtualDarkStore.Tests.Environment.PhysicalLocationLabelTests.PickerHoverPrompt_IncludesExactSlotLocationId" methodname="PickerHoverPrompt_IncludesExactSlotLocationId" classname="VirtualDarkStore.Tests.Environment.PhysicalLocationLabelTests" runstate="Runnable" seed="1072313416" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.007089" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1040" name="ProductSlotTicket_MatchesSimulationLocationAndSkuMapping" fullname="VirtualDarkStore.Tests.Environment.PhysicalLocationLabelTests.ProductSlotTicket_MatchesSimulationLocationAndSkuMapping" methodname="ProductSlotTicket_MatchesSimulationLocationAndSkuMapping" classname="VirtualDarkStore.Tests.Environment.PhysicalLocationLabelTests" runstate="Runnable" seed="964711587" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.005120" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 432 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1039" name="ShelfLevelTag_AlignsWithTierIndices" fullname="VirtualDarkStore.Tests.Environment.PhysicalLocationLabelTests.ShelfLevelTag_AlignsWithTierIndices" methodname="ShelfLevelTag_AlignsWithTierIndices" classname="VirtualDarkStore.Tests.Environment.PhysicalLocationLabelTests" runstate="Runnable" seed="624266909" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.000918" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestSuite" id="1104" name="Scenarios" fullname="VirtualDarkStore.Tests.Scenarios" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.185499" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1030" name="ScenarioTests" fullname="VirtualDarkStore.Tests.Scenarios.ScenarioTests" classname="VirtualDarkStore.Tests.Scenarios.ScenarioTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.182995" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1034" name="Comparison_FlagsNonEquivalentConditions" fullname="VirtualDarkStore.Tests.Scenarios.ScenarioTests.Comparison_FlagsNonEquivalentConditions" methodname="Comparison_FlagsNonEquivalentConditions" classname="VirtualDarkStore.Tests.Scenarios.ScenarioTests" runstate="Runnable" seed="120645382" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.049486" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+[OrderManager] Dispatched new order: [Order ORD-SCN-0001] Status: InProgress, Items: 4, Current: 1/4
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 1.00s (1.00s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0002] MovingBetweenLocations | T: 1.00s - 7.79s (6.79s) | Dist: 9.50m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (-6.0, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0003] Approaching | T: 7.79s - 9.17s (1.39s) | Dist: 1.80m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (-6.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Orange Juice Fresh 1L' (SKU-0003). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0004] Searching | T: 9.17s - 11.07s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0005] Picking | T: 11.07s - 11.57s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (-6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0006] MovingBetweenLocations | T: 11.57s - 20.71s (9.14s) | Dist: 12.80m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-2.0, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0007] Approaching | T: 20.71s - 22.10s (1.39s) | Dist: 1.80m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-2.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Tortilla Chips Jalapeno 200g' (SKU-0030). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0008] Searching | T: 22.10s - 24.00s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (-2.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0009] Picking | T: 24.00s - 24.50s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-2.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0010] MovingBetweenLocations | T: 24.50s - 39.34s (14.84s) | Dist: 20.78m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (2.0, 0.0, 3.0)
+[WorkEventLogger] Logged: [EVT-0011] Approaching | T: 39.34s - 40.74s (1.40s) | Dist: 1.82m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (2.0, 0.0, 4.8)
+[OrderManager] Pick SUCCESS! Picked 'Basmati Rice Royal 1kg' (SKU-0045). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0012] Searching | T: 40.74s - 42.64s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (2.0, 0.0, 4.8)
+[WorkEventLogger] Logged: [EVT-0013] Picking | T: 42.64s - 43.14s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (2.0, 0.0, 4.8)
+[WorkEventLogger] Logged: [EVT-0014] MovingBetweenLocations | T: 43.14s - 58.00s (14.86s) | Dist: 20.80m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (6.0, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0015] Approaching | T: 58.00s - 59.39s (1.39s) | Dist: 1.80m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (6.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Dishwashing Liquid Citrus 500ml' (SKU-0066). Order fulfilled: True
+[WorkEventLogger] Logged: [EVT-0016] Searching | T: 59.39s - 61.29s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0017] Picking | T: 61.29s - 61.79s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0018] MovingBetweenLocations | T: 61.79s - 67.87s (6.09s) | Dist: 8.52m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (2.8, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0019] Approaching | T: 67.87s - 69.96s (2.09s) | Dist: 2.78m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[OrderManager] Order 'ORD-SCN-0001' successfully completed and packed!
+[WorkEventLogger] Logged: [EVT-0020] Packing | T: 69.96s - 71.86s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0021] OrderCompleted | T: 71.86s - 72.66s (0.80s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[OrderManager] Dispatched new order: [Order ORD-SCN-0001] Status: InProgress, Items: 4, Current: 1/4
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 1.00s (1.00s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0002] MovingBetweenLocations | T: 1.00s - 6.23s (5.23s) | Dist: 9.42m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (-6.0, 0.0, -5.1)
+[WorkEventLogger] Logged: [EVT-0003] Approaching | T: 6.23s - 7.38s (1.14s) | Dist: 1.88m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (-6.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Orange Juice Fresh 1L' (SKU-0003). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0004] Searching | T: 7.38s - 9.28s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (-6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0005] Picking | T: 9.28s - 9.78s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (-6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0006] MovingBetweenLocations | T: 9.78s - 23.57s (13.79s) | Dist: 24.82m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (2.0, 0.0, 3.0)
+[WorkEventLogger] Logged: [EVT-0007] Approaching | T: 23.57s - 24.66s (1.09s) | Dist: 1.78m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (2.0, 0.0, 4.8)
+[OrderManager] Pick SUCCESS! Picked 'Basmati Rice Royal 1kg' (SKU-0045). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0008] Searching | T: 24.66s - 26.56s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (2.0, 0.0, 4.8)
+[WorkEventLogger] Logged: [EVT-0009] Picking | T: 26.56s - 27.06s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (2.0, 0.0, 4.8)
+[WorkEventLogger] Logged: [EVT-0010] MovingBetweenLocations | T: 27.06s - 38.57s (11.51s) | Dist: 20.72m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-2.0, 0.0, -5.1)
+[WorkEventLogger] Logged: [EVT-0011] Approaching | T: 38.57s - 39.71s (1.14s) | Dist: 1.88m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-2.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Tortilla Chips Jalapeno 200g' (SKU-0030). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0012] Searching | T: 39.71s - 41.61s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (-2.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0013] Picking | T: 41.61s - 42.11s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-2.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0014] MovingBetweenLocations | T: 42.11s - 51.40s (9.29s) | Dist: 16.72m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (6.0, 0.0, -5.1)
+[WorkEventLogger] Logged: [EVT-0015] Approaching | T: 51.40s - 52.54s (1.14s) | Dist: 1.88m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (6.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Dishwashing Liquid Citrus 500ml' (SKU-0066). Order fulfilled: True
+[WorkEventLogger] Logged: [EVT-0016] Searching | T: 52.54s - 54.44s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0017] Picking | T: 54.44s - 54.94s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0018] MovingBetweenLocations | T: 54.94s - 59.69s (4.74s) | Dist: 8.54m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (2.8, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0019] Approaching | T: 59.69s - 61.32s (1.63s) | Dist: 2.76m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[OrderManager] Order 'ORD-SCN-0001' successfully completed and packed!
+[WorkEventLogger] Logged: [EVT-0020] Packing | T: 61.32s - 63.22s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0021] OrderCompleted | T: 63.22s - 64.02s (0.80s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[OrderManager] Dispatched new order: [Order ORD-SCN-0001] Status: InProgress, Items: 2, Current: 1/2
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 1.00s (1.00s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0002] MovingBetweenLocations | T: 1.00s - 7.79s (6.79s) | Dist: 9.50m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (-6.0, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0003] Approaching | T: 7.79s - 9.17s (1.39s) | Dist: 1.80m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (-6.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Orange Juice Fresh 1L' (SKU-0003). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0004] Searching | T: 9.17s - 11.07s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0005] Picking | T: 11.07s - 11.57s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (-6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0006] MovingBetweenLocations | T: 11.57s - 20.71s (9.14s) | Dist: 12.80m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-2.0, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0007] Approaching | T: 20.71s - 22.10s (1.39s) | Dist: 1.80m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-2.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Tortilla Chips Jalapeno 200g' (SKU-0030). Order fulfilled: True
+[WorkEventLogger] Logged: [EVT-0008] Searching | T: 22.10s - 24.00s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (-2.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0009] Picking | T: 24.00s - 24.50s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-2.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0010] MovingBetweenLocations | T: 24.50s - 27.50s (3.00s) | Dist: 4.20m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (-2.0, 0.0, -7.4)
+[WorkEventLogger] Logged: [EVT-0011] Approaching | T: 27.50s - 29.81s (2.31s) | Dist: 3.10m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[OrderManager] Order 'ORD-SCN-0001' successfully completed and packed!
+[WorkEventLogger] Logged: [EVT-0012] Packing | T: 29.81s - 31.71s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0013] OrderCompleted | T: 31.71s - 32.51s (0.80s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+]]></output>
+              </test-case>
+              <test-case id="1031" name="Definition_Validation_RejectsBadInput" fullname="VirtualDarkStore.Tests.Scenarios.ScenarioTests.Definition_Validation_RejectsBadInput" methodname="Definition_Validation_RejectsBadInput" classname="VirtualDarkStore.Tests.Scenarios.ScenarioTests" runstate="Runnable" seed="2043647786" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.003800" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1033" name="Run_IsDeterministic_AndUsesRealClassifierEvents" fullname="VirtualDarkStore.Tests.Scenarios.ScenarioTests.Run_IsDeterministic_AndUsesRealClassifierEvents" methodname="Run_IsDeterministic_AndUsesRealClassifierEvents" classname="VirtualDarkStore.Tests.Scenarios.ScenarioTests" runstate="Runnable" seed="113256153" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.030959" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+[OrderManager] Dispatched new order: [Order ORD-SCN-0001] Status: InProgress, Items: 4, Current: 1/4
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 1.00s (1.00s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0002] MovingBetweenLocations | T: 1.00s - 7.79s (6.79s) | Dist: 9.50m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (-6.0, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0003] Approaching | T: 7.79s - 9.17s (1.39s) | Dist: 1.80m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (-6.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Orange Juice Fresh 1L' (SKU-0003). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0004] Searching | T: 9.17s - 11.07s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0005] Picking | T: 11.07s - 11.57s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (-6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0006] MovingBetweenLocations | T: 11.57s - 20.71s (9.14s) | Dist: 12.80m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-2.0, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0007] Approaching | T: 20.71s - 22.10s (1.39s) | Dist: 1.80m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-2.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Tortilla Chips Jalapeno 200g' (SKU-0030). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0008] Searching | T: 22.10s - 24.00s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (-2.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0009] Picking | T: 24.00s - 24.50s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-2.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0010] MovingBetweenLocations | T: 24.50s - 39.34s (14.84s) | Dist: 20.78m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (2.0, 0.0, 3.0)
+[WorkEventLogger] Logged: [EVT-0011] Approaching | T: 39.34s - 40.74s (1.40s) | Dist: 1.82m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (2.0, 0.0, 4.8)
+[OrderManager] Pick SUCCESS! Picked 'Basmati Rice Royal 1kg' (SKU-0045). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0012] Searching | T: 40.74s - 42.64s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (2.0, 0.0, 4.8)
+[WorkEventLogger] Logged: [EVT-0013] Picking | T: 42.64s - 43.14s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (2.0, 0.0, 4.8)
+[WorkEventLogger] Logged: [EVT-0014] MovingBetweenLocations | T: 43.14s - 58.00s (14.86s) | Dist: 20.80m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (6.0, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0015] Approaching | T: 58.00s - 59.39s (1.39s) | Dist: 1.80m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (6.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Dishwashing Liquid Citrus 500ml' (SKU-0066). Order fulfilled: True
+[WorkEventLogger] Logged: [EVT-0016] Searching | T: 59.39s - 61.29s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0017] Picking | T: 61.29s - 61.79s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0018] MovingBetweenLocations | T: 61.79s - 67.87s (6.09s) | Dist: 8.52m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (2.8, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0019] Approaching | T: 67.87s - 69.96s (2.09s) | Dist: 2.78m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[OrderManager] Order 'ORD-SCN-0001' successfully completed and packed!
+[WorkEventLogger] Logged: [EVT-0020] Packing | T: 69.96s - 71.86s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0021] OrderCompleted | T: 71.86s - 72.66s (0.80s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[OrderManager] Dispatched new order: [Order ORD-SCN-0001] Status: InProgress, Items: 4, Current: 1/4
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 1.00s (1.00s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0002] MovingBetweenLocations | T: 1.00s - 7.79s (6.79s) | Dist: 9.50m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (-6.0, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0003] Approaching | T: 7.79s - 9.17s (1.39s) | Dist: 1.80m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (-6.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Orange Juice Fresh 1L' (SKU-0003). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0004] Searching | T: 9.17s - 11.07s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0005] Picking | T: 11.07s - 11.57s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (-6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0006] MovingBetweenLocations | T: 11.57s - 20.71s (9.14s) | Dist: 12.80m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-2.0, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0007] Approaching | T: 20.71s - 22.10s (1.39s) | Dist: 1.80m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-2.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Tortilla Chips Jalapeno 200g' (SKU-0030). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0008] Searching | T: 22.10s - 24.00s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (-2.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0009] Picking | T: 24.00s - 24.50s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-2.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0010] MovingBetweenLocations | T: 24.50s - 39.34s (14.84s) | Dist: 20.78m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (2.0, 0.0, 3.0)
+[WorkEventLogger] Logged: [EVT-0011] Approaching | T: 39.34s - 40.74s (1.40s) | Dist: 1.82m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (2.0, 0.0, 4.8)
+[OrderManager] Pick SUCCESS! Picked 'Basmati Rice Royal 1kg' (SKU-0045). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0012] Searching | T: 40.74s - 42.64s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (2.0, 0.0, 4.8)
+[WorkEventLogger] Logged: [EVT-0013] Picking | T: 42.64s - 43.14s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (2.0, 0.0, 4.8)
+[WorkEventLogger] Logged: [EVT-0014] MovingBetweenLocations | T: 43.14s - 58.00s (14.86s) | Dist: 20.80m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (6.0, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0015] Approaching | T: 58.00s - 59.39s (1.39s) | Dist: 1.80m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (6.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Dishwashing Liquid Citrus 500ml' (SKU-0066). Order fulfilled: True
+[WorkEventLogger] Logged: [EVT-0016] Searching | T: 59.39s - 61.29s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0017] Picking | T: 61.29s - 61.79s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0018] MovingBetweenLocations | T: 61.79s - 67.87s (6.09s) | Dist: 8.52m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (2.8, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0019] Approaching | T: 67.87s - 69.96s (2.09s) | Dist: 2.78m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[OrderManager] Order 'ORD-SCN-0001' successfully completed and packed!
+[WorkEventLogger] Logged: [EVT-0020] Packing | T: 69.96s - 71.86s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0021] OrderCompleted | T: 71.86s - 72.66s (0.80s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+]]></output>
+              </test-case>
+              <test-case id="1032" name="SaveLoad_RoundTripsScenarioExactly" fullname="VirtualDarkStore.Tests.Scenarios.ScenarioTests.SaveLoad_RoundTripsScenarioExactly" methodname="SaveLoad_RoundTripsScenarioExactly" classname="VirtualDarkStore.Tests.Scenarios.ScenarioTests" runstate="Runnable" seed="239060078" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.008298" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1035" name="TwoScenarios_RunCompareAndExportEvidence" fullname="VirtualDarkStore.Tests.Scenarios.ScenarioTests.TwoScenarios_RunCompareAndExportEvidence" methodname="TwoScenarios_RunCompareAndExportEvidence" classname="VirtualDarkStore.Tests.Scenarios.ScenarioTests" runstate="Runnable" seed="1613148933" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.088118" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+[Phase6] SKU-0003 -> A01-L-B01-T03-S01 @ (-7.20, 1.95, -3.20)
+[Phase6] SKU-0030 -> A02-R-B01-T03-S01 @ (-0.80, 1.95, -3.20)
+[Phase6] SKU-0045 -> A03-L-B03-T03-S01 @ (0.80, 1.95, 4.80)
+[Phase6] SKU-0066 -> A04-R-B01-T03-S01 @ (7.20, 1.95, -3.20)
+[OrderManager] Dispatched new order: [Order ORD-SCN-0001] Status: InProgress, Items: 4, Current: 1/4
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 1.00s (1.00s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0002] MovingBetweenLocations | T: 1.00s - 7.79s (6.79s) | Dist: 9.50m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (-6.0, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0003] Approaching | T: 7.79s - 9.17s (1.39s) | Dist: 1.80m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (-6.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Orange Juice Fresh 1L' (SKU-0003). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0004] Searching | T: 9.17s - 11.07s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0005] Picking | T: 11.07s - 11.57s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (-6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0006] MovingBetweenLocations | T: 11.57s - 20.71s (9.14s) | Dist: 12.80m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-2.0, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0007] Approaching | T: 20.71s - 22.10s (1.39s) | Dist: 1.80m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-2.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Tortilla Chips Jalapeno 200g' (SKU-0030). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0008] Searching | T: 22.10s - 24.00s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (-2.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0009] Picking | T: 24.00s - 24.50s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-2.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0010] MovingBetweenLocations | T: 24.50s - 39.34s (14.84s) | Dist: 20.78m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (2.0, 0.0, 3.0)
+[WorkEventLogger] Logged: [EVT-0011] Approaching | T: 39.34s - 40.74s (1.40s) | Dist: 1.82m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (2.0, 0.0, 4.8)
+[OrderManager] Pick SUCCESS! Picked 'Basmati Rice Royal 1kg' (SKU-0045). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0012] Searching | T: 40.74s - 42.64s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (2.0, 0.0, 4.8)
+[WorkEventLogger] Logged: [EVT-0013] Picking | T: 42.64s - 43.14s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (2.0, 0.0, 4.8)
+[WorkEventLogger] Logged: [EVT-0014] MovingBetweenLocations | T: 43.14s - 58.00s (14.86s) | Dist: 20.80m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (6.0, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0015] Approaching | T: 58.00s - 59.39s (1.39s) | Dist: 1.80m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (6.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Dishwashing Liquid Citrus 500ml' (SKU-0066). Order fulfilled: True
+[WorkEventLogger] Logged: [EVT-0016] Searching | T: 59.39s - 61.29s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0017] Picking | T: 61.29s - 61.79s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0018] MovingBetweenLocations | T: 61.79s - 67.87s (6.09s) | Dist: 8.52m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (2.8, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0019] Approaching | T: 67.87s - 69.96s (2.09s) | Dist: 2.78m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[OrderManager] Order 'ORD-SCN-0001' successfully completed and packed!
+[WorkEventLogger] Logged: [EVT-0020] Packing | T: 69.96s - 71.86s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0021] OrderCompleted | T: 71.86s - 72.66s (0.80s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[OrderManager] Dispatched new order: [Order ORD-SCN-0001] Status: InProgress, Items: 4, Current: 1/4
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 1.00s (1.00s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0002] MovingBetweenLocations | T: 1.00s - 7.79s (6.79s) | Dist: 9.50m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (-6.0, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0003] Approaching | T: 7.79s - 9.17s (1.39s) | Dist: 1.80m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (-6.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Orange Juice Fresh 1L' (SKU-0003). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0004] Searching | T: 9.17s - 11.07s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (-6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0005] Picking | T: 11.07s - 11.57s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0003 | Loc: A01-L-B01-T03-S01 | Pos: (-6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0006] MovingBetweenLocations | T: 11.57s - 29.27s (17.70s) | Dist: 24.78m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (2.0, 0.0, 3.0)
+[WorkEventLogger] Logged: [EVT-0007] Approaching | T: 29.27s - 30.67s (1.40s) | Dist: 1.82m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (2.0, 0.0, 4.8)
+[OrderManager] Pick SUCCESS! Picked 'Basmati Rice Royal 1kg' (SKU-0045). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0008] Searching | T: 30.67s - 32.57s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (2.0, 0.0, 4.8)
+[WorkEventLogger] Logged: [EVT-0009] Picking | T: 32.57s - 33.07s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0045 | Loc: A03-L-B03-T03-S01 | Pos: (2.0, 0.0, 4.8)
+[WorkEventLogger] Logged: [EVT-0010] MovingBetweenLocations | T: 33.07s - 47.93s (14.86s) | Dist: 20.80m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-2.0, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0011] Approaching | T: 47.93s - 49.31s (1.39s) | Dist: 1.80m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-2.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Tortilla Chips Jalapeno 200g' (SKU-0030). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0012] Searching | T: 49.31s - 51.21s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (-2.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0013] Picking | T: 51.21s - 51.71s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0030 | Loc: A02-R-B01-T03-S01 | Pos: (-2.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0014] MovingBetweenLocations | T: 51.71s - 63.71s (12.00s) | Dist: 16.80m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (6.0, 0.0, -5.0)
+[WorkEventLogger] Logged: [EVT-0015] Approaching | T: 63.71s - 65.10s (1.39s) | Dist: 1.80m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (6.0, 0.0, -3.2)
+[OrderManager] Pick SUCCESS! Picked 'Dishwashing Liquid Citrus 500ml' (SKU-0066). Order fulfilled: True
+[WorkEventLogger] Logged: [EVT-0016] Searching | T: 65.10s - 67.00s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0017] Picking | T: 67.00s - 67.50s (0.50s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU: SKU-0066 | Loc: A04-R-B01-T03-S01 | Pos: (6.0, 0.0, -3.2)
+[WorkEventLogger] Logged: [EVT-0018] MovingBetweenLocations | T: 67.50s - 73.59s (6.09s) | Dist: 8.52m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (2.8, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0019] Approaching | T: 73.59s - 75.67s (2.09s) | Dist: 2.78m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[OrderManager] Order 'ORD-SCN-0001' successfully completed and packed!
+[WorkEventLogger] Logged: [EVT-0020] Packing | T: 75.67s - 77.57s (1.90s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0021] OrderCompleted | T: 77.57s - 78.37s (0.80s) | Dist: 0.00m | Order: ORD-SCN-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[Phase6] 
+# Scenario A/B Comparison: SCN-A vs SCN-B
+
+> All values are MEASURED SIMULATION RESULTS from recorded virtual-picker runs in this simulation. They are not predictions and not real-world measurements.
+
+- A: **Scenario A: catalogue-number sequence** (`SCN-A`), recorded 2026-11-02T19:42:05.719+05:30
+  - SKU sequence: SKU-0003 → SKU-0030 → SKU-0045 → SKU-0066
+- B: **Scenario B: alternate sequence** (`SCN-B`), recorded 2026-11-02T19:42:05.730+05:30
+  - SKU sequence: SKU-0003 → SKU-0045 → SKU-0030 → SKU-0066
+- Equivalent starting conditions: **YES**
+- Factor varied between A and B: pick/visit sequence
+- Duration/percentage reconciliation (both runs): PASS
+- Events recorded: A=21, B=21
+
+## KPI comparison (Delta = B − A)
+
+| Metric | Unit | A | B | Delta (B−A) | Delta % |
+|---|---|---:|---:|---:|---:|
+| Total task time | s | 72.66 | 78.37 | +5.71 | 7.9% |
+| Walking / travel time | s | 59.36 | 65.07 | +5.71 | 9.6% |
+| Searching time | s | 7.60 | 7.60 | 0.00 | 0.0% |
+| Picking time | s | 2.00 | 2.00 | 0.00 | 0.0% |
+| Waiting time | s | 1.00 | 1.00 | 0.00 | 0.0% |
+| Packing time | s | 1.90 | 1.90 | 0.00 | 0.0% |
+| Order-completed element | s | 0.80 | 0.80 | 0.00 | 0.0% |
+| Distance travelled | m | 82.40 | 90.40 | +8.00 | 9.7% |
+| Successful picks | count | 4.00 | 4.00 | 0.00 | 0.0% |
+| Shelf bay visits | count | 4.00 | 4.00 | 0.00 | 0.0% |
+
+## Activity distribution (share of total task time)
+
+| Metric | Unit | A | B | Delta (B−A) | Delta % |
+|---|---|---:|---:|---:|---:|
+| Walking / travel | % of time | 81.69 | 83.03 | +1.33 | 1.6% |
+| Searching | % of time | 10.46 | 9.70 | -0.76 | -7.3% |
+| Picking | % of time | 2.75 | 2.55 | -0.20 | -7.3% |
+| Waiting | % of time | 1.38 | 1.28 | -0.10 | -7.3% |
+| Packing | % of time | 2.62 | 2.42 | -0.19 | -7.3% |
+| Order completed | % of time | 1.10 | 1.02 | -0.08 | -7.3% |
+
+Walking / travel = General walking + Moving between locations + Approaching (as defined by `WorkStudyCalculator`).
+Distance is the horizontal path length accumulated by the classifier. Routing is a fixed straight-line rule, not NavMesh pathfinding.
+
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestSuite" id="1103" name="VR" fullname="VirtualDarkStore.Tests.VR" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.060620" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1022" name="VRRigTests" fullname="VirtualDarkStore.Tests.VR.VRRigTests" classname="VirtualDarkStore.Tests.VR.VRRigTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.058854" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1025" name="VRControllerInput_TracksSpatialPose_AndSimulatesButtons" fullname="VirtualDarkStore.Tests.VR.VRRigTests.VRControllerInput_TracksSpatialPose_AndSimulatesButtons" methodname="VRControllerInput_TracksSpatialPose_AndSimulatesButtons" classname="VirtualDarkStore.Tests.VR.VRRigTests" runstate="Runnable" seed="2016770735" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.010355" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1028" name="VRFulfillment_IntegrationWithActivityClassifier_AndWorkStudyCalculator" fullname="VirtualDarkStore.Tests.VR.VRRigTests.VRFulfillment_IntegrationWithActivityClassifier_AndWorkStudyCalculator" methodname="VRFulfillment_IntegrationWithActivityClassifier_AndWorkStudyCalculator" classname="VirtualDarkStore.Tests.VR.VRRigTests" runstate="Runnable" seed="1895838180" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.011693" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+[OrderManager] Dispatched new order: [Order ORD-VR-002] Status: InProgress, Items: 2, Current: 1/2
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 1.13s (1.13s) | Dist: 0.00m | Order: ORD-VR-002 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (0.0, 0.0, -8.0)
+[WorkEventLogger] Logged: [EVT-0002] MovingBetweenLocations | T: 1.13s - 4.00s (2.87s) | Dist: 9.00m | Order: ORD-VR-002 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.2, 0.4, -1.7)
+[WorkEventLogger] Logged: [EVT-0003] Approaching | T: 4.00s - 5.50s (1.50s) | Dist: 0.00m | Order: ORD-VR-002 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.2, 0.4, -1.7)
+[OrderManager] Pick SUCCESS! Picked 'Cold Brew Coffee 330ml' (SKU-0001). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0004] Searching | T: 5.50s - 5.50s (0.00s) | Dist: 0.00m | Order: ORD-VR-002 | SKU: SKU-0002 | Loc: A01-L-B01-T02-S01 | Pos: (-7.2, 0.4, -1.7)
+[WorkEventLogger] Logged: [EVT-0005] Picking | T: 5.50s - 6.00s (0.50s) | Dist: 0.00m | Order: ORD-VR-002 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.2, 0.4, -1.7)
+[WorkEventLogger] Logged: [EVT-0006] MovingBetweenLocations | T: 6.00s - 8.50s (2.50s) | Dist: 4.00m | Order: ORD-VR-002 | SKU: SKU-0002 | Loc: A01-L-B01-T02-S01 | Pos: (-7.2, 0.8, -3.2)
+[WorkEventLogger] Logged: [EVT-0007] Approaching | T: 8.50s - 12.20s (3.70s) | Dist: 2.00m | Order: ORD-VR-002 | SKU: SKU-0002 | Loc: A01-L-B01-T02-S01 | Pos: (-7.2, 1.2, -2.0)
+[OrderManager] Pick SUCCESS! Picked 'Sparkling Water Lemon 500ml' (SKU-0002). Order fulfilled: True
+[WorkEventLogger] Logged: [EVT-0008] Searching | T: 12.20s - 12.20s (0.00s) | Dist: 0.00m | Order: ORD-VR-002 | SKU:  | Loc: PACK-01 | Pos: (-7.2, 1.2, -2.0)
+[WorkEventLogger] Logged: [EVT-0009] Picking | T: 12.20s - 12.70s (0.50s) | Dist: 0.00m | Order: ORD-VR-002 | SKU: SKU-0002 | Loc: A01-L-B01-T02-S01 | Pos: (-7.2, 1.2, -2.0)
+[WorkEventLogger] Logged: [EVT-0010] MovingBetweenLocations | T: 12.70s - 17.50s (4.80s) | Dist: 8.00m | Order: ORD-VR-002 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0011] Approaching | T: 17.50s - 18.70s (1.20s) | Dist: 0.00m | Order: ORD-VR-002 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[OrderManager] Order 'ORD-VR-002' successfully completed and packed!
+[WorkEventLogger] Logged: [EVT-0012] Packing | T: 18.70s - 18.70s (0.00s) | Dist: 0.00m | Order: ORD-VR-002 | SKU:  | Loc: GENERAL_FLOOR | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0013] OrderCompleted | T: 18.70s - 19.50s (0.80s) | Dist: 0.00m | Order: ORD-VR-002 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[VR WorkStudy Summary]
+=== INDUSTRIAL WORK-STUDY SIMULATION RESULTS ===
+Total Task Time:   19.50 s
+Total Traveled:    23.00 m
+Successful Picks:  2
+Shelf Bay Visits:  2
+Processed Events:  13
+------------------------------------------------
+Activity Category Breakdown (Time-Study):
+  - Walking / Travel:     16.57 s  ( 85.0%)  [Moving: 10.17s, Approach: 6.40s, General: 0.00s]
+  - Searching Shelf:       0.00 s  (  0.0%)
+  - Item Picking:          1.00 s  (  5.1%)
+  - Waiting / Idle:        1.13 s  (  5.8%)
+  - Order Packing:         0.00 s  (  0.0%)
+  - Order Completed:       0.80 s  (  4.1%)
+------------------------------------------------
+Work-Sampling (Interval: 1.00 s, Total Samples: 20):
+  - Waiting               :    2 obs ( 10.0%)
+  - Approaching           :    6 obs ( 30.0%)
+  - Picking               :    1 obs (  5.0%)
+  - MovingBetweenLocations:   10 obs ( 50.0%)
+  - OrderCompleted        :    1 obs (  5.0%)
+================================================
+
+]]></output>
+              </test-case>
+              <test-case id="1029" name="VRHardware_Detection_ReportsActualStatus" fullname="VirtualDarkStore.Tests.VR.VRRigTests.VRHardware_Detection_ReportsActualStatus" methodname="VRHardware_Detection_ReportsActualStatus" classname="VirtualDarkStore.Tests.VR.VRRigTests" runstate="Runnable" seed="1223077446" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.008113" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+[VR Hardware Report] Status: NotRun, Device: None, Msg: NOT RUN: No physical VR headset detected in the current environment.
+]]></output>
+              </test-case>
+              <test-case id="1024" name="VRHeadTracking_ExposesOrientationAndRay_WithoutPhysiologicalClaims" fullname="VirtualDarkStore.Tests.VR.VRRigTests.VRHeadTracking_ExposesOrientationAndRay_WithoutPhysiologicalClaims" methodname="VRHeadTracking_ExposesOrientationAndRay_WithoutPhysiologicalClaims" classname="VirtualDarkStore.Tests.VR.VRRigTests" runstate="Runnable" seed="2169424" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.005268" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1027" name="VRLocomotion_ContinuousAndTeleportation_PreservesTravelDistanceMeasurement" fullname="VirtualDarkStore.Tests.VR.VRRigTests.VRLocomotion_ContinuousAndTeleportation_PreservesTravelDistanceMeasurement" methodname="VRLocomotion_ContinuousAndTeleportation_PreservesTravelDistanceMeasurement" classname="VirtualDarkStore.Tests.VR.VRRigTests" runstate="Runnable" seed="523296295" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.004925" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+[VRLocomotionController] Teleport rejected: Distance 25.00m exceeds max 10.00m.
+]]></output>
+              </test-case>
+              <test-case id="1026" name="VRPickerInteraction_ValidatesAndPicksItems_SharingSameOrderSystem" fullname="VirtualDarkStore.Tests.VR.VRRigTests.VRPickerInteraction_ValidatesAndPicksItems_SharingSameOrderSystem" methodname="VRPickerInteraction_ValidatesAndPicksItems_SharingSameOrderSystem" classname="VirtualDarkStore.Tests.VR.VRRigTests" runstate="Runnable" seed="1723147466" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.011128" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+[OrderManager] Dispatched new order: [Order ORD-VR-001] Status: InProgress, Items: 1, Current: 1/1
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 1.13s (1.13s) | Dist: 0.00m | Order: ORD-VR-001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (0.0, 0.0, -8.0)
+[OrderManager] Pick SUCCESS! Picked 'Cold Brew Coffee 330ml' (SKU-0001). Order fulfilled: True
+[WorkEventLogger] Logged: [EVT-0002] MovingBetweenLocations | T: 1.13s - 1.13s (0.00s) | Dist: 0.00m | Order: ORD-VR-001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.0)
+[WorkEventLogger] Logged: [EVT-0003] Picking | T: 1.13s - 1.63s (0.50s) | Dist: 0.00m | Order: ORD-VR-001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (0.0, 0.0, -8.0)
+[OrderManager] Order 'ORD-VR-001' successfully completed and packed!
+[WorkEventLogger] Logged: [EVT-0004] MovingBetweenLocations | T: 1.63s - 1.63s (0.00s) | Dist: 0.00m | Order: ORD-VR-001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (0.0, 0.0, -8.0)
+[WorkEventLogger] Logged: [EVT-0005] OrderCompleted | T: 1.63s - 2.43s (0.80s) | Dist: 0.00m | Order: ORD-VR-001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.0)
+]]></output>
+              </test-case>
+              <test-case id="1023" name="VRPlayerRig_InitializesHierarchy_AndTrackingComponents" fullname="VirtualDarkStore.Tests.VR.VRRigTests.VRPlayerRig_InitializesHierarchy_AndTrackingComponents" methodname="VRPlayerRig_InitializesHierarchy_AndTrackingComponents" classname="VirtualDarkStore.Tests.VR.VRRigTests" runstate="Runnable" seed="47342428" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.004009" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestSuite" id="1102" name="WorkStudy" fullname="VirtualDarkStore.Tests.WorkStudy" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.073184" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1011" name="WorkStudyCalculatorTests" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.027115" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1013" name="DeterministicScenario_CalculatesAccurateMetrics_AndReconciles" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests.DeterministicScenario_CalculatesAccurateMetrics_AndReconciles" methodname="DeterministicScenario_CalculatesAccurateMetrics_AndReconciles" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests" runstate="Runnable" seed="1176017747" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.005133" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+=== INDUSTRIAL WORK-STUDY SIMULATION RESULTS ===
+Total Task Time:   30.00 s
+Total Traveled:    33.50 m
+Successful Picks:  2
+Shelf Bay Visits:  2
+Processed Events:  12
+------------------------------------------------
+Activity Category Breakdown (Time-Study):
+  - Walking / Travel:     18.50 s  ( 61.7%)  [Moving: 15.00s, Approach: 3.50s, General: 0.00s]
+  - Searching Shelf:       5.00 s  ( 16.7%)
+  - Item Picking:          1.00 s  (  3.3%)
+  - Waiting / Idle:        2.00 s  (  6.7%)
+  - Order Packing:         3.00 s  ( 10.0%)
+  - Order Completed:       0.50 s  (  1.7%)
+------------------------------------------------
+Work-Sampling (Interval: 1.00 s, Total Samples: 31):
+  - Waiting               :    3 obs (  9.7%)
+  - Searching             :    5 obs ( 16.1%)
+  - Approaching           :    4 obs ( 12.9%)
+  - MovingBetweenLocations:   15 obs ( 48.4%)
+  - Packing               :    3 obs (  9.7%)
+  - OrderCompleted        :    1 obs (  3.2%)
+================================================
+
+]]></output>
+              </test-case>
+              <test-case id="1012" name="EmptyEventsList_ProducesZeroResults_ReconcilesSuccessfully" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests.EmptyEventsList_ProducesZeroResults_ReconcilesSuccessfully" methodname="EmptyEventsList_ProducesZeroResults_ReconcilesSuccessfully" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests" runstate="Runnable" seed="1267266769" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.003619" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1015" name="SampleOrderExecution_GeneratesFullyReconciledResults" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests.SampleOrderExecution_GeneratesFullyReconciledResults" methodname="SampleOrderExecution_GeneratesFullyReconciledResults" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests" runstate="Runnable" seed="1145830499" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.013269" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+[OrderManager] Dispatched new order: [Order ORD-0001] Status: InProgress, Items: 2, Current: 1/2
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 1.19s (1.19s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (0.0, 0.0, -8.0)
+[WorkEventLogger] Logged: [EVT-0002] MovingBetweenLocations | T: 1.19s - 4.00s (2.81s) | Dist: 9.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.2, 0.4, -1.7)
+[WorkEventLogger] Logged: [EVT-0003] Approaching | T: 4.00s - 5.50s (1.50s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.2, 0.4, -1.7)
+[OrderManager] Pick SUCCESS! Picked 'Cold Brew Coffee 330ml' (SKU-0001). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0004] Searching | T: 5.50s - 5.50s (0.00s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T02-S01 | Pos: (-7.2, 0.4, -1.7)
+[WorkEventLogger] Logged: [EVT-0005] Picking | T: 5.50s - 6.00s (0.50s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.2, 0.4, -1.7)
+[WorkEventLogger] Logged: [EVT-0006] MovingBetweenLocations | T: 6.00s - 11.00s (5.00s) | Dist: 6.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T02-S01 | Pos: (-7.2, 1.2, -2.0)
+[WorkEventLogger] Logged: [EVT-0007] Approaching | T: 11.00s - 12.20s (1.20s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T02-S01 | Pos: (-7.2, 1.2, -2.0)
+[OrderManager] Pick SUCCESS! Picked 'Sparkling Water Lemon 500ml' (SKU-0002). Order fulfilled: True
+[WorkEventLogger] Logged: [EVT-0008] Searching | T: 12.20s - 12.20s (0.00s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (-7.2, 1.2, -2.0)
+[WorkEventLogger] Logged: [EVT-0009] Picking | T: 12.20s - 12.70s (0.50s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T02-S01 | Pos: (-7.2, 1.2, -2.0)
+[WorkEventLogger] Logged: [EVT-0010] MovingBetweenLocations | T: 12.70s - 17.00s (4.30s) | Dist: 7.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0011] Approaching | T: 17.00s - 18.00s (1.00s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[OrderManager] Order 'ORD-0001' successfully completed and packed!
+[WorkEventLogger] Logged: [EVT-0012] Packing | T: 18.00s - 18.00s (0.00s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0013] OrderCompleted | T: 18.00s - 18.80s (0.80s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+=== INDUSTRIAL WORK-STUDY SIMULATION RESULTS ===
+Total Task Time:   18.80 s
+Total Traveled:    22.00 m
+Successful Picks:  2
+Shelf Bay Visits:  2
+Processed Events:  13
+------------------------------------------------
+Activity Category Breakdown (Time-Study):
+  - Walking / Travel:     15.81 s  ( 84.1%)  [Moving: 12.11s, Approach: 3.70s, General: 0.00s]
+  - Searching Shelf:       0.00 s  (  0.0%)
+  - Item Picking:          1.00 s  (  5.3%)
+  - Waiting / Idle:        1.19 s  (  6.3%)
+  - Order Packing:         0.00 s  (  0.0%)
+  - Order Completed:       0.80 s  (  4.3%)
+------------------------------------------------
+Work-Sampling (Interval: 1.00 s, Total Samples: 19):
+  - Waiting               :    2 obs ( 10.5%)
+  - Approaching           :    3 obs ( 15.8%)
+  - Picking               :    1 obs (  5.3%)
+  - MovingBetweenLocations:   13 obs ( 68.4%)
+================================================
+
+]]></output>
+              </test-case>
+              <test-case id="1014" name="WorkSampling_ConfigurableInterval_MatchesDiscreteObservationRule" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests.WorkSampling_ConfigurableInterval_MatchesDiscreteObservationRule" methodname="WorkSampling_ConfigurableInterval_MatchesDiscreteObservationRule" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyCalculatorTests" runstate="Runnable" seed="784202923" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.003760" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1016" name="WorkStudyInstrumentationTests" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.044998" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1020" name="ActivityClassifier_EvaluatesAll8Activities_AccordingToMeasurableRules" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests.ActivityClassifier_EvaluatesAll8Activities_AccordingToMeasurableRules" methodname="ActivityClassifier_EvaluatesAll8Activities_AccordingToMeasurableRules" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests" runstate="Runnable" seed="1925910665" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.003478" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1021" name="SampleOrderFulfillment_GeneratesOrderedNonNegativeEvents" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests.SampleOrderFulfillment_GeneratesOrderedNonNegativeEvents" methodname="SampleOrderFulfillment_GeneratesOrderedNonNegativeEvents" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests" runstate="Runnable" seed="661778259" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.019353" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+[OrderManager] Dispatched new order: [Order ORD-0001] Status: InProgress, Items: 2, Current: 1/2
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 1.22s (1.22s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (0.0, 0.0, -8.0)
+[WorkEventLogger] Logged: [EVT-0002] MovingBetweenLocations | T: 1.22s - 4.00s (2.78s) | Dist: 9.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.2, 0.4, -1.7)
+[WorkEventLogger] Logged: [EVT-0003] Approaching | T: 4.00s - 5.50s (1.50s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.2, 0.4, -1.7)
+[OrderManager] Pick SUCCESS! Picked 'Cold Brew Coffee 330ml' (SKU-0001). Order fulfilled: False
+[WorkEventLogger] Logged: [EVT-0004] Searching | T: 5.50s - 5.50s (0.00s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T02-S01 | Pos: (-7.2, 0.4, -1.7)
+[WorkEventLogger] Logged: [EVT-0005] Picking | T: 5.50s - 6.00s (0.50s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.2, 0.4, -1.7)
+[WorkEventLogger] Logged: [EVT-0006] MovingBetweenLocations | T: 6.00s - 8.50s (2.50s) | Dist: 4.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T02-S01 | Pos: (-7.2, 0.8, -3.2)
+[WorkEventLogger] Logged: [EVT-0007] Approaching | T: 8.50s - 12.20s (3.70s) | Dist: 2.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T02-S01 | Pos: (-7.2, 1.2, -2.0)
+[OrderManager] Pick SUCCESS! Picked 'Sparkling Water Lemon 500ml' (SKU-0002). Order fulfilled: True
+[WorkEventLogger] Logged: [EVT-0008] Searching | T: 12.20s - 12.20s (0.00s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (-7.2, 1.2, -2.0)
+[WorkEventLogger] Logged: [EVT-0009] Picking | T: 12.20s - 12.70s (0.50s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T02-S01 | Pos: (-7.2, 1.2, -2.0)
+[WorkEventLogger] Logged: [EVT-0010] MovingBetweenLocations | T: 12.70s - 17.50s (4.80s) | Dist: 8.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0011] Approaching | T: 17.50s - 18.70s (1.20s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[OrderManager] Order 'ORD-0001' successfully completed and packed!
+[WorkEventLogger] Logged: [EVT-0012] Packing | T: 18.70s - 18.70s (0.00s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (0.0, 0.0, -8.5)
+[WorkEventLogger] Logged: [EVT-0013] OrderCompleted | T: 18.70s - 19.50s (0.80s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+=== GENERATED WORK EVENTS: 13 TOTAL ===
+[EVT-0001] Waiting | T: 0.00s - 1.22s (1.22s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (0.0, 0.0, -8.0)
+[EVT-0002] MovingBetweenLocations | T: 1.22s - 4.00s (2.78s) | Dist: 9.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.2, 0.4, -1.7)
+[EVT-0003] Approaching | T: 4.00s - 5.50s (1.50s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.2, 0.4, -1.7)
+[EVT-0004] Searching | T: 5.50s - 5.50s (0.00s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T02-S01 | Pos: (-7.2, 0.4, -1.7)
+[EVT-0005] Picking | T: 5.50s - 6.00s (0.50s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0001 | Loc: A01-L-B01-T01-S01 | Pos: (-7.2, 0.4, -1.7)
+[EVT-0006] MovingBetweenLocations | T: 6.00s - 8.50s (2.50s) | Dist: 4.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T02-S01 | Pos: (-7.2, 0.8, -3.2)
+[EVT-0007] Approaching | T: 8.50s - 12.20s (3.70s) | Dist: 2.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T02-S01 | Pos: (-7.2, 1.2, -2.0)
+[EVT-0008] Searching | T: 12.20s - 12.20s (0.00s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (-7.2, 1.2, -2.0)
+[EVT-0009] Picking | T: 12.20s - 12.70s (0.50s) | Dist: 0.00m | Order: ORD-0001 | SKU: SKU-0002 | Loc: A01-L-B01-T02-S01 | Pos: (-7.2, 1.2, -2.0)
+[EVT-0010] MovingBetweenLocations | T: 12.70s - 17.50s (4.80s) | Dist: 8.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[EVT-0011] Approaching | T: 17.50s - 18.70s (1.20s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+[EVT-0012] Packing | T: 18.70s - 18.70s (0.00s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: GENERAL_FLOOR | Pos: (0.0, 0.0, -8.5)
+[EVT-0013] OrderCompleted | T: 18.70s - 19.50s (0.80s) | Dist: 0.00m | Order: ORD-0001 | SKU:  | Loc: PACK-01 | Pos: (0.0, 0.0, -8.5)
+]]></output>
+              </test-case>
+              <test-case id="1017" name="WorkEvent_CalculatesDuration_AndValidatesNonNegativeValues" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests.WorkEvent_CalculatesDuration_AndValidatesNonNegativeValues" methodname="WorkEvent_CalculatesDuration_AndValidatesNonNegativeValues" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests" runstate="Runnable" seed="1849972851" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.012045" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1018" name="WorkEvent_RejectsNegativeOrInvertedTimestamps" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests.WorkEvent_RejectsNegativeOrInvertedTimestamps" methodname="WorkEvent_RejectsNegativeOrInvertedTimestamps" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests" runstate="Runnable" seed="858168575" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.003588" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+]]></output>
+              </test-case>
+              <test-case id="1019" name="WorkEventLogger_MaintainsMonotonicOrderedTimestamps" fullname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests.WorkEventLogger_MaintainsMonotonicOrderedTimestamps" methodname="WorkEventLogger_MaintainsMonotonicOrderedTimestamps" classname="VirtualDarkStore.Tests.WorkStudy.WorkStudyInstrumentationTests" runstate="Runnable" seed="1927707712" result="Passed" start-time="2026-11-02 14:12:05Z" end-time="2026-11-02 14:12:05Z" duration="0.004418" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[StoreManager] Successfully verified store topology: 72 SKUs mapped to unique locations across 288 total slots (72 occupied).
+[WorkEventLogger] Logged: [EVT-0001] Waiting | T: 0.00s - 2.00s (2.00s) | Dist: 0.00m | Order:  | SKU:  | Loc:  | Pos: (0.0, 0.0, 0.0)
+[WorkEventLogger] Logged: [EVT-0002] Walking | T: 2.00s - 5.50s (3.50s) | Dist: 3.00m | Order:  | SKU:  | Loc:  | Pos: (3.0, 0.0, 0.0)
+[WorkEventLogger] Logged: [EVT-0003] Approaching | T: 5.50s - 7.00s (1.50s) | Dist: 2.00m | Order:  | SKU:  | Loc:  | Pos: (5.0, 0.0, 0.0)
+Saving results to: C:/Users/Mehul/AppData/LocalLow/DefaultCompany/WSD VR Project\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

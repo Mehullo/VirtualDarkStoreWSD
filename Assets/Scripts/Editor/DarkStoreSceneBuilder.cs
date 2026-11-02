@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -17,6 +18,13 @@ using VirtualDarkStore.WorkStudy;
 
 namespace VirtualDarkStore.Editor
 {
+    /// <summary>
+    /// Builds the primary simulation scene (DarkStore_Phase1.unity) upgraded into a realistic
+    /// generic quick-commerce dark store with 6 aisles (A01-A06), closed rack backs, designated entry zone,
+    /// order collection desk, picking area, packing/deposit desk, exit zone, overhead aisle labels,
+    /// solid physics collision, realistic walkable corridors, and baked NavMesh coverage.
+    /// Strictly complies with the RTX 2050 GPU budget.
+    /// </summary>
     public static class DarkStoreSceneBuilder
     {
         private const string SceneFolder = "Assets/Scenes";
@@ -26,7 +34,7 @@ namespace VirtualDarkStore.Editor
         [MenuItem("DarkStore/Build Phase 1 Scene")]
         public static void BuildDarkStorePhase1Scene()
         {
-            Debug.Log("[DarkStoreSceneBuilder] Starting Dark Store Scene Build (Phase 8 Polish & RTX 2050 Optimization)...");
+            Debug.Log("[DarkStoreSceneBuilder] Starting Dark Store Scene Build (Quick-Commerce A01-A06 & Structured Locations)...");
 
             if (!Directory.Exists(MaterialFolder))
             {
@@ -43,28 +51,33 @@ namespace VirtualDarkStore.Editor
             // Create shared GPU-instanced URP materials
             var floorMat = GetOrCreateMaterial("Mat_Floor_Concrete", new Color(0.32f, 0.34f, 0.36f), 0.08f, 0.28f);
             var wallMat = GetOrCreateMaterial("Mat_Wall_Drywall", new Color(0.76f, 0.78f, 0.80f), 0.0f, 0.2f);
-            var shelfMat = GetOrCreateMaterial("Mat_Shelf_Metal", new Color(0.20f, 0.30f, 0.44f), 0.4f, 0.55f); // Industrial blue uprights
+            var shelfMat = GetOrCreateMaterial("Mat_Shelf_Metal", new Color(0.20f, 0.30f, 0.44f), 0.4f, 0.55f); // Industrial blue uprights & backs
             var beamMat = GetOrCreateMaterial("Mat_Shelf_Beams", new Color(0.88f, 0.46f, 0.12f), 0.2f, 0.5f); // Safety orange beams
             var benchMat = GetOrCreateMaterial("Mat_Packing_Bench", new Color(0.26f, 0.28f, 0.31f), 0.15f, 0.4f);
             var zoneMat = GetOrCreateMaterial("Mat_Staging_Zone", new Color(0.95f, 0.78f, 0.15f), 0.0f, 0.25f); // Safety yellow
             var laneMat = GetOrCreateMaterial("Mat_Aisle_Guide", new Color(0.22f, 0.55f, 0.78f), 0.0f, 0.25f); // Aisle center stripe
             var toteMat = GetOrCreateMaterial("Mat_Tote_Container", new Color(0.15f, 0.48f, 0.82f), 0.1f, 0.45f); // Dispatch tote bin
+            var barrierMat = GetOrCreateMaterial("Mat_Barrier_Steel", new Color(0.85f, 0.85f, 0.88f), 0.5f, 0.6f); // Boundary barrier steel
 
             // 1. Root [Environment] Hierarchy
             var envRoot = new GameObject("[Environment]");
 
-            SetupLighting(envRoot);
-            SetupBuildingEnvelope(envRoot, floorMat, wallMat, zoneMat, laneMat);
-
-            // Aisles & Shelving Racks (4 Aisles)
-            var aislesRoot = new GameObject("Aisles");
-            aislesRoot.transform.SetParent(envRoot.transform);
-
-            float[] aisleXPositions = { -6.0f, -2.0f, 2.0f, 6.0f };
+            // 6-Aisle positions (3.0m pitch: 1.8m corridor + 2 * 0.6m rack depth)
+            float[] aisleXPositions = { -7.5f, -4.5f, -1.5f, 1.5f, 4.5f, 7.5f };
             float aisleLength = 12.0f;
             float rackDepth = 0.6f;
             float rackHeight = 2.4f;
             float aisleCorridorWidth = 1.8f;
+
+            SetupLighting(envRoot, aisleXPositions);
+            SetupBuildingEnvelope(envRoot, floorMat, wallMat, zoneMat, laneMat, aisleXPositions);
+
+            // Operational Front Zones (Entry, Order Collection, Packing/Deposit, Exit)
+            SetupOperationalFront(envRoot, benchMat, zoneMat, toteMat, barrierMat);
+
+            // Aisles & Shelving Racks (6 Aisles: A01 to A06 with product-facing shelves & closed backs)
+            var aislesRoot = new GameObject("Aisles");
+            aislesRoot.transform.SetParent(envRoot.transform);
 
             for (int i = 0; i < aisleXPositions.Length; i++)
             {
@@ -73,10 +86,7 @@ namespace VirtualDarkStore.Editor
                 BuildAisle(aislesRoot, aisleNum, x, aisleLength, aisleCorridorWidth, rackDepth, rackHeight, shelfMat, beamMat, zoneMat);
             }
 
-            // Packing & Staging Station
-            BuildPackingStation(envRoot, benchMat, zoneMat, toteMat);
-
-            // Physical Shelf Products (72 SKUs across all 4 aisles)
+            // Physical Shelf Products (144 SKUs distributed across all 6 aisles)
             BuildShelfProducts(envRoot);
 
             // 2. Player Rigs (Desktop active by default; VR ready & inactive until selected)
@@ -85,7 +95,12 @@ namespace VirtualDarkStore.Editor
 
             // 3. Core Simulation & Work-Study Managers
             var storeObj = new GameObject("[StoreManager]");
-            storeObj.AddComponent<StoreManager>();
+            var storeMgr = storeObj.AddComponent<StoreManager>();
+            var configField = typeof(StoreManager).GetField("configuration", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (configField != null)
+            {
+                configField.SetValue(storeMgr, StoreConfiguration.CreateQuickCommerce6AisleConfig());
+            }
 
             var orderObj = new GameObject("[OrderManager]");
             orderObj.AddComponent<OrderManager>();
@@ -100,6 +115,7 @@ namespace VirtualDarkStore.Editor
             workStudyObj.AddComponent<ScenarioComparisonUI>();
             workStudyObj.AddComponent<ScenarioRouteVisualizer>();
             workStudyObj.AddComponent<DemoFlowController>();
+            workStudyObj.AddComponent<OperationalCycleManager>();
             workStudyObj.AddComponent<SimulationErrorHandler>();
             var perfMgr = workStudyObj.AddComponent<PerformanceSettingsManager>();
             perfMgr.ApplyOptimizations();
@@ -110,7 +126,7 @@ namespace VirtualDarkStore.Editor
             // 5. Save Scene & Register in Build Settings
             EditorSceneManager.SaveScene(newScene, ScenePath);
             AssetDatabase.SaveAssets();
-            Debug.Log($"[DarkStoreSceneBuilder] Successfully generated and saved scene to {ScenePath}");
+            Debug.Log($"[DarkStoreSceneBuilder] Successfully generated and saved upgraded Quick-Commerce Dark Store scene to {ScenePath}");
 
             RegisterSceneInBuildSettings(ScenePath);
         }
@@ -137,14 +153,14 @@ namespace VirtualDarkStore.Editor
             return mat;
         }
 
-        private static void SetupLighting(GameObject parent)
+        private static void SetupLighting(GameObject parent, float[] aisleX)
         {
             var lightingRoot = new GameObject("Lighting");
             lightingRoot.transform.SetParent(parent.transform);
 
             var lightObj = new GameObject("Directional Light");
             lightObj.transform.SetParent(lightingRoot.transform);
-            lightObj.transform.position = new Vector3(0f, 6f, 0f);
+            lightObj.transform.position = new Vector3(0f, 6.5f, 0f);
             lightObj.transform.rotation = Quaternion.Euler(50f, -30f, 0f);
 
             var light = lightObj.AddComponent<Light>();
@@ -153,68 +169,215 @@ namespace VirtualDarkStore.Editor
             light.intensity = 1.25f;
             light.shadows = LightShadows.Soft;
 
-            // RTX 2050 budget: 8 high-bay ceiling point lights (2 per aisle) with LightShadows.None
+            // RTX 2050 budget: 6 high-bay ceiling point lights (1 per aisle) with LightShadows.None
             var ceilingLights = new GameObject("Ceiling_HighBay_Lights");
             ceilingLights.transform.SetParent(lightingRoot.transform);
 
-            float[] xPos = { -6f, -2f, 2f, 6f };
-            float[] zPos = { -1.5f, 5.5f };
-
-            foreach (var x in xPos)
+            foreach (var x in aisleX)
             {
-                foreach (var z in zPos)
-                {
-                    var ptLight = new GameObject($"HighBayLight_X{x}_Z{z}");
-                    ptLight.transform.SetParent(ceilingLights.transform);
-                    ptLight.transform.position = new Vector3(x, 3.8f, z);
+                var ptLight = new GameObject($"HighBayLight_X{x:F1}");
+                ptLight.transform.SetParent(ceilingLights.transform);
+                ptLight.transform.position = new Vector3(x, 3.8f, 2.0f);
 
-                    var pl = ptLight.AddComponent<Light>();
-                    pl.type = LightType.Point;
-                    pl.range = 8.5f;
-                    pl.intensity = 1.6f;
-                    pl.color = new Color(0.95f, 0.97f, 1.0f);
-                    pl.shadows = LightShadows.None;
-                }
+                var pl = ptLight.AddComponent<Light>();
+                pl.type = LightType.Point;
+                pl.range = 9.5f;
+                pl.intensity = 1.6f;
+                pl.color = new Color(0.95f, 0.97f, 1.0f);
+                pl.shadows = LightShadows.None;
+            }
+
+            // Operational front lighting (3 non-shadow casting lights over entry/collection, packing, exit)
+            float[] opX = { -6.0f, 0.0f, 6.0f };
+            foreach (var ox in opX)
+            {
+                var opLight = new GameObject($"OpLight_X{ox:F1}");
+                opLight.transform.SetParent(ceilingLights.transform);
+                opLight.transform.position = new Vector3(ox, 3.2f, -10.0f);
+
+                var pl = opLight.AddComponent<Light>();
+                pl.type = LightType.Point;
+                pl.range = 7.5f;
+                pl.intensity = 1.4f;
+                pl.color = new Color(0.98f, 0.98f, 0.95f);
+                pl.shadows = LightShadows.None;
             }
         }
 
-        private static void SetupBuildingEnvelope(GameObject parent, Material floorMat, Material wallMat, Material safetyMat, Material laneMat)
+        private static void SetupBuildingEnvelope(GameObject parent, Material floorMat, Material wallMat, Material safetyMat, Material laneMat, float[] aisleX)
         {
             var envelope = new GameObject("Envelope");
             envelope.transform.SetParent(parent.transform);
 
-            // Floor: 24m wide (X) x 28m deep (Z)
+            // Warehouse Floor: 26m wide (X) x 28m deep (Z)
             var floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
             floor.name = "Floor";
             floor.transform.SetParent(envelope.transform);
             floor.transform.position = new Vector3(0f, -0.1f, 0f);
-            floor.transform.localScale = new Vector3(24.0f, 0.2f, 28.0f);
+            floor.transform.localScale = new Vector3(26.0f, 0.2f, 28.0f);
             floor.GetComponent<MeshRenderer>().sharedMaterial = floorMat;
             GameObjectUtility.SetStaticEditorFlags(floor, StaticEditorFlags.OccluderStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.BatchingStatic);
 
             // Perimeter walls (Height: 4.5m, Thickness: 0.3m)
             float wallHeight = 4.5f;
             float wallThickness = 0.3f;
-            float halfX = 12.0f;
+            float halfX = 13.0f;
             float halfZ = 14.0f;
 
-            CreateWall(envelope, "Wall_North", new Vector3(0f, wallHeight * 0.5f, halfZ), new Vector3(24.0f, wallHeight, wallThickness), wallMat);
-            CreateWall(envelope, "Wall_South", new Vector3(0f, wallHeight * 0.5f, -halfZ), new Vector3(24.0f, wallHeight, wallThickness), wallMat);
+            CreateWall(envelope, "Wall_North", new Vector3(0f, wallHeight * 0.5f, halfZ), new Vector3(26.0f, wallHeight, wallThickness), wallMat);
+            CreateWall(envelope, "Wall_South", new Vector3(0f, wallHeight * 0.5f, -halfZ), new Vector3(26.0f, wallHeight, wallThickness), wallMat);
             CreateWall(envelope, "Wall_East", new Vector3(halfX, wallHeight * 0.5f, 0f), new Vector3(wallThickness, wallHeight, 28.0f), wallMat);
             CreateWall(envelope, "Wall_West", new Vector3(-halfX, wallHeight * 0.5f, 0f), new Vector3(wallThickness, wallHeight, 28.0f), wallMat);
 
-            // Floor Safety & Navigation Markings (No colliders, zero shadow casting)
+            // Floor Safety Markings (Cross-aisles & aisle center lines)
             var markingsRoot = new GameObject("FloorMarkings");
             markingsRoot.transform.SetParent(envelope.transform);
 
-            CreateFloorStripe(markingsRoot, "CrossAisle_SafetyLine_Front", new Vector3(0f, 0.005f, -5.2f), new Vector3(16.0f, 0.01f, 0.12f), safetyMat);
-            CreateFloorStripe(markingsRoot, "CrossAisle_SafetyLine_Back", new Vector3(0f, 0.005f, 8.8f), new Vector3(16.0f, 0.01f, 0.12f), safetyMat);
+            // Front cross-aisle safety boundary (Z = -5.0m)
+            CreateFloorStripe(markingsRoot, "CrossAisle_SafetyLine_Front", new Vector3(0f, 0.005f, -5.2f), new Vector3(20.0f, 0.01f, 0.12f), safetyMat);
+            // Rear cross-aisle safety boundary (Z = +8.8m)
+            CreateFloorStripe(markingsRoot, "CrossAisle_SafetyLine_Back", new Vector3(0f, 0.005f, 8.8f), new Vector3(20.0f, 0.01f, 0.12f), safetyMat);
 
-            float[] aisleX = { -6.0f, -2.0f, 2.0f, 6.0f };
+            // Aisle center lines for all 6 aisles
             for (int i = 0; i < aisleX.Length; i++)
             {
                 CreateFloorStripe(markingsRoot, $"Aisle_{i + 1:D2}_CenterLine", new Vector3(aisleX[i], 0.004f, 2.0f), new Vector3(0.08f, 0.01f, 12.0f), laneMat);
             }
+        }
+
+        private static void SetupOperationalFront(GameObject parent, Material benchMat, Material zoneMat, Material toteMat, Material barrierMat)
+        {
+            var opRoot = new GameObject("OperationalFront");
+            opRoot.transform.SetParent(parent.transform);
+
+            // 1. Entry Zone (West side: X = -8.0m, Z = -10.5m)
+            var entryRoot = new GameObject("EntryZone");
+            entryRoot.transform.SetParent(opRoot.transform);
+
+            var entryArch = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            entryArch.name = "EntryDoorArch";
+            entryArch.transform.SetParent(entryRoot.transform);
+            entryArch.transform.position = new Vector3(-8.0f, 2.5f, -11.5f);
+            entryArch.transform.localScale = new Vector3(2.6f, 0.3f, 0.15f);
+            entryArch.GetComponent<MeshRenderer>().sharedMaterial = zoneMat;
+            GameObjectUtility.SetStaticEditorFlags(entryArch, StaticEditorFlags.BatchingStatic);
+
+            var entrySign = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            entrySign.name = "EntryZone_HeaderSign";
+            entrySign.transform.SetParent(entryRoot.transform);
+            entrySign.transform.position = new Vector3(-8.0f, 2.85f, -11.45f);
+            entrySign.transform.localScale = new Vector3(2.4f, 0.35f, 0.06f);
+            entrySign.GetComponent<MeshRenderer>().sharedMaterial = zoneMat;
+            var esCol = entrySign.GetComponent<Collider>();
+            if (esCol != null) Object.DestroyImmediate(esCol);
+            GameObjectUtility.SetStaticEditorFlags(entrySign, StaticEditorFlags.BatchingStatic);
+
+            var entryPad = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            entryPad.name = "EntryZone_WalkwayPad";
+            entryPad.transform.SetParent(entryRoot.transform);
+            entryPad.transform.position = new Vector3(-8.0f, 0.005f, -10.5f);
+            entryPad.transform.localScale = new Vector3(2.2f, 0.01f, 2.4f);
+            entryPad.GetComponent<MeshRenderer>().sharedMaterial = zoneMat;
+            var epCol = entryPad.GetComponent<Collider>();
+            if (epCol != null) Object.DestroyImmediate(epCol);
+            GameObjectUtility.SetStaticEditorFlags(entryPad, StaticEditorFlags.BatchingStatic);
+
+            var entryBarrier = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            entryBarrier.name = "Entry_TurnstileBarrier";
+            entryBarrier.transform.SetParent(entryRoot.transform);
+            entryBarrier.transform.position = new Vector3(-6.7f, 0.5f, -10.5f);
+            entryBarrier.transform.localScale = new Vector3(0.12f, 1.0f, 2.0f);
+            entryBarrier.GetComponent<MeshRenderer>().sharedMaterial = barrierMat;
+            GameObjectUtility.SetStaticEditorFlags(entryBarrier, StaticEditorFlags.OccluderStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.BatchingStatic);
+
+            // 2. Order Collection Desk (X = -4.0m, Z = -10.0m)
+            var collectionRoot = new GameObject("OrderCollectionStation");
+            collectionRoot.transform.SetParent(opRoot.transform);
+
+            var colDesk = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            colDesk.name = "OrderCollectionDesk";
+            colDesk.transform.SetParent(collectionRoot.transform);
+            colDesk.transform.position = new Vector3(-4.0f, 0.45f, -10.0f);
+            colDesk.transform.localScale = new Vector3(2.4f, 0.9f, 1.0f);
+            colDesk.GetComponent<MeshRenderer>().sharedMaterial = benchMat;
+            GameObjectUtility.SetStaticEditorFlags(colDesk, StaticEditorFlags.OccluderStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.BatchingStatic);
+
+            var colScreen = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            colScreen.name = "CollectionTerminal";
+            colScreen.transform.SetParent(collectionRoot.transform);
+            colScreen.transform.position = new Vector3(-4.0f, 1.25f, -9.8f);
+            colScreen.transform.localScale = new Vector3(0.65f, 0.42f, 0.06f);
+            colScreen.GetComponent<MeshRenderer>().sharedMaterial = benchMat;
+            GameObjectUtility.SetStaticEditorFlags(colScreen, StaticEditorFlags.BatchingStatic);
+
+            var colTote1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            colTote1.name = "PickCart_Tote_01";
+            colTote1.transform.SetParent(collectionRoot.transform);
+            colTote1.transform.position = new Vector3(-4.7f, 1.02f, -10.0f);
+            colTote1.transform.localScale = new Vector3(0.55f, 0.24f, 0.40f);
+            colTote1.GetComponent<MeshRenderer>().sharedMaterial = toteMat;
+            GameObjectUtility.SetStaticEditorFlags(colTote1, StaticEditorFlags.BatchingStatic);
+
+            var colTote2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            colTote2.name = "PickCart_Tote_02";
+            colTote2.transform.SetParent(collectionRoot.transform);
+            colTote2.transform.position = new Vector3(-3.3f, 1.02f, -10.0f);
+            colTote2.transform.localScale = new Vector3(0.55f, 0.24f, 0.40f);
+            colTote2.GetComponent<MeshRenderer>().sharedMaterial = toteMat;
+            GameObjectUtility.SetStaticEditorFlags(colTote2, StaticEditorFlags.BatchingStatic);
+
+            var colSign = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            colSign.name = "OrderCollection_Sign";
+            colSign.transform.SetParent(collectionRoot.transform);
+            colSign.transform.position = new Vector3(-4.0f, 2.2f, -10.0f);
+            colSign.transform.localScale = new Vector3(2.0f, 0.3f, 0.06f);
+            colSign.GetComponent<MeshRenderer>().sharedMaterial = zoneMat;
+            var csCol = colSign.GetComponent<Collider>();
+            if (csCol != null) Object.DestroyImmediate(csCol);
+            GameObjectUtility.SetStaticEditorFlags(colSign, StaticEditorFlags.BatchingStatic);
+
+            // 3. Packing & Deposit Station (X = +2.0m, Z = -10.0m)
+            BuildPackingStation(opRoot, benchMat, zoneMat, toteMat);
+
+            // 4. Exit Zone (East side: X = +8.0m, Z = -10.5m)
+            var exitRoot = new GameObject("ExitZone");
+            exitRoot.transform.SetParent(opRoot.transform);
+
+            var exitArch = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            exitArch.name = "ExitDoorArch";
+            exitArch.transform.SetParent(exitRoot.transform);
+            exitArch.transform.position = new Vector3(8.0f, 2.5f, -11.5f);
+            exitArch.transform.localScale = new Vector3(2.6f, 0.3f, 0.15f);
+            exitArch.GetComponent<MeshRenderer>().sharedMaterial = zoneMat;
+            GameObjectUtility.SetStaticEditorFlags(exitArch, StaticEditorFlags.BatchingStatic);
+
+            var exitSign = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            exitSign.name = "ExitZone_HeaderSign";
+            exitSign.transform.SetParent(exitRoot.transform);
+            exitSign.transform.position = new Vector3(8.0f, 2.85f, -11.45f);
+            exitSign.transform.localScale = new Vector3(2.4f, 0.35f, 0.06f);
+            exitSign.GetComponent<MeshRenderer>().sharedMaterial = zoneMat;
+            var exsCol = exitSign.GetComponent<Collider>();
+            if (exsCol != null) Object.DestroyImmediate(exsCol);
+            GameObjectUtility.SetStaticEditorFlags(exitSign, StaticEditorFlags.BatchingStatic);
+
+            var exitPad = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            exitPad.name = "ExitZone_WalkwayPad";
+            exitPad.transform.SetParent(exitRoot.transform);
+            exitPad.transform.position = new Vector3(8.0f, 0.005f, -10.5f);
+            exitPad.transform.localScale = new Vector3(2.2f, 0.01f, 2.4f);
+            exitPad.GetComponent<MeshRenderer>().sharedMaterial = zoneMat;
+            var expCol = exitPad.GetComponent<Collider>();
+            if (expCol != null) Object.DestroyImmediate(expCol);
+            GameObjectUtility.SetStaticEditorFlags(exitPad, StaticEditorFlags.BatchingStatic);
+
+            var exitBarrier = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            exitBarrier.name = "Exit_TurnstileBarrier";
+            exitBarrier.transform.SetParent(exitRoot.transform);
+            exitBarrier.transform.position = new Vector3(6.7f, 0.5f, -10.5f);
+            exitBarrier.transform.localScale = new Vector3(0.12f, 1.0f, 2.0f);
+            exitBarrier.GetComponent<MeshRenderer>().sharedMaterial = barrierMat;
+            GameObjectUtility.SetStaticEditorFlags(exitBarrier, StaticEditorFlags.OccluderStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.BatchingStatic);
         }
 
         private static void CreateFloorStripe(GameObject parent, string name, Vector3 pos, Vector3 scale, Material mat)
@@ -261,7 +424,7 @@ namespace VirtualDarkStore.Editor
             var aisleComp = aisleObj.AddComponent<DarkStoreAisle>();
             aisleComp.Initialize(aisleNum, $"Aisle {aisleNum:D2}", aisleWidth, length, frontWaypoint, backWaypoint);
 
-            // Overhead Aisle Header Arch / Signboard at front entrance (Z = -4.0m)
+            // Overhead Aisle Header Signboard at front entrance (Z = -3.95m)
             var signArch = GameObject.CreatePrimitive(PrimitiveType.Cube);
             signArch.name = $"Aisle_{aisleNum:D2}_HeaderSign";
             signArch.transform.SetParent(aisleObj.transform);
@@ -274,11 +437,52 @@ namespace VirtualDarkStore.Editor
             signRenderer.shadowCastingMode = ShadowCastingMode.Off;
             GameObjectUtility.SetStaticEditorFlags(signArch, StaticEditorFlags.BatchingStatic);
 
-            // Left Rack
+            // Front physical aisle label facing South (towards store front and entrance)
+            PhysicalLocationLabel.CreateLabelObject(
+                $"Aisle_{aisleNum:D2}_HeaderSign_FaceFront",
+                aisleObj.transform,
+                new Vector3(0f, rackHeight + 0.15f, -3.95f - 2.0f - 0.045f),
+                Quaternion.identity,
+                LocationLabelType.AisleHeader,
+                $"AISLE A{aisleNum:D2}",
+                "PICKING CORRIDOR",
+                $"A{aisleNum:D2}",
+                aisle: aisleNum,
+                width: aisleWidth + rackDepth * 2f - 0.15f,
+                height: 0.26f);
+
+            // Overhead Aisle Rear Signboard at back entrance (Z = +7.95m)
+            var backSignArch = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            backSignArch.name = $"Aisle_{aisleNum:D2}_BackSign";
+            backSignArch.transform.SetParent(aisleObj.transform);
+            backSignArch.transform.position = new Vector3(aisleCenterX, rackHeight + 0.15f, 7.95f);
+            backSignArch.transform.localScale = new Vector3(aisleWidth + rackDepth * 2f, 0.28f, 0.08f);
+            var backSignCol = backSignArch.GetComponent<Collider>();
+            if (backSignCol != null) Object.DestroyImmediate(backSignCol);
+            var backSignRenderer = backSignArch.GetComponent<MeshRenderer>();
+            backSignRenderer.sharedMaterial = signMat;
+            backSignRenderer.shadowCastingMode = ShadowCastingMode.Off;
+            GameObjectUtility.SetStaticEditorFlags(backSignArch, StaticEditorFlags.BatchingStatic);
+
+            // Rear physical aisle label facing North (towards rear egress)
+            PhysicalLocationLabel.CreateLabelObject(
+                $"Aisle_{aisleNum:D2}_BackSign_FaceRear",
+                aisleObj.transform,
+                new Vector3(0f, rackHeight + 0.15f, 7.95f - 2.0f + 0.045f),
+                Quaternion.Euler(0f, 180f, 0f),
+                LocationLabelType.AisleHeader,
+                $"AISLE A{aisleNum:D2}",
+                "REAR EGRESS",
+                $"A{aisleNum:D2}",
+                aisle: aisleNum,
+                width: aisleWidth + rackDepth * 2f - 0.15f,
+                height: 0.26f);
+
+            // Left Rack (facing into corridor, closed back along its outer/rear side)
             float leftRackX = aisleCenterX - (aisleWidth * 0.5f + rackDepth * 0.5f);
             BuildRack(aisleObj, aisleNum, ShelfSide.Left, new Vector3(leftRackX, 0f, 2.0f), length, rackDepth, rackHeight, shelfMat, beamMat);
 
-            // Right Rack
+            // Right Rack (facing into corridor, closed back along its outer/rear side)
             float rightRackX = aisleCenterX + (aisleWidth * 0.5f + rackDepth * 0.5f);
             BuildRack(aisleObj, aisleNum, ShelfSide.Right, new Vector3(rightRackX, 0f, 2.0f), length, rackDepth, rackHeight, shelfMat, beamMat);
         }
@@ -296,6 +500,7 @@ namespace VirtualDarkStore.Editor
             float bayLength = length / bayCount;
             float startZ = -length * 0.5f;
 
+            // Uprights
             for (int b = 0; b <= bayCount; b++)
             {
                 float z = startZ + b * bayLength;
@@ -310,6 +515,7 @@ namespace VirtualDarkStore.Editor
                 GameObjectUtility.SetStaticEditorFlags(upright, StaticEditorFlags.OccluderStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.BatchingStatic);
             }
 
+            // Shelf Beams / Tiers
             float[] tierHeights = { 0.25f, 1.05f, 1.85f };
             for (int t = 0; t < tierHeights.Length; t++)
             {
@@ -324,6 +530,18 @@ namespace VirtualDarkStore.Editor
                 GameObjectUtility.SetStaticEditorFlags(shelfBeam, StaticEditorFlags.OccluderStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.BatchingStatic);
             }
 
+            // Closed Rack Back Panel (Solid backing between back-to-back aisles or outer warehouse perimeter)
+            float backPanelXOffset = (side == ShelfSide.Left) ? (-depth * 0.5f + 0.015f) : (depth * 0.5f - 0.015f);
+            var backPanel = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            backPanel.name = "Rack_ClosedBackPanel";
+            backPanel.transform.SetParent(rackObj.transform);
+            backPanel.transform.position = centerPos + new Vector3(backPanelXOffset, height * 0.5f, 0f);
+            backPanel.transform.localScale = new Vector3(0.03f, height * 0.98f, length);
+            var bpCol = backPanel.GetComponent<Collider>();
+            if (bpCol != null) Object.DestroyImmediate(bpCol);
+            backPanel.GetComponent<MeshRenderer>().sharedMaterial = uprightMat;
+            GameObjectUtility.SetStaticEditorFlags(backPanel, StaticEditorFlags.OccluderStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.BatchingStatic);
+
             // Solid Rack BoxCollider for physics collision and raycast shelf detection
             var mainColliderObj = new GameObject("Rack_Collider");
             mainColliderObj.transform.SetParent(rackObj.transform);
@@ -331,19 +549,89 @@ namespace VirtualDarkStore.Editor
             var col = mainColliderObj.AddComponent<BoxCollider>();
             col.size = new Vector3(depth, height, length);
             GameObjectUtility.SetStaticEditorFlags(mainColliderObj, StaticEditorFlags.OccluderStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.BatchingStatic);
+
+            // Physical Location Signage (End-Cap, Bay Placards & Shelf Level Badges)
+            float faceXOffset = (side == ShelfSide.Left) ? (depth * 0.5f + 0.005f) : (-depth * 0.5f - 0.005f);
+            Quaternion faceRot = (side == ShelfSide.Left) ? Quaternion.Euler(0f, 90f, 0f) : Quaternion.Euler(0f, -90f, 0f);
+            char sideChar = (side == ShelfSide.Left) ? 'L' : 'R';
+            string sideName = (side == ShelfSide.Left) ? "LEFT" : "RIGHT";
+
+            // End-Cap Placard facing front cross-aisle
+            string endCapId = $"A{aisleNum:D2}-{sideChar}";
+            var endCapObj = PhysicalLocationLabel.CreateLabelObject(
+                $"EndCapPlacard_{side}_{aisleNum:D2}",
+                rackObj.transform,
+                Vector3.zero,
+                Quaternion.identity,
+                LocationLabelType.EndCapPlacard,
+                endCapId,
+                $"{sideName} RACK",
+                endCapId,
+                aisle: aisleNum,
+                side: side,
+                width: 0.50f,
+                height: 0.22f);
+            endCapObj.transform.position = centerPos + new Vector3(0f, 1.85f, startZ - 0.045f);
+
+            // Bay Placards and Shelf Level Badges
+            for (int b = 1; b <= bayCount; b++)
+            {
+                float bayCenterZ = startZ + (b - 0.5f) * bayLength;
+                string bayLocId = $"A{aisleNum:D2}-{sideChar}-B{b:D2}";
+
+                // 1. Bay Placard at eye level atop the bay
+                var bayPlacard = PhysicalLocationLabel.CreateLabelObject(
+                    $"Placard_Bay_{b:D2}",
+                    rackObj.transform,
+                    Vector3.zero,
+                    faceRot,
+                    LocationLabelType.BayRack,
+                    bayLocId,
+                    $"BAY {b:D2} • {sideName}",
+                    bayLocId,
+                    aisle: aisleNum,
+                    side: side,
+                    bay: b,
+                    width: 0.60f,
+                    height: 0.22f);
+                bayPlacard.transform.position = centerPos + new Vector3(faceXOffset, height - 0.25f, bayCenterZ);
+
+                // 2. Shelf Level Badges on tier beam lips
+                for (int t = 0; t < tierHeights.Length; t++)
+                {
+                    int tierNum = t + 1;
+                    string tierLocId = $"A{aisleNum:D2}-{sideChar}-B{b:D2}-T{tierNum:D2}";
+                    var tierTag = PhysicalLocationLabel.CreateLabelObject(
+                        $"Tag_Bay_{b:D2}_Level_{tierNum:D2}",
+                        rackObj.transform,
+                        Vector3.zero,
+                        faceRot,
+                        LocationLabelType.ShelfLevel,
+                        $"LEVEL {tierNum:D2}",
+                        $"TIER {tierNum:D2}",
+                        tierLocId,
+                        aisle: aisleNum,
+                        side: side,
+                        bay: b,
+                        tier: tierNum,
+                        width: 0.24f,
+                        height: 0.055f);
+                    tierTag.transform.position = centerPos + new Vector3(faceXOffset, tierHeights[t], bayCenterZ - bayLength * 0.35f);
+                }
+            }
         }
 
         private static void BuildPackingStation(GameObject parent, Material benchMat, Material zoneMat, Material toteMat)
         {
             var stationRoot = new GameObject("PackingStation_01");
             stationRoot.transform.SetParent(parent.transform);
-            stationRoot.transform.position = new Vector3(0f, 0f, -9.5f);
+            stationRoot.transform.position = new Vector3(2.0f, 0f, -10.0f);
 
             // Packing Bench (Table)
             var bench = GameObject.CreatePrimitive(PrimitiveType.Cube);
             bench.name = "PackingBench";
             bench.transform.SetParent(stationRoot.transform);
-            bench.transform.position = new Vector3(0f, 0.45f, -9.5f);
+            bench.transform.position = new Vector3(2.0f, 0.45f, -10.0f);
             bench.transform.localScale = new Vector3(3.2f, 0.9f, 1.2f);
             bench.GetComponent<MeshRenderer>().sharedMaterial = benchMat;
             GameObjectUtility.SetStaticEditorFlags(bench, StaticEditorFlags.OccluderStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.BatchingStatic);
@@ -352,7 +640,7 @@ namespace VirtualDarkStore.Editor
             var screen = GameObject.CreatePrimitive(PrimitiveType.Cube);
             screen.name = "StationTerminal";
             screen.transform.SetParent(stationRoot.transform);
-            screen.transform.position = new Vector3(0f, 1.25f, -9.3f);
+            screen.transform.position = new Vector3(2.0f, 1.25f, -9.8f);
             screen.transform.localScale = new Vector3(0.65f, 0.42f, 0.06f);
             screen.GetComponent<MeshRenderer>().sharedMaterial = benchMat;
             GameObjectUtility.SetStaticEditorFlags(screen, StaticEditorFlags.BatchingStatic);
@@ -361,7 +649,7 @@ namespace VirtualDarkStore.Editor
             var tote1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
             tote1.name = "DispatchTote_01";
             tote1.transform.SetParent(stationRoot.transform);
-            tote1.transform.position = new Vector3(-1.0f, 1.02f, -9.5f);
+            tote1.transform.position = new Vector3(1.0f, 1.02f, -10.0f);
             tote1.transform.localScale = new Vector3(0.55f, 0.24f, 0.40f);
             tote1.GetComponent<MeshRenderer>().sharedMaterial = toteMat;
             GameObjectUtility.SetStaticEditorFlags(tote1, StaticEditorFlags.BatchingStatic);
@@ -369,7 +657,7 @@ namespace VirtualDarkStore.Editor
             var tote2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
             tote2.name = "DispatchTote_02";
             tote2.transform.SetParent(stationRoot.transform);
-            tote2.transform.position = new Vector3(1.0f, 1.02f, -9.5f);
+            tote2.transform.position = new Vector3(3.0f, 1.02f, -10.0f);
             tote2.transform.localScale = new Vector3(0.55f, 0.24f, 0.40f);
             tote2.GetComponent<MeshRenderer>().sharedMaterial = toteMat;
             GameObjectUtility.SetStaticEditorFlags(tote2, StaticEditorFlags.BatchingStatic);
@@ -378,15 +666,25 @@ namespace VirtualDarkStore.Editor
             var dropPad = GameObject.CreatePrimitive(PrimitiveType.Cube);
             dropPad.name = "ToteDropZone";
             dropPad.transform.SetParent(stationRoot.transform);
-            dropPad.transform.position = new Vector3(2.2f, 0.01f, -9.5f);
+            dropPad.transform.position = new Vector3(4.2f, 0.01f, -10.0f);
             dropPad.transform.localScale = new Vector3(1.2f, 0.02f, 1.2f);
             dropPad.GetComponent<MeshRenderer>().sharedMaterial = zoneMat;
             GameObjectUtility.SetStaticEditorFlags(dropPad, StaticEditorFlags.BatchingStatic);
 
+            var packSign = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            packSign.name = "PackingStation_Sign";
+            packSign.transform.SetParent(stationRoot.transform);
+            packSign.transform.position = new Vector3(2.0f, 2.2f, -10.0f);
+            packSign.transform.localScale = new Vector3(2.4f, 0.3f, 0.06f);
+            packSign.GetComponent<MeshRenderer>().sharedMaterial = zoneMat;
+            var psCol = packSign.GetComponent<Collider>();
+            if (psCol != null) Object.DestroyImmediate(psCol);
+            GameObjectUtility.SetStaticEditorFlags(packSign, StaticEditorFlags.BatchingStatic);
+
             // Worker Spawn Point
             var spawnPoint = new GameObject("SpawnPoint").transform;
             spawnPoint.SetParent(stationRoot.transform);
-            spawnPoint.position = new Vector3(0f, 0f, -8.0f);
+            spawnPoint.position = new Vector3(2.0f, 0f, -8.0f);
             spawnPoint.rotation = Quaternion.identity;
 
             var comp = stationRoot.AddComponent<PackingStation>();
@@ -421,7 +719,7 @@ namespace VirtualDarkStore.Editor
 
             var cam = camObj.AddComponent<Camera>();
             cam.nearClipPlane = 0.1f;
-            cam.farClipPlane = 45f; // RTX 2050 optimization: covers 24m x 28m warehouse envelope cleanly
+            cam.farClipPlane = 45f; // RTX 2050 optimization: covers 26m x 28m warehouse envelope cleanly
             cam.fieldOfView = 75f;
 
             var urpCamData = camObj.AddComponent<UniversalAdditionalCameraData>();
@@ -433,7 +731,7 @@ namespace VirtualDarkStore.Editor
             camObj.AddComponent<AudioListener>();
 
             var controller = playerObj.AddComponent<DesktopPickerController>();
-            var camField = typeof(DesktopPickerController).GetField("cameraTransform", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var camField = typeof(DesktopPickerController).GetField("cameraTransform", BindingFlags.NonPublic | BindingFlags.Instance);
             if (camField != null)
             {
                 camField.SetValue(controller, camHolder.transform);
@@ -476,7 +774,7 @@ namespace VirtualDarkStore.Editor
             leftObj.transform.SetParent(offsetObj.transform, false);
             leftObj.transform.localPosition = new Vector3(-0.25f, 1.2f, 0.35f);
             var leftInput = leftObj.AddComponent<VirtualDarkStore.VR.VRControllerInput>();
-            var handField = typeof(VirtualDarkStore.VR.VRControllerInput).GetField("hand", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var handField = typeof(VirtualDarkStore.VR.VRControllerInput).GetField("hand", BindingFlags.NonPublic | BindingFlags.Instance);
             if (handField != null) handField.SetValue(leftInput, VirtualDarkStore.VR.VRHand.Left);
 
             var rightObj = new GameObject("RightHandController");
@@ -505,7 +803,7 @@ namespace VirtualDarkStore.Editor
 
             var tempStoreObj = new GameObject("[TempStore]");
             var tempStore = tempStoreObj.AddComponent<StoreManager>();
-            tempStore.InitializeStore();
+            tempStore.InitializeStore(StoreConfiguration.CreateQuickCommerce6AisleConfig());
 
             var catalog = tempStore.GetAllSkus();
             var catMaterials = new Dictionary<string, Material>(System.StringComparer.OrdinalIgnoreCase);
@@ -566,11 +864,33 @@ namespace VirtualDarkStore.Editor
 
                     var visualComp = prodObj.AddComponent<PickableItemVisual>();
                     visualComp.Initialize(sku.SkuId, sku.Name, slot.SlotId, mat);
+
+                    // Physical shelf-edge barcode ticket directly below product slot on shelf beam lip
+                    float ticketXOffset = (slot.Side == ShelfSide.Left) ? 0.305f : -0.305f;
+                    Quaternion ticketRot = (slot.Side == ShelfSide.Left) ? Quaternion.Euler(0f, 90f, 0f) : Quaternion.Euler(0f, -90f, 0f);
+                    Vector3 ticketPos = new Vector3(slot.WorldPosition.x + ticketXOffset, slot.WorldPosition.y - 0.06f, slot.WorldPosition.z);
+
+                    PhysicalLocationLabel.CreateLabelObject(
+                        $"ShelfTicket_{sku.SkuId}",
+                        productsRoot.transform,
+                        ticketPos,
+                        ticketRot,
+                        LocationLabelType.ProductSlot,
+                        slot.SlotId,
+                        $"{sku.SkuId} • {sku.Name}",
+                        slot.SlotId,
+                        aisle: slot.AisleNumber,
+                        side: slot.Side,
+                        bay: slot.BayIndex,
+                        tier: slot.TierLevel,
+                        slot: slot.SlotIndex,
+                        width: 0.22f,
+                        height: 0.05f);
                 }
             }
 
             Object.DestroyImmediate(tempStoreObj);
-            Debug.Log($"[DarkStoreSceneBuilder] Spawned {catalog.Count} physical pickable shelf product visuals across all 4 aisles.");
+            Debug.Log($"[DarkStoreSceneBuilder] Spawned {catalog.Count} physical pickable shelf product visuals across all 6 aisles.");
         }
 
         private static void BakeNavMeshGeometry()
@@ -578,7 +898,7 @@ namespace VirtualDarkStore.Editor
             try
             {
                 var buildSettings = UnityEngine.AI.NavMesh.GetSettingsByID(0);
-                var bounds = new Bounds(new Vector3(0f, 2f, 0f), new Vector3(30f, 10f, 32f));
+                var bounds = new Bounds(new Vector3(0f, 2f, 0f), new Vector3(32f, 10f, 32f));
                 var sources = new List<UnityEngine.AI.NavMeshBuildSource>();
                 var markups = new List<UnityEngine.AI.NavMeshBuildMarkup>();
 

@@ -2,8 +2,8 @@
 
 ## 1. Verified Test Execution Status
 > [!NOTE]
-> **Current Status**: **41 TESTS EXECUTED AND PASSED** (Phase 8 Final Verification).
-> All 41 EditMode tests passed with 0 failures and 0 warnings on 2026-10-29 (`0.771s`). Evidence recorded in `TestResults-EditMode.xml` and `docs/evidence/phase8/`.
+> **Current Status**: **84 TESTS EXECUTED AND PASSED** (Configurable Multi-Order Simulation & Shelf Population Verification).
+> All 84 EditMode tests passed with 0 failures and 0 warnings on 2026-11-02 (`9.56s`). Evidence recorded in `TestResults-MultiOrderCheck2.xml`.
 
 ### Verified Test Run Evidence (2026-10-28 11:06:50Z)
 | Test Suite / Fixture | Test Case | Status | Duration |
@@ -153,5 +153,60 @@ New automated tests:
 3. `WorkStudyReportExporter_ExportsValidMarkdownAndCsvFiles`: Verifies `WorkStudyReportExporter.ExportFullReportBundle` generating Markdown (`.md`), RFC-4180 elemental events CSV (`_events.csv`), and summary KPI CSV (`_summary.csv`).
 4. `PerformanceAudit_EnforcesRtx2050Budget_WithoutFabricatedBenchmarks`: Opens `Assets/Scenes/DarkStore_Phase1.unity`, runs `PerformanceSettingsManager.AuditScenePerformance()`, verifies `148` renderers ($\le 300$), `16/16` GPU-instanced shared materials, `1` shadow-casting directional light + `8` shadowless point lights, camera far clip `45.0 m`, URP shadow distance `32.0 m`, `2` shadow cascades, post-processing disabled, and exports `docs/evidence/phase8/rtx2050_performance_audit.md` with interactive GPU FPS benchmarking marked `NOT RUN`.
 5. `FinalDemoWorkflow_ExecutesAll7Steps_ExportsReport_AndComparesScenarios`: Executes the complete 7-step Final Demo workflow (`1. SelectScenario` -> `2. SelectOrder` -> `3. StartMode` -> `4. PickProducts` -> `5. CompleteOrder` -> `6. ViewWorkStudyResults` -> `7. CompareAnotherScenario`), exports `docs/evidence/phase8/demo_order_work_study_report.*` (`38.00 s`, `33.18 m`, `18` events, `100.0%` reconciled), and compares `SCN-DEMO-A` ($49.30\text{ s}, 53.20\text{ m}$) vs `SCN-DEMO-B` ($65.44\text{ s}, 75.80\text{ m}$) in `docs/evidence/phase8/demo_comparison_A_vs_B.md`.
+
+## 9. Phase 10 Structured Store Location & SKU Mapping Tests (`Assets/Tests/Editor/Domain/StructuredStoreLocationTests.cs`)
+Executed 2026-11-02: full EditMode suite **47/47 passed (100% pass rate in 0.799s)**.
+New automated tests:
+1. `UniqueLocationIds_AllSlotsInStore_HaveDistinctFormattedIds`: Verifies across 4-aisle baseline (288 slots) and 6-aisle quick-commerce configurations (432 slots) that all slot IDs conform to `A{aisle:D2}-{side}-B{bay:D2}-T{tier:D2}-S{slot:D2}`, parse into `StoreLocation`, and are strictly unique.
+2. `ValidSkuMappings_AllSkus_MapToOneToOneValidPhysicalLocation`: Verifies that all 72 catalog SKUs map 1:1 to unique physical slots with bidirectional consistency (`skuToSlotMap` and `slotToSkuMap`), `slot.IsOccupied == true`, and `ValidateSkuLocationMappings` returns 0 errors.
+3. `WorldPositionResolution_SkuAndLocationId_ResolveToValidWorldCoordinates`: Verifies `TryResolveSkuLocation` and `TryResolveLocationPosition` return identical physical coordinates with non-NaN, finite values elevated from the floor ($y > 0.2\text{ m}, y < 3.0\text{ m}$) within the store perimeter.
+4. `MissingLocation_NonExistentSkuOrLocationId_ReturnsFalseWithoutThrowing`: Verifies that querying nonexistent, null, or empty SKU IDs or Location IDs returns `false` with `Vector3.zero` and does not throw unhandled exceptions.
+5. `DuplicateLocation_DetectsCollision_WhenTwoSkusAssignedSameSlot`: Verifies that simulated slot collisions where two distinct SKUs map to the same slot are immediately caught and flagged by `ValidateSkuLocationMappings`.
+6. `InvalidMapping_MalformedLocationStrings_AreDetectedAndRejected`: Verifies that `StoreLocation.TryParse` and `StoreManager.ValidateLocationId` reject invalid prefixes, wrong side characters ('X', 'M'), non-numeric bays/tiers/slots, and out-of-range indices with informative error messages.
+
+## 10. Phase 11 Controlled Order Generation Tests (`Assets/Tests/Editor/Domain/ControlledOrderGenerationTests.cs`)
+Executed 2026-11-02: full EditMode suite **56/56 passed (100% pass rate)**.
+New automated tests:
+1. `SameSeed_ProducesIdenticalOrder`: Verifies two runs with same seed (`42001`) produce identical SKU IDs, quantities, order ID, and physical locations.
+2. `DifferentSeeds_ProduceDifferentOrders`: Verifies seeds 11111 and 99999 produce different SKU selections.
+3. `AllGeneratedSkus_ExistInStoreCatalog`: Verifies every generated SKU exists in `StoreManager` and matches catalog names.
+4. `AllGeneratedLocations_HaveValidWorldPositions`: Verifies every generated item has a non-empty `targetSlotId` and valid elevated 3D position within rack boundaries.
+5. `DuplicatePolicy_Disallow_ProducesDistinctSkus`: Verifies that `DuplicateSkuPolicy.DisallowDuplicates` produces unique SKU selections without repeats.
+6. `BatchGeneration_ProducesRequestedCountAndReproducibleSequences`: Verifies `GenerateBatch` generates the requested count with repeatable sequences.
+7. `PresetOrders_RemainUnchanged`: Verifies `OrderManager.StartSpecificOrder` and legacy presets remain 100% intact and functional.
+8. `GeneratedOrder_DispatchesAndExecutesSuccessfully`: Verifies dispatching a generated order activates it in `OrderManager` and allows successful pick validation.
+
+## 11. Phase 12 Routing Optimization & Travel Cost Matrix Tests (`Assets/Tests/Editor/Routing/RoutingOptimizationTests.cs`)
+Executed 2026-11-02: full EditMode suite **65/65 passed (100% pass rate in 5.98s)**.
+New automated tests:
+1. `CostMatrix_CalculatesDistances_WithZeroDiagonal`: Verifies square $N \times N$ matrix dimensions, zero diagonal ($Costs[i, i] == 0$), positive costs between different nodes, and `matrix.Validate(out _)` returns true.
+2. `CostMatrix_HandlesUnreachableNodes_Explicitly`: Verifies that unreachable nodes are marked `float.PositiveInfinity` and `IsReachable(from, to) == false` without throwing exceptions.
+3. `Routing_ValidStartAndEnd`: Verifies route starts at Node 0 (Order Desk) and terminates at Node $K+1$ (Packing Bench).
+4. `Routing_EveryRequiredSkuExactlyOnce`: Verifies that every required SKU stop appears exactly once in the TSP solution without dropped or duplicated SKUs.
+5. `Routing_NoUnexpectedSku`: Verifies that no foreign node indices or unknown SKUs are present in the optimized route.
+6. `Routing_RouteEndsAtPacking`: Verifies that the final stop of the tour matches the physical coordinates of the packing bench (`PACK-01`).
+7. `Routing_BaselineSequenceRemainsAvailable`: Verifies that `BaselineRouteOptimizer` preserves the original order sequence for A/B work-study comparison.
+8. `Routing_SolverFailure_FallsBackSafely`: Verifies that in case of unreachable nodes or solver exceptions, the optimizer safely falls back to the baseline sequence without throwing.
+9. `OrTools_OptimizesVisitSequence_WhenOutOfOrder`: Verifies that OR-Tools optimizes an out-of-order 3-stop corridor order with backtracking, reducing travel distance from $75.0\text{ m}$ (baseline) to $35.0\text{ m}$ (optimized), achieving $>50\%$ travel reduction with proven constraint satisfaction.
+
+## 12. Phase 13 & Phase 14 Operational Workflow & Comparison Tests (`Assets/Tests/Editor/Scenarios/OperationalWorkflowTests.cs`)
+Executed 2026-11-02: full EditMode suite **70/70 passed (100% pass rate in 7.21s)**.
+New automated tests:
+1. `OperationalStage_FullCycleProgression_ReachesCompleted`: Verifies the complete 7-stage state progression: `Entry` $\to$ `CollectOrder` $\to$ `Picking` $\to$ `AwaitingPacking` $\to$ `DepositOrder` $\to$ `WalkToExit` $\to$ `Completed`.
+2. `OperationalEvents_RecordedMonotonically_WithZeroNegativeDurations`: Verifies that all work-study events generated across an operational cycle maintain monotonic non-decreasing start timestamps ($t_{start, i} \le t_{start, i+1}$), non-negative durations ($\Delta t \ge 0$), and non-negative distances.
+3. `AisleTransitionsAndBacktracking_CalculatesAccurately`: Verifies that `OperationalCycleManager.CalculateAisleMetrics` accurately collapses consecutive picks in the same aisle, counts aisle transitions (e.g. 2 transitions for A01 $\to$ A03 $\to$ A01), and identifies aisle backtracking (1 backtrack detected on revisit to A01; 0 backtracks on monotonic sweep).
+4. `OperationalCycleRunner_ExecutesEndToEndWorkflow_Deterministically`: Verifies that the scripted virtual picker executes the entire operational workflow headlessly, verifies waypoint labels (`ENTRY`, `COLLECT_ORDER`, `DEPOSIT_PACKING`, `EXIT`), and reconciles work-study metrics with 100% integrity.
+5. `BaselineVsOptimized_SameOrder_IdenticalStartingConditions_VariesOnlyPickSequence`: Executes Baseline (Run A) vs OR-Tools Optimized (Run B) on order `ORD-STUDY-001`, validates 100% equivalent starting conditions, measures travel distance reduction (from 96.38m to 73.18m, -24.1%), cycle time reduction (from 80.54s to 63.97s, -20.6%), and aisle backtrack reduction (from 1 to 0), and exports evidence bundle to `docs/evidence/phase14/`.
+
+## 13. Physical Location Labels & Store Signage Tests (`Assets/Tests/Editor/Environment/PhysicalLocationLabelTests.cs`)
+Executed 2026-11-02: full EditMode suite **75/75 passed (100% pass rate in 7.78s)**.
+Evidence recorded in `TestResults-FinalVerification.xml`.
+New automated tests:
+1. `AisleHeaderLabel_InitializesWithCorrectLocationIdAndProperties`: Verifies World Space canvas configuration, primary text (`AISLE A01`), secondary text, zero colliders (preventing NavMesh/physics interference), and non-blocking graphics (`raycastTarget = false`).
+2. `BayRackPlacard_MatchesStructuredLocationHierarchy`: Verifies bay placard (`A03-L-B02` / `BAY 02 • LEFT`) matches the structured `StoreLocation` domain hierarchy and preserves Aisle, Side, and Bay properties.
+3. `ShelfLevelTag_AlignsWithTierIndices`: Verifies that shelf level badges (`LEVEL 03` / `TIER 03`) align with tier indices and corresponding location IDs (`A02-R-B01-T03`).
+4. `ProductSlotTicket_MatchesSimulationLocationAndSkuMapping`: Verifies that shelf-edge product tickets correspond 1:1 with catalog SKUs, match `slot.SlotId`, and parse accurately into `StoreLocation` with matching Aisle, Side, Bay, Tier, and Slot indices.
+5. `PickerHoverPrompt_IncludesExactSlotLocationId`: Verifies that center-screen reticle raycast on shelf items surfaces the exact physical slot location ID in the interaction prompt (e.g. `[E / LMB] Pick: <SkuName> (<SkuId>) [<SlotId>]`).
+
 
 

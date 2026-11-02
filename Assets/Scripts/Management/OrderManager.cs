@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VirtualDarkStore.Domain;
 using VirtualDarkStore.Interaction;
+using VirtualDarkStore.Routing;
 
 namespace VirtualDarkStore.Management
 {
@@ -29,16 +30,24 @@ namespace VirtualDarkStore.Management
         [SerializeField] private int completedOrdersCount = 0;
         [SerializeField] private bool autoStartSampleOrderOnAwake = true;
 
+        [Header("Multi-Order Simulation State")]
+        [SerializeField] private MultiOrderSimulation activeSimulation;
+
         public Order ActiveOrder => activeOrder;
         public int CompletedOrdersCount => completedOrdersCount;
         public bool HasActiveOrder => activeOrder != null && activeOrder.Status == OrderStatus.InProgress;
         public bool IsAwaitingPacking => activeOrder != null && activeOrder.Status == OrderStatus.AwaitingPacking;
+        public MultiOrderSimulation ActiveSimulation => activeSimulation;
+        public bool HasActiveSimulation => activeSimulation != null && activeSimulation.IsActive;
 
         // Events
         public event Action<Order> OnOrderStarted;
         public event Action<OrderItem, bool> OnItemPicked;
         public event Action<string, string, string> OnPickFailed; // expectedSku, attemptedSku, reason
         public event Action<Order> OnOrderCompleted;
+        public event Action<MultiOrderSimulation> OnSimulationStarted;
+        public event Action<Order, int, int> OnSimulationOrderChanged; // order, currentOrderNum, totalOrders
+        public event Action<MultiOrderSimulation> OnSimulationCompleted;
 
         private void Awake()
         {
@@ -169,6 +178,57 @@ namespace VirtualDarkStore.Management
             return order != null;
         }
 
+        /// <summary>
+        /// Generates and dispatches a controlled deterministic order based on OrderGenerationConfig.
+        /// </summary>
+        public bool TryDispatchGeneratedOrder(OrderGenerationConfig config, out Order order, out string errorReason)
+        {
+            order = null;
+            errorReason = null;
+
+            var store = StoreManager.Instance;
+            if (store == null)
+            {
+                errorReason = "StoreManager is not initialized.";
+                SimulationErrorHandler.ReportError("OrderManager", errorReason);
+                return false;
+            }
+
+            if (config == null)
+            {
+                errorReason = "OrderGenerationConfig cannot be null.";
+                SimulationErrorHandler.ReportError("OrderManager", errorReason);
+                return false;
+            }
+
+            try
+            {
+                order = OrderGenerator.GenerateOrder(store, config, completedOrdersCount);
+                DispatchOrder(order);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errorReason = ex.Message;
+                SimulationErrorHandler.ReportError("OrderManager", $"Failed to generate order: {ex.Message}");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Directly dispatches an existing Order instance into the simulation runtime.
+        /// </summary>
+        public Order DispatchOrder(Order order)
+        {
+            if (order == null) throw new ArgumentNullException(nameof(order));
+
+            ResetShelfVisuals();
+            activeOrder = order;
+            Debug.Log($"[OrderManager] Dispatched new order: {activeOrder.OrderId} ({activeOrder.TotalItemCount} items)");
+            OnOrderStarted?.Invoke(activeOrder);
+            return activeOrder;
+        }
+
         private Order CreateAndDispatchOrder(string orderId, List<Sku> skus)
         {
             var store = StoreManager.Instance;
@@ -262,12 +322,129 @@ namespace VirtualDarkStore.Management
                 completedOrdersCount++;
                 Debug.Log($"[OrderManager] Order '{activeOrder.OrderId}' successfully completed and packed!");
                 OnOrderCompleted?.Invoke(activeOrder);
+
+                // Multi-order simulation sequence progression
+                if (activeSimulation != null && activeSimulation.IsActive)
+                {
+                    activeSimulation.RecordOrderCompleted(activeOrder);
+
+                    if (activeSimulation.HasNextOrder)
+                    {
+                        var nextOrder = activeSimulation.AdvanceToNextOrder();
+                        Debug.Log($"[OrderManager] Multi-Order Simulation advancing to Order {activeSimulation.CurrentOrderIndex + 1}/{activeSimulation.TotalOrdersCount}: {nextOrder.OrderId}");
+                        DispatchOrder(nextOrder);
+                        OnSimulationOrderChanged?.Invoke(nextOrder, activeSimulation.CurrentOrderIndex + 1, activeSimulation.TotalOrdersCount);
+                    }
+                    else
+                    {
+                        activeSimulation.Complete();
+                        Debug.Log($"[OrderManager] Multi-Order Simulation COMPLETED! All {activeSimulation.TotalOrdersCount} orders fulfilled.");
+                        OnSimulationCompleted?.Invoke(activeSimulation);
+                    }
+                }
+
                 return true;
             }
 
             Debug.LogWarning($"[OrderManager] Packing failed: {failureReason}");
             SimulationErrorHandler.ReportWarning("OrderManager", failureReason);
             return false;
+        }
+
+        /// <summary>
+        /// Validates, generates, and begins sequential execution of a configurable multi-order simulation.
+        /// </summary>
+        public bool TryStartMultiOrderSimulation(OrderGenerationConfig config, out MultiOrderSimulation simulation, out string errorReason)
+        {
+            simulation = null;
+            errorReason = null;
+
+            var store = StoreManager.Instance;
+            if (store == null)
+            {
+                errorReason = "StoreManager is not initialized.";
+                SimulationErrorHandler.ReportError("OrderManager", errorReason);
+                return false;
+            }
+
+            if (config == null)
+            {
+                errorReason = "OrderGenerationConfig cannot be null.";
+                SimulationErrorHandler.ReportError("OrderManager", errorReason);
+                return false;
+            }
+
+            if (!config.Validate(store, out errorReason))
+            {
+                SimulationErrorHandler.ReportError("OrderManager", errorReason);
+                return false;
+            }
+
+            try
+            {
+                var orders = OrderGenerator.GenerateBatch(store, config);
+                simulation = new MultiOrderSimulation(config, orders);
+                activeSimulation = simulation;
+
+                Debug.Log($"[OrderManager] Starting Multi-Order Simulation: {simulation.SimulationId} ({simulation.TotalOrdersCount} orders, {config.ItemCount} items/order, Seed {config.Seed})");
+
+                // Dispatch the first order
+                DispatchOrder(simulation.ActiveOrder);
+
+                OnSimulationStarted?.Invoke(activeSimulation);
+                OnSimulationOrderChanged?.Invoke(simulation.ActiveOrder, 1, simulation.TotalOrdersCount);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errorReason = ex.Message;
+                SimulationErrorHandler.ReportError("OrderManager", $"Failed to start multi-order simulation: {ex.Message}");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Cancels and clears any active multi-order simulation.
+        /// </summary>
+        public void StopMultiOrderSimulation()
+        {
+            if (activeSimulation != null)
+            {
+                activeSimulation.Cancel();
+                activeSimulation = null;
+            }
+        }
+
+        /// <summary>
+        /// Optimizes the pick-sequence route of the active order using the specified route optimizer (default: OR-Tools).
+        /// If applyToActiveOrder is true, reorders the active order items prior to picking.
+        /// </summary>
+        public RouteOptimizationResult OptimizeActiveOrderRoute(IRouteOptimizer optimizer = null, bool applyToActiveOrder = true)
+        {
+            if (activeOrder == null)
+            {
+                return new RouteOptimizationResult
+                {
+                    Success = false,
+                    SolverName = "None",
+                    StatusMessage = "No active order to optimize."
+                };
+            }
+
+            var result = StoreRouteManager.OptimizeOrder(activeOrder, null, null, optimizer);
+            if (result.Success && applyToActiveOrder && result.SkuSequence != null && result.SkuSequence.Count > 0)
+            {
+                if (activeOrder.TryReorderItems(result.SkuSequence, out string reorderError))
+                {
+                    Debug.Log($"[OrderManager] Successfully reordered active order to optimized pick sequence: {result}");
+                }
+                else
+                {
+                    Debug.LogWarning($"[OrderManager] Route optimization succeeded but could not reorder items: {reorderError}");
+                }
+            }
+
+            return result;
         }
     }
 }

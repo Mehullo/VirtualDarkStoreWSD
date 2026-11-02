@@ -28,10 +28,12 @@ namespace VirtualDarkStore.Player
         [Header("State")]
         [SerializeField] private PickableItemVisual hoveredItem;
         [SerializeField] private PackingStation hoveredPackingStation;
+        [SerializeField] private GameObject hoveredCollectionDesk;
         [SerializeField] private string currentPrompt = string.Empty;
 
         public PickableItemVisual HoveredItem => hoveredItem;
         public PackingStation HoveredPackingStation => hoveredPackingStation;
+        public GameObject HoveredCollectionDesk => hoveredCollectionDesk;
         public string CurrentPrompt => currentPrompt;
         public float ReachDistance => reachDistance;
 
@@ -54,11 +56,19 @@ namespace VirtualDarkStore.Player
         {
             hoveredItem = null;
             hoveredPackingStation = null;
+            hoveredCollectionDesk = null;
             currentPrompt = string.Empty;
 
-            if (playerCamera == null) return;
+            if (playerCamera == null)
+            {
+                playerCamera = GetComponentInChildren<Camera>();
+                if (playerCamera == null) playerCamera = Camera.main;
+            }
 
-            Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+            Ray ray = (playerCamera != null)
+                ? new Ray(playerCamera.transform.position, playerCamera.transform.forward)
+                : new Ray(transform.position + Vector3.up * 1.6f, transform.forward);
+
             var hits = Physics.RaycastAll(ray, reachDistance, interactionLayers);
             if (hits != null && hits.Length > 0)
             {
@@ -73,7 +83,7 @@ namespace VirtualDarkStore.Player
                     if (item != null && !item.IsPicked)
                     {
                         hoveredItem = item;
-                        currentPrompt = $"[E / LMB] Pick: {item.SkuName} ({item.SkuId})";
+                        currentPrompt = $"[E / LMB] Pick: {item.SkuName} ({item.SkuId}) [{item.SlotId}]";
                         return;
                     }
 
@@ -94,6 +104,23 @@ namespace VirtualDarkStore.Player
                         else
                         {
                             currentPrompt = "Packing Station (No active order awaiting dispatch)";
+                        }
+                        return;
+                    }
+
+                    // 3. Check for Order Collection Desk
+                    if (hit.collider.name.IndexOf("Collection", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                        (hit.collider.transform.parent != null && hit.collider.transform.parent.name.IndexOf("Collection", StringComparison.OrdinalIgnoreCase) >= 0))
+                    {
+                        hoveredCollectionDesk = hit.collider.gameObject;
+                        var op = VirtualDarkStore.Management.OperationalCycleManager.Instance;
+                        if (op != null && op.CurrentStage == VirtualDarkStore.Management.OperationalStage.CollectOrder)
+                        {
+                            currentPrompt = "[E / LMB] Collect Pick Cart & Activate Order";
+                        }
+                        else
+                        {
+                            currentPrompt = "Order Collection Desk";
                         }
                         return;
                     }
@@ -152,10 +179,26 @@ namespace VirtualDarkStore.Player
                 return;
             }
 
+            // Collect pick cart & activate order at Order Collection Desk
+            if (hoveredCollectionDesk != null)
+            {
+                var op = VirtualDarkStore.Management.OperationalCycleManager.Instance;
+                if (op != null && op.CurrentStage == VirtualDarkStore.Management.OperationalStage.CollectOrder)
+                {
+                    op.CollectOrder(out _, out _);
+                }
+                return;
+            }
+
             // Deliver tote / finalize packing at packing bench
             if (hoveredPackingStation != null)
             {
-                if (orderManager.IsAwaitingPacking)
+                var op = VirtualDarkStore.Management.OperationalCycleManager.Instance;
+                if (op != null && (op.CurrentStage == VirtualDarkStore.Management.OperationalStage.AwaitingPacking || op.CurrentStage == VirtualDarkStore.Management.OperationalStage.DepositOrder))
+                {
+                    op.DepositOrder(out _);
+                }
+                else if (orderManager.IsAwaitingPacking)
                 {
                     orderManager.CompletePacking(out string failureReason);
                 }

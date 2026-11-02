@@ -395,6 +395,26 @@ namespace VirtualDarkStore.WorkStudy
                 if (eventLogger == null) return;
             }
 
+            if (eventLogger.EventCount > 0)
+            {
+                var prev = eventLogger.LoggedEvents[eventLogger.EventCount - 1];
+                if (currentActivityStartTime < prev.StartTime)
+                {
+                    currentActivityStartTime = prev.EndTime;
+                }
+            }
+
+            if (endTime < currentActivityStartTime)
+            {
+                endTime = currentActivityStartTime;
+            }
+
+            float duration = endTime - currentActivityStartTime;
+            if (duration < 0f)
+            {
+                return;
+            }
+
             string eventId = $"EVT-{(++eventSequence):D4}";
             string locationName = GetCurrentLocationName();
             string relatedSku = GetCurrentSkuId();
@@ -417,13 +437,22 @@ namespace VirtualDarkStore.WorkStudy
         private void HandleOrderStarted(Order order)
         {
             float now = currentSimulationTime > 0f ? currentSimulationTime : Time.time;
+            if (eventLogger != null && eventLogger.EventCount > 0)
+            {
+                now = Mathf.Max(now, eventLogger.LoggedEvents[eventLogger.EventCount - 1].EndTime);
+            }
             Vector3 pos = pickerTransform != null ? pickerTransform.position : lastRecordedPosition;
             TransitionActivity(ActivityType.MovingBetweenLocations, now, pos);
         }
 
         private void HandleItemPicked(OrderItem item, bool orderFinished)
         {
-            float now = currentSimulationTime > 0f ? currentSimulationTime : Time.time;
+            float rawTime = currentSimulationTime > 0f ? currentSimulationTime : Time.time;
+            float now = Mathf.Max(rawTime, currentActivityStartTime);
+            if (eventLogger != null && eventLogger.EventCount > 0)
+            {
+                now = Mathf.Max(now, eventLogger.LoggedEvents[eventLogger.EventCount - 1].EndTime);
+            }
             Vector3 pos = pickerTransform != null ? pickerTransform.position : lastRecordedPosition;
 
             // 1. Close preceding activity (e.g. Searching)
@@ -460,7 +489,12 @@ namespace VirtualDarkStore.WorkStudy
 
         private void HandleOrderCompleted(Order order)
         {
-            float now = currentSimulationTime > 0f ? currentSimulationTime : Time.time;
+            float rawTime = currentSimulationTime > 0f ? currentSimulationTime : Time.time;
+            float now = Mathf.Max(rawTime, currentActivityStartTime);
+            if (eventLogger != null && eventLogger.EventCount > 0)
+            {
+                now = Mathf.Max(now, eventLogger.LoggedEvents[eventLogger.EventCount - 1].EndTime);
+            }
             Vector3 pos = pickerTransform != null ? pickerTransform.position : lastRecordedPosition;
 
             // 1. Close current Packing activity

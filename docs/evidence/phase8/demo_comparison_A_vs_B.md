@@ -2,9 +2,9 @@
 
 > All values are MEASURED SIMULATION RESULTS from recorded virtual-picker runs in this simulation. They are not predictions and not real-world measurements.
 
-- A: **Demo Scenario A: 3-Item Aisle-Grouped Sequence** (`SCN-DEMO-A`), recorded 2026-10-29T10:00:16.640+05:30
+- A: **Demo Scenario A: 3-Item Aisle-Grouped Sequence** (`SCN-DEMO-A`), recorded 2026-11-02T21:06:34.516+05:30
   - SKU sequence: SKU-0001 → SKU-0008 → SKU-0039
-- B: **Demo Scenario B: 3-Item Ungrouped Backtracking** (`SCN-DEMO-B`), recorded 2026-10-29T10:00:16.660+05:30
+- B: **Demo Scenario B: 3-Item Ungrouped Backtracking** (`SCN-DEMO-B`), recorded 2026-11-02T21:06:34.545+05:30
   - SKU sequence: SKU-0001 → SKU-0039 → SKU-0008
 - Equivalent starting conditions: **YES**
 - Factor varied between A and B: pick/visit sequence
