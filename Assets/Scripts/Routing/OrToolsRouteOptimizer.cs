@@ -43,10 +43,8 @@ namespace VirtualDarkStore.Routing
 
 #if UNITY_ANDROID
             // Standalone Meta Quest Android does not support Google OR-Tools native x64 binaries.
-            // Safely fallback to baseline sequence.
-            baselineResult.SolverName = $"{SolverName} [Fallback]";
-            baselineResult.StatusMessage = "OR-Tools native binaries unsupported on Android. Safely fell back to baseline sequence.";
-            return baselineResult;
+            // Solve using exact/2-opt pure C# warehouse routing solver.
+            return SolvePureCsharpTsp(matrix, skuIds, baselineResult);
 #else
             try
             {
@@ -150,6 +148,136 @@ namespace VirtualDarkStore.Routing
                 return baselineResult;
             }
 #endif
+        }
+
+        private RouteOptimizationResult SolvePureCsharpTsp(TravelCostMatrix matrix, IReadOnlyList<string> skuIds, RouteOptimizationResult baselineResult)
+        {
+            int totalNodes = matrix.NodeCount;
+            int stopCount = totalNodes - 2;
+
+            var stops = new List<int>(stopCount);
+            for (int i = 1; i <= stopCount; i++) stops.Add(i);
+
+            List<int> bestStops = null;
+            float bestCost = float.PositiveInfinity;
+
+            if (stopCount <= 8)
+            {
+                // Exact permutation search for standard pick orders
+                void Permute(int k)
+                {
+                    if (k == stops.Count)
+                    {
+                        var candidate = new List<int>(totalNodes) { 0 };
+                        candidate.AddRange(stops);
+                        candidate.Add(totalNodes - 1);
+                        float c = BaselineRouteOptimizer.CalculateSequenceCost(matrix, candidate);
+                        if (c < bestCost)
+                        {
+                            bestCost = c;
+                            bestStops = new List<int>(stops);
+                        }
+                        return;
+                    }
+                    for (int i = k; i < stops.Count; i++)
+                    {
+                        int temp = stops[k]; stops[k] = stops[i]; stops[i] = temp;
+                        Permute(k + 1);
+                        temp = stops[k]; stops[k] = stops[i]; stops[i] = temp;
+                    }
+                }
+                Permute(0);
+            }
+            else
+            {
+                // Nearest-neighbor initialization
+                var unvisited = new HashSet<int>(stops);
+                var currentRoute = new List<int>(stopCount);
+                int currentNode = 0;
+                while (unvisited.Count > 0)
+                {
+                    int nearest = -1;
+                    float nearestDist = float.PositiveInfinity;
+                    foreach (int u in unvisited)
+                    {
+                        float d = matrix.GetCost(currentNode, u);
+                        if (d < nearestDist) { nearestDist = d; nearest = u; }
+                    }
+                    unvisited.Remove(nearest);
+                    currentRoute.Add(nearest);
+                    currentNode = nearest;
+                }
+
+                // 2-opt local search refinement
+                bool improved = true;
+                while (improved)
+                {
+                    improved = false;
+                    for (int i = 0; i < currentRoute.Count - 1; i++)
+                    {
+                        for (int j = i + 1; j < currentRoute.Count; j++)
+                        {
+                            int nPrev = (i == 0) ? 0 : currentRoute[i - 1];
+                            int nI = currentRoute[i];
+                            int nJ = currentRoute[j];
+                            int nNext = (j == currentRoute.Count - 1) ? totalNodes - 1 : currentRoute[j + 1];
+
+                            float currentDist = matrix.GetCost(nPrev, nI) + matrix.GetCost(nJ, nNext);
+                            float newDist = matrix.GetCost(nPrev, nJ) + matrix.GetCost(nI, nNext);
+                            if (newDist < currentDist - 0.001f)
+                            {
+                                currentRoute.Reverse(i, j - i + 1);
+                                improved = true;
+                            }
+                        }
+                    }
+                }
+                bestStops = currentRoute;
+                var testOrder = new List<int>(totalNodes) { 0 };
+                testOrder.AddRange(bestStops);
+                testOrder.Add(totalNodes - 1);
+                bestCost = BaselineRouteOptimizer.CalculateSequenceCost(matrix, testOrder);
+            }
+
+            if (bestStops == null || float.IsPositiveInfinity(bestCost))
+            {
+                baselineResult.SolverName = $"{SolverName} [Fallback]";
+                baselineResult.StatusMessage = "No reachable path found between stops. Safely fell back to baseline sequence.";
+                return baselineResult;
+            }
+
+            var visitOrder = new List<int>(totalNodes) { 0 };
+            if (bestStops != null) visitOrder.AddRange(bestStops);
+            visitOrder.Add(totalNodes - 1);
+
+            float baselineCost = baselineResult.TotalCost;
+            float improvement = baselineCost > 0.001f ? ((baselineCost - bestCost) / baselineCost) * 100f : 0f;
+
+            var orderedSkus = new List<string>(stopCount);
+            if (bestStops != null)
+            {
+                for (int i = 0; i < bestStops.Count; i++)
+                {
+                    int stopIdx = bestStops[i] - 1;
+                    if (skuIds != null && stopIdx >= 0 && stopIdx < skuIds.Count)
+                        orderedSkus.Add(skuIds[stopIdx]);
+                    else
+                        orderedSkus.Add($"Stop-{stopIdx + 1}");
+                }
+            }
+
+            return new RouteOptimizationResult
+            {
+                Success = true,
+                SolverName = $"{SolverName} [C# Standalone Optimizer]",
+                VisitOrder = visitOrder,
+                SkuSequence = orderedSkus,
+                TotalCost = bestCost,
+                BaselineCost = baselineCost,
+                ImprovementPercentage = Mathf.Max(0f, improvement),
+                IsOptimalProven = stopCount <= 8,
+                StatusMessage = $"Standalone routing complete: {bestCost:F2}m vs baseline {baselineCost:F2}m ({improvement:F1}% travel reduction)."
+            };
         }
 
         private static bool ValidateOptimizedRoute(List<int> visitOrder, int totalNodes, out string error)

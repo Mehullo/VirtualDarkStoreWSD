@@ -345,6 +345,21 @@ namespace VirtualDarkStore.Scenarios
                 return false;
             }
 
+            var roster = VirtualDarkStore.Domain.Participants.ParticipantRoster.Instance;
+            if (roster.ActiveParticipant == null)
+            {
+                if (roster.RegisteredCount == 0)
+                {
+                    roster.TryRegisterParticipant("Participant 01", out _, out _);
+                }
+                else
+                {
+                    error = "No active participant selected. Please select a registered participant in the Researcher Dashboard [F2] before starting.";
+                    SimulationErrorHandler.ReportWarning("DemoFlow", error);
+                    return false;
+                }
+            }
+
             var preset = SelectedOrderPreset;
             string orderId = (preset != null && !preset.useScenarioSequence && !string.IsNullOrWhiteSpace(preset.orderId))
                 ? preset.orderId

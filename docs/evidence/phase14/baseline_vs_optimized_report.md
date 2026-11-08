@@ -9,7 +9,7 @@
 | **SKU Count** | `4` items | `4` items |
 | **Pick Sequence** | SKU-0001 → SKU-0039 → SKU-0008 → SKU-0066 | SKU-0001 → SKU-0008 → SKU-0039 → SKU-0066 |
 | **Optimization Mode** | Baseline (Original Sequence) | Google OR-Tools Local Solver (Guided Local Search) |
-| **Recorded At** | 2026-11-02T21:06:41.105+05:30 | 2026-11-02T21:06:42.133+05:30 |
+| **Recorded At** | 2026-11-04T19:28:38.124+05:30 | 2026-11-04T19:28:39.550+05:30 |
 | **Equivalent Conditions** | **YES** | - |
 
 ## 2. Operational Cycle KPI Comparison
@@ -23,9 +23,9 @@
 | Packing & Deposit Time | s | 1.90 | 1.90 | 0.00 | 0.0% |
 | Order Completed Element | s | 0.80 | 0.80 | 0.00 | 0.0% |
 | Measured Picker Distance | m | 96.38 | 73.18 | -23.20 | -24.1% |
-| Algorithmic Route Cost (Solver Matrix) | m | 65.20 | 34.29 | -30.91 | -47.4% |
+| Algorithmic Route Cost (Solver Matrix) | m | 65.20 | 36.76 | -28.44 | -43.6% |
 | Successful Item Picks | count | 4.00 | 4.00 | 0.00 | 0.0% |
-| Distinct Shelf Bays Visited | count | 4.00 | 4.00 | 0.00 | 0.0% |
+| Distinct Shelf Bays Visited | count | 5.00 | 4.00 | -1.00 | -20.0% |
 | Inter-Aisle Transitions | count | 3.00 | 2.00 | -1.00 | -33.3% |
 | Aisle Backtracks (Revisited Aisle) | count | 1.00 | 0.00 | -1.00 | -100.0% |
 

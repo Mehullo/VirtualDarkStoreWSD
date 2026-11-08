@@ -1,0 +1,2 @@
+﻿OrderId,ScenarioId,TotalTaskTimeSeconds,TotalDistanceMeters,TotalPicks,ShelfVisits,TotalEvents,WalkingSeconds,SearchingSeconds,PickingSeconds,WaitingSeconds,PackingSeconds,OrderCompletedSeconds,WalkingPct,SearchingPct,PickingPct,WaitingPct,PackingPct,OrderCompletedPct,Reconciled
+ORD-GEN-1001-002,SCN-A,37.799,41.203,4,5,43,17.215,4.900,2.000,12.166,0.717,0.800,45.54,12.96,5.29,32.19,1.90,2.12,TRUE

@@ -6,6 +6,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 ### Added
+- **Prominent Top-Centre Next-Order Information Panel**:
+  - `SimulationHUD.cs`: Dedicated high-visibility Next-Order Information Panel centered horizontally at the top of the screen (`panelY = 12f`, width 42% clamped between 580px and 660px, adaptive height up to 240px with `GUI.BeginScrollView`).
+  - Dark semi-transparent card styling (`#0B1220F0`) with cyan top accent strip (`#00E5FF`) and high-contrast amber/cyan headers.
+  - Significantly larger typography (15pt bold header, 12pt subheaders and table text) for immediate picker readability without eye strain.
+  - Dynamically displays Order ID (`NEXT ORDER | ORD-...`), total item count, and full product table with SKU/product names, quantities, highlighted Aisle numbers (`A01`–`A06` in amber yellow), Rack and Slot positions (`R-B03-T03-S02` in ice cyan), and pick status badges (`PICK`, `DONE`, `WAIT`).
+  - Active target pick item highlighted in bold golden yellow (`#FFD54F`) with arrow indicator `▶` for instant picker orientation.
+  - Automatically queries live `StoreManager.Instance.TryGetSlotForSku` on every frame to immediately reflect physical re-slotting or routing optimizations without stale cached strings.
+  - Automatically advances to the next upcoming queued order upon fulfillment and packing completion, and displays a graceful `NEXT ORDER | NO UPCOMING ORDERS` summary when all orders are finished.
+  - Dynamically floats transient notification banners below the panel (`12f + currentNextOrderPanelHeight + 6f`) to prevent UI overlap.
+  - Cleanly destroys allocated textures in `OnDestroy()`.
+  - `NextOrderPanelTests.cs`: 7 automated EditMode tests validating active order formatting, queued simulation progression, completion summaries, live slot resolution, fallback location parsing, and null safety.
+  - All 92 EditMode tests passing (`7.72s`, 0 failures, 0 warnings).
+
+### Fixed
+- **Internal Aisle Signage Text Orientation**:
+  - Corrected inverted Euler rotation in `DarkStoreSceneBuilder.cs` for internal aisle signage (`faceRot` and `ticketRot`):
+    - Left racks: set to `Quaternion.Euler(0f, -90f, 0f)` (-90° yaw) so local X aligns with picker camera right (+Z) when looking West (-X).
+    - Right racks: set to `Quaternion.Euler(0f, 90f, 0f)` (+90° yaw) so local X aligns with picker camera right (-Z) when looking East (+X).
+  - Regenerated and baked primary scene `Assets/Scenes/DarkStore_Phase1.unity`, updating all internal bay placards, shelf level tags, and shelf tickets while strictly preserving front-facing header signs and end-cap placards (`Quaternion.identity`).
+  - Added unit test `InternalAisleSignage_OrientationMatchesPickerViewingDirection_WithoutHorizontalMirroring` in `PhysicalLocationLabelTests.cs`.
+  - All 85 EditMode tests passing (`8.19s`, 0 failures, 0 warnings).
+
+### Added
 - **Configurable Multi-Order Simulation**:
   - `MultiOrderSimulation.cs`: Domain model coordinating ordered batches of independent orders, tracking active order progression, completed orders, and overall status.
   - `OrderGenerationConfig.cs`: Added `Validate()` enforcing $N \ge 1$ orders, $K \ge 1$ items/order, and capacity boundaries without silent clamping.

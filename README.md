@@ -6,14 +6,54 @@ The **Virtual Dark Store Work-Study & Simulation Platform** is a 3D simulation a
 > **Scope & Honesty Guarantee**: This platform is an industrial engineering measurement and simulation tool—**not** an AI/ML prediction product. All outputs are **measured simulation telemetry** derived deterministically from recorded `WorkEvent` logs. No AI/ML models, synthetic dataset pipelines, uninstrumented physiological/eye-gaze claims, or fabricated FPS/benchmark numbers are included.
 
 ## Current Status
-- **Current Phase**: Phases 0–14 Completed + Usability Improvements (Physical Labels, Shelf Population & Configurable Multi-Order Simulation)
-- **Status**: **COMPLETED** (2026-11-02)
-- **Automated Verification**: **84 / 84 EditMode Tests Passing** (`9.56s`, 0 failures, 0 warnings)
-- **Primary Scene**: `Assets/Scenes/DarkStore_Phase1.unity` (6 aisles `A01`–`A06`, 144 stocked physical pickable SKUs across all racks, closed rack backs, entry zone, order collection desk, picking area, packing/deposit desk, exit zone, physical aisle/bay/level/slot signage, collision, baked NavMesh, operational state machine, multi-order simulation setup)
+- **Current Phase**: Phases 0–14 + Meta Quest 3 VR Integration (Standalone & PC VR Windows Link) + Participant Data Collection
+- **Status**: **COMPLETED** (2026-11-04)
+- **Automated Verification**: **117 / 117 EditMode Tests Passing** (`8.49s`, 0 failures, 0 warnings)
+- **Primary Scene**: `Assets/Scenes/DarkStore_Phase1.unity` (6 aisles `A01`–`A06`, 144 stocked physical pickable SKUs across all racks, closed rack backs, entry zone, order collection desk, picking area, packing/deposit desk, exit zone, physical aisle/bay/level/slot signage with non-mirrored internal placards, collision, baked NavMesh, operational state machine, multi-order simulation setup, desktop controller, Meta Quest 3 VR rig with 50°-tilted visible hands, elevated wrist checklist UI, gaze prompts, and right-stick rotation)
+- **Windows PC VR Link Guide**: [Meta Quest 3 PC VR (Windows Profile) Setup Guide](README_VR_WINDOWS_LINK.md)
+- **Standalone USB Guide**: [Meta Quest 3 Standalone Android Build & Deployment Guide](docs/QUEST3_VR_SETUP_GUIDE.md)
 
 ---
 
-## Features Across All Phases (Phases 0–14)
+## Features Across All Phases (Phases 0–14 + VR + Participant Data Collection)
+
+### Feature: Meta Quest 3 VR Integration (Standalone & PC VR Windows Link)
+- **One Simulation, Two Synchronized Interaction Modes**:
+  - Desktop: Keyboard/Mouse interaction with `DesktopPickerController`.
+  - VR: Meta Quest 3 Headset tracking & Touch Plus controllers with `VRPlayerRig`.
+  - Both modes share the exact same store geometry, 144-SKU inventory, `OrderManager`, baseline routing, C#/OR-Tools optimized routing, `WorkEventLogger`, and `WorkStudyCalculator`.
+- **Visible 3D Controller Hands with Ergonomic 50° Tilt**:
+  - Both hands are visually represented in the VR environment with 3D controller models.
+  - Controller models and pointing rays are angled **50 degrees forward / away from the user** (`tiltAngleAwayFromUser = 50°`) so the pointer fires straight ahead into shelves instead of pointing up/back, eliminating awkward wrist twisting.
+  - Left Hand: Soft cyan accents with dedicated elevated wrist UI mount.
+  - Right Hand: Safety amber accents with a spatial laser pointer ray (`LineRenderer`) targeting products.
+  - Physics-safe: All colliders removed to prevent snagging on shelving or floor physics.
+- **Elevated Wrist-Mounted Next Order Checklist (Zero Controller Overlap)**:
+  - World Space Canvas elevated above the left controller (`Y = +0.14m`, bottom-edge pivot) replicating the exact Next Order Card.
+  - Positioned completely above the blue thumbstick face disc (over 12 cm clearance) to ensure 100% unobstructed readability.
+  - Displays Order ID, status, and dynamic table of items with active target indicator `▶`, pending items `○`, and picked items `✔`.
+  - Press `[T]` to toggle between wrist-mounted and static floating billboard in front of the player's view.
+- **3D Gaze Grab Prompt & Reticle**:
+  - Looking directly at any product, collection desk, or packing bench displays a floating 3D prompt: `[Trigger / Grip] Grab: <Product Name> (<SkuId>) [<SlotId>]`.
+  - Dynamically changes reticle state to bright amber upon hover and auto-dismisses when looking away.
+- **Dual Pick/Grab Controls, Right Stick Turn & Locomotion**:
+  - Headset: 6-DoF natural head tracking with level floor horizon alignment.
+  - Left Controller: Thumbstick continuous locomotion through warehouse aisles. Click thumbstick or hold grip to sprint (3.5 m/s).
+  - Right Controller: Flick thumbstick left/right for 45° snap turn (VR comfort standard). Pull Index Trigger or squeeze Grip (Grab) button to pick shelf items, collect pick cart, and finalize orders.
+- **Stand-Alone Android Build & Quest Link Support**:
+  - OpenXR Loader with Meta Quest Touch Plus Controller Profile and Vulkan graphics API.
+  - Pure C# exact/2-opt TSP solver for standalone Quest Android where native x64 Windows OR-Tools binaries are unavailable.
+  - Complete step-by-step setup guides: [README_VR_WINDOWS_LINK.md](README_VR_WINDOWS_LINK.md) & [docs/QUEST3_VR_SETUP_GUIDE.md](docs/QUEST3_VR_SETUP_GUIDE.md).
+
+### UI Enhancement: Prominent Top-Centre Next-Order Information Panel
+- **Dedicated High-Visibility Top-Centre Display**:
+  - Positioned centrally at the top of the screen (`y = 12px`, width 42% clamped between 580px and 660px) with dark semi-transparent card styling (`#0B1220F0`) and high-contrast amber/cyan headers.
+  - Significantly larger typography (15pt bold header, 12pt subheaders and table entries) ensuring instantaneous readability during active picking.
+  - Dynamically renders Order ID (`NEXT ORDER | ORD-...`), total item count, and full item checklist with SKU/product names, required quantities, highlighted Aisle numbers (amber yellow), Rack and Slot positions (`R-B03-T03-S02` in ice cyan), and pick status badges (`PICK`, `DONE`, `WAIT`).
+  - Active target item highlighted in bold golden yellow (`#FFD54F`) with arrow indicator `▶` for instant picker orientation.
+  - Automatically queries live `StoreManager` physical slot assignments on every frame, immediately reflecting layout re-slotting or routing optimizations without stale cache.
+  - Automatically advances to the next upcoming queued order upon packing completion, and displays a graceful `NEXT ORDER | NO UPCOMING ORDERS` summary when all orders are complete.
+  - Adaptive height (max 240px) with internal scrolling and non-overlapping transient alerts, preserving picker reticle clearance and central line-of-sight.
 
 ### Visual & Usability Improvement: Physical Location Labels & Store Signage
 - **Physical In-World Signage Hierarchy**:
@@ -157,7 +197,7 @@ The **Virtual Dark Store Work-Study & Simulation Platform** is a 3D simulation a
 3. Launch with Unity Editor **`6000.6.7f1`**.
 4. In the Project window, open **`Assets/Scenes/DarkStore_Phase1.unity`**.
 
-### 3. Reproducible Scene Rebuild & 47-Test Suite (CLI)
+### 3. Reproducible Scene Rebuild & 92-Test Suite (CLI)
 1. **Rebuild Dark Store Scene & NavMesh**:
    ```powershell
    $p = Start-Process -FilePath "C:\Program Files\Unity\Hub\Editor\6000.6.7f1\Editor\Unity.exe" `
@@ -165,7 +205,7 @@ The **Virtual Dark Store Work-Study & Simulation Platform** is a 3D simulation a
      -PassThru -Wait
    Write-Output "ExitCode: $($p.ExitCode)"
    ```
-2. **Execute Full 47-Test EditMode Suite**:
+2. **Execute Full 92-Test EditMode Suite**:
    ```powershell
    $p = Start-Process -FilePath "C:\Program Files\Unity\Hub\Editor\6000.6.7f1\Editor\Unity.exe" `
      -ArgumentList "-batchmode -nographics -projectPath . -runTests -testPlatform EditMode -testResults TestResults-EditMode.xml -logFile Logs/TestRun.log" `

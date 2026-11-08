@@ -2,12 +2,38 @@
 
 ## 1. Verified Test Execution Status
 > [!NOTE]
-> **Current Status**: **84 TESTS EXECUTED AND PASSED** (Configurable Multi-Order Simulation & Shelf Population Verification).
-> All 84 EditMode tests passed with 0 failures and 0 warnings on 2026-11-02 (`9.56s`). Evidence recorded in `TestResults-MultiOrderCheck2.xml`.
+> **Current Status**: **111 TESTS EXECUTED AND PASSED** (PC VR Windows Profile Link Integration, Participant-Wise Data Collection, Meta Quest 3 VR Parity, Next-Order Panel & Multi-Order Simulation).
+> All 111 EditMode tests passed with 0 failures and 0 warnings on 2026-11-04 (`8.27s`). Evidence recorded in `TestResults-VRRigUpdate.xml`.
 
-### Verified Test Run Evidence (2026-10-28 11:06:50Z)
+### Verified Test Run Evidence (2026-11-04 11:54:53Z)
 | Test Suite / Fixture | Test Case | Status | Duration |
 |---|---|---|---|
+| `VirtualDarkStore.Tests.VR.VRRigTests` | `VRPlayerRig_CenterSpawnAutoCorrection_MovesToWarehouseStart` | **PASSED** | 0.004s |
+| `VirtualDarkStore.Tests.VR.VRRigTests` | `VRPickerInteraction_GripGrab_ExecutesPick` | **PASSED** | 0.009s |
+| `VirtualDarkStore.Tests.VR.VRRigTests` | `VRLocomotion_SprintInteraction_AcceleratesSpeed` | **PASSED** | 0.004s |
+| `VirtualDarkStore.Tests.VR.VRRigTests` | `VRPlayerRig_CameraAngle_IsLevelWithWarehouseFloor` | **PASSED** | 0.012s |
+| `VirtualDarkStore.Tests.VR.VRRigTests` | `VRPlayerRig_InitializesHierarchy_AndTrackingComponents` | **PASSED** | 0.004s |
+| `VirtualDarkStore.Tests.VR.VRRigTests` | `VRHeadTracking_ExposesOrientationAndRay_WithoutPhysiologicalClaims` | **PASSED** | 0.006s |
+| `VirtualDarkStore.Tests.VR.VRRigTests` | `VRControllerInput_TracksSpatialPose_AndSimulatesButtons` | **PASSED** | 0.005s |
+| `VirtualDarkStore.Tests.VR.VRRigTests` | `VRPickerInteraction_ValidatesAndPicksItems_SharingSameOrderSystem` | **PASSED** | 0.016s |
+| `VirtualDarkStore.Tests.VR.VRRigTests` | `VRLocomotion_ContinuousAndTeleportation_PreservesTravelDistanceMeasurement` | **PASSED** | 0.005s |
+| `VirtualDarkStore.Tests.VR.VRRigTests` | `VRFulfillment_IntegrationWithActivityClassifier_AndWorkStudyCalculator` | **PASSED** | 0.012s |
+| `VirtualDarkStore.Tests.VR.VRRigTests` | `VRHardware_Detection_ReportsActualStatus` | **PASSED** | 0.008s |
+| `VirtualDarkStore.Tests.Editor.Participants.ParticipantDataCollectionTests` | `Test01_RegisterAll10Participants_Succeeds` | **PASSED** | 0.005s |
+| `VirtualDarkStore.Tests.Editor.Participants.ParticipantDataCollectionTests` | `Test02_Reject11thParticipant_EnforcesCapacityLimit` | **PASSED** | 0.003s |
+| `VirtualDarkStore.Tests.Editor.Participants.ParticipantDataCollectionTests` | `Test03_RejectDuplicateParticipantNames_CaseInsensitive` | **PASSED** | 0.002s |
+| `VirtualDarkStore.Tests.Editor.Participants.ParticipantDataCollectionTests` | `Test04_RejectEmptyParticipantName` | **PASSED** | 0.001s |
+| `VirtualDarkStore.Tests.Editor.Participants.ParticipantDataCollectionTests` | `Test05_CompleteScenarioForP01_ExportsSummaryCsv` | **PASSED** | 0.009s |
+| `VirtualDarkStore.Tests.Editor.Participants.ParticipantDataCollectionTests` | `Test06_CompleteDifferentScenarioForP01_WithoutOverwritingFirstReport` | **PASSED** | 0.006s |
+| `VirtualDarkStore.Tests.Editor.Participants.ParticipantDataCollectionTests` | `Test07_CompleteSameScenarioForP02_MaintainsSeparateFoldersAndFiles` | **PASSED** | 0.005s |
+| `VirtualDarkStore.Tests.Editor.Participants.ParticipantDataCollectionTests` | `Test08_RunBaselineAndOptimizedRouting_SameParticipantAndScenario` | **PASSED** | 0.006s |
+| `VirtualDarkStore.Tests.Editor.Participants.ParticipantDataCollectionTests` | `Test09_VerifySameOrderDefinition_AcrossComparisonSessions` | **PASSED** | 0.003s |
+| `VirtualDarkStore.Tests.Editor.Participants.ParticipantDataCollectionTests` | `Test10_VerifyEventLevelCsv_MatchesWorkEventLogger` | **PASSED** | 0.004s |
+| `VirtualDarkStore.Tests.Editor.Participants.ParticipantDataCollectionTests` | `Test11_GenerateCombinedSummaries_RetainsAllRecordsExactlyOnce` | **PASSED** | 0.005s |
+| `VirtualDarkStore.Tests.Editor.Participants.ParticipantDataCollectionTests` | `Test12_FilenameAndCsvHandling_NamesWithSpacesAndSpecialCharacters` | **PASSED** | 0.004s |
+| `VirtualDarkStore.Tests.Editor.Participants.ParticipantDataCollectionTests` | `Test13_DesktopExportDirectory_ResolvesSafePath` | **PASSED** | 0.001s |
+| `VirtualDarkStore.Tests.Editor.Participants.ParticipantDataCollectionTests` | `Test14_RosterPersistence_PreservesStateAcrossReload` | **PASSED** | 0.003s |
+| `VirtualDarkStore.Tests.Editor.Participants.ParticipantDataCollectionTests` | `Test15_ExistingSimulationCoreParity_ReconcilesWithoutFabrication` | **PASSED** | 0.002s |
 | `VirtualDarkStore.Tests.Domain.OrderFulfillmentTests` | `OrderItem_InitialState_AndPickRecording` | **PASSED** | 0.003s |
 | `VirtualDarkStore.Tests.Domain.OrderFulfillmentTests` | `Order_Validation_RejectsWrongSku_WithoutAdvancingOrCounting` | **PASSED** | 0.003s |
 | `VirtualDarkStore.Tests.Domain.OrderFulfillmentTests` | `Order_Validation_RejectsNullOrEmptySku` | **PASSED** | 0.003s |

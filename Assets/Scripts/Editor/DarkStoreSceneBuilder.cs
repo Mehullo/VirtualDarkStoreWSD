@@ -89,9 +89,9 @@ namespace VirtualDarkStore.Editor
             // Physical Shelf Products (144 SKUs distributed across all 6 aisles)
             BuildShelfProducts(envRoot);
 
-            // 2. Player Rigs (Desktop active by default; VR ready & inactive until selected)
+            // 2. Player Rigs (XR Origin Hands (XR Rig) active for VR simulation; Desktop ready via [V] toggle)
             BuildPlayerController();
-            BuildVRPlayerRig(null, false);
+            BuildVRPlayerRig(null, true);
 
             // 3. Core Simulation & Work-Study Managers
             var storeObj = new GameObject("[StoreManager]");
@@ -552,7 +552,7 @@ namespace VirtualDarkStore.Editor
 
             // Physical Location Signage (End-Cap, Bay Placards & Shelf Level Badges)
             float faceXOffset = (side == ShelfSide.Left) ? (depth * 0.5f + 0.005f) : (-depth * 0.5f - 0.005f);
-            Quaternion faceRot = (side == ShelfSide.Left) ? Quaternion.Euler(0f, 90f, 0f) : Quaternion.Euler(0f, -90f, 0f);
+            Quaternion faceRot = (side == ShelfSide.Left) ? Quaternion.Euler(0f, -90f, 0f) : Quaternion.Euler(0f, 90f, 0f);
             char sideChar = (side == ShelfSide.Left) ? 'L' : 'R';
             string sideName = (side == ShelfSide.Left) ? "LEFT" : "RIGHT";
 
@@ -694,7 +694,7 @@ namespace VirtualDarkStore.Editor
         private static void BuildPlayerController()
         {
             var playerObj = new GameObject("DesktopPicker");
-            playerObj.transform.position = new Vector3(0f, 0f, -8.0f);
+            playerObj.transform.position = new Vector3(0f, 0f, -8.5f);
             playerObj.transform.rotation = Quaternion.identity;
 
             var cc = playerObj.AddComponent<CharacterController>();
@@ -740,11 +740,11 @@ namespace VirtualDarkStore.Editor
             playerObj.AddComponent<PickerInteraction>();
         }
 
-        public static GameObject BuildVRPlayerRig(GameObject parent = null, bool active = false)
+        public static GameObject BuildVRPlayerRig(GameObject parent = null, bool active = true)
         {
-            var vrObj = new GameObject("[VRPlayerRig]");
+            var vrObj = new GameObject("XR Origin Hands (XR Rig)");
             if (parent != null) vrObj.transform.SetParent(parent.transform);
-            vrObj.transform.position = new Vector3(0f, 0f, -8.0f);
+            vrObj.transform.position = new Vector3(0f, 0f, -8.5f);
             vrObj.transform.rotation = Quaternion.identity;
 
             var cc = vrObj.AddComponent<CharacterController>();
@@ -754,14 +754,20 @@ namespace VirtualDarkStore.Editor
 
             var origin = vrObj.AddComponent<Unity.XR.CoreUtils.XROrigin>();
             origin.RequestedTrackingOriginMode = Unity.XR.CoreUtils.XROrigin.TrackingOriginMode.Floor;
+            origin.CameraYOffset = 1.68f;
 
-            var offsetObj = new GameObject("CameraOffset");
+            var offsetObj = new GameObject("Camera Floor Offset");
             offsetObj.transform.SetParent(vrObj.transform, false);
+            offsetObj.transform.localPosition = Vector3.zero;
+            offsetObj.transform.localRotation = Quaternion.identity;
             origin.CameraFloorOffsetObject = offsetObj;
 
-            var camObj = new GameObject("VRMainCamera");
+            var camObj = new GameObject("Main Camera");
             camObj.transform.SetParent(offsetObj.transform, false);
-            camObj.transform.localPosition = new Vector3(0f, 1.70f, 0f);
+            camObj.transform.localPosition = new Vector3(0f, 1.68f, 0f);
+            camObj.transform.localRotation = Quaternion.identity;
+            camObj.tag = "MainCamera";
+
             var cam = camObj.AddComponent<Camera>();
             cam.nearClipPlane = 0.05f;
             cam.farClipPlane = 45f; // RTX 2050 budget
@@ -770,21 +776,21 @@ namespace VirtualDarkStore.Editor
             camObj.AddComponent<VirtualDarkStore.VR.VRHeadTracking>();
             origin.Camera = cam;
 
-            var leftObj = new GameObject("LeftHandController");
+            var leftObj = new GameObject("Left Hand");
             leftObj.transform.SetParent(offsetObj.transform, false);
             leftObj.transform.localPosition = new Vector3(-0.25f, 1.2f, 0.35f);
             var leftInput = leftObj.AddComponent<VirtualDarkStore.VR.VRControllerInput>();
             var handField = typeof(VirtualDarkStore.VR.VRControllerInput).GetField("hand", BindingFlags.NonPublic | BindingFlags.Instance);
             if (handField != null) handField.SetValue(leftInput, VirtualDarkStore.VR.VRHand.Left);
 
-            var rightObj = new GameObject("RightHandController");
+            var rightObj = new GameObject("Right Hand");
             rightObj.transform.SetParent(offsetObj.transform, false);
             rightObj.transform.localPosition = new Vector3(0.25f, 1.2f, 0.35f);
             var rightInput = rightObj.AddComponent<VirtualDarkStore.VR.VRControllerInput>();
             if (handField != null) handField.SetValue(rightInput, VirtualDarkStore.VR.VRHand.Right);
 
             var loco = vrObj.AddComponent<VirtualDarkStore.VR.VRLocomotionController>();
-            loco.SetReferences(leftInput, camObj.transform, cc);
+            loco.SetReferences(leftInput, camObj.transform, cc, rightInput);
 
             var picker = vrObj.AddComponent<VirtualDarkStore.VR.VRPickerInteraction>();
             picker.SetReferences(rightInput, cam);
@@ -867,7 +873,7 @@ namespace VirtualDarkStore.Editor
 
                     // Physical shelf-edge barcode ticket directly below product slot on shelf beam lip
                     float ticketXOffset = (slot.Side == ShelfSide.Left) ? 0.305f : -0.305f;
-                    Quaternion ticketRot = (slot.Side == ShelfSide.Left) ? Quaternion.Euler(0f, 90f, 0f) : Quaternion.Euler(0f, -90f, 0f);
+                    Quaternion ticketRot = (slot.Side == ShelfSide.Left) ? Quaternion.Euler(0f, -90f, 0f) : Quaternion.Euler(0f, 90f, 0f);
                     Vector3 ticketPos = new Vector3(slot.WorldPosition.x + ticketXOffset, slot.WorldPosition.y - 0.06f, slot.WorldPosition.z);
 
                     PhysicalLocationLabel.CreateLabelObject(

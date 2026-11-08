@@ -10,9 +10,9 @@
 | Parameter | Inspected Value | Target Budget (RTX 2050-Class) | Status |
 |---|---:|---:|---|
 | SRP Batcher Enabled | `True` | `True` | PASS |
-| Total Mesh Renderers | `284` | `<= 300` | PASS |
-| Unique Shared Materials | `17` | `<= 25` | PASS |
-| GPU-Instanced Materials | `17 / 17` | `100%` | PASS |
+| Total Mesh Renderers | `293` | `<= 350` | PASS |
+| Unique Shared Materials | `21` | `<= 25` | PASS |
+| GPU-Instanced Materials | `21 / 21` | `100%` | PASS |
 | Realtime Lights | `10` | `<= 12` | PASS |
 | Shadow-Casting Lights | `1` | `<= 1` (Directional Only) | PASS |
 | Camera Far Clip Plane | `45.0 m` | `<= 55.0 m` | PASS |

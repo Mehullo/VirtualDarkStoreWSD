@@ -201,7 +201,7 @@ namespace VirtualDarkStore.Tests.Demo
                 Assert.IsNotNull(report);
                 Assert.IsTrue(report.SrpBatcherEnabled, "SRP Batcher must be enabled.");
                 Assert.GreaterOrEqual(report.TotalRenderersCount, 100, "Expected full dark store scene renderers (72 products + racks + envelope).");
-                Assert.LessOrEqual(report.TotalRenderersCount, 300, "Renderer count must stay within RTX 2050 budget (<= 300).");
+                Assert.LessOrEqual(report.TotalRenderersCount, 350, "Renderer count must stay within budget (<= 350 for 6-aisle 144-SKU store).");
                 Assert.GreaterOrEqual(report.UniqueSharedMaterialsCount, 8, "Expected shared category and structural materials.");
                 Assert.AreEqual(report.UniqueSharedMaterialsCount, report.InstancedMaterialsCount, "100% of shared materials must have GPU Instancing enabled.");
                 Assert.LessOrEqual(report.MaxCameraFarClipPlane, 50f, "Camera far clip plane must be clamped to <= 50m.");

@@ -25,13 +25,13 @@
 ## 3. Continuous Time-Study Elemental Breakdown
 | Activity Category | Duration (s) | Share of Task Time (%) |
 |---|---:|---:|
-| **Walking / Travel (Total)** | `29.58` | `77.8%` |
-|   ↳ *Moving Between Locations (Macro Transit)* | `18.58` | `48.9%` |
+| **Walking / Travel (Total)** | `29.62` | `77.9%` |
+|   ↳ *Moving Between Locations (Macro Transit)* | `18.62` | `49.0%` |
 |   ↳ *Approaching Target Zone (<= 3.0m)* | `11.00` | `28.9%` |
 |   ↳ *General Unassigned Walking* | `0.00` | `0.0%` |
 | **Searching Shelf (Stationary Orientation)** | `0.00` | `0.0%` |
 | **Item Picking (Validated SKU Grasp)** | `1.50` | `3.9%` |
-| **Waiting / Idle** | `6.12` | `16.1%` |
+| **Waiting / Idle** | `6.08` | `16.0%` |
 | **Order Packing (At Dispatch Bench)** | `0.00` | `0.0%` |
 | **Order Completed (Dispatch Finalization)** | `0.80` | `2.1%` |
 | **TOTAL RECONCILED** | **`38.00`** | **`100.0%`** |
@@ -49,8 +49,8 @@
 ## 5. Chronological Elemental Event Log
 | Event ID | Activity | Start (s) | End (s) | Duration (s) | Distance (m) | Location | SKU | Order | World Position (x, y, z) |
 |---|---|---:|---:|---:|---:|---|---|---|---|
-| `EVT-0001` | `Waiting` | 0.00 | 0.16 | 0.16 | 0.00 | `A01-L-B01-T01-S01` | `SKU-0001` | `ORD-DEMO-0001` | `(0.0, 0.0, -8.5)` |
-| `EVT-0002` | `MovingBetweenLocations` | 0.16 | 1.00 | 0.84 | 0.00 | `A01-L-B01-T01-S01` | `SKU-0001` | `ORD-DEMO-0001` | `(0.0, 0.0, -8.5)` |
+| `EVT-0001` | `Waiting` | 0.00 | 0.12 | 0.12 | 0.00 | `A01-L-B01-T01-S01` | `SKU-0001` | `ORD-DEMO-0001` | `(0.0, 0.0, -8.5)` |
+| `EVT-0002` | `MovingBetweenLocations` | 0.12 | 1.00 | 0.88 | 0.00 | `A01-L-B01-T01-S01` | `SKU-0001` | `ORD-DEMO-0001` | `(0.0, 0.0, -8.5)` |
 | `EVT-0003` | `Waiting` | 1.00 | 6.96 | 5.96 | 6.68 | `A01-L-B01-T01-S01` | `SKU-0001` | `ORD-DEMO-0001` | `(-6.5, 0.0, -3.2)` |
 | `EVT-0004` | `Approaching` | 6.96 | 9.96 | 3.00 | 1.67 | `A01-L-B01-T01-S01` | `SKU-0001` | `ORD-DEMO-0001` | `(-6.5, 0.0, -3.2)` |
 | `EVT-0005` | `Searching` | 9.96 | 9.96 | 0.00 | 0.00 | `A01-L-B03-T02-S01` | `SKU-0008` | `ORD-DEMO-0001` | `(-6.5, 0.0, -3.2)` |

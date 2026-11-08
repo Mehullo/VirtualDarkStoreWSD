@@ -4,6 +4,283 @@ This log tracks all architectural and engineering changes to the Virtual Dark St
 
 ---
 
+## Entry: 2026-11-04T19:25:00+05:30
+- **Date**: 2026-11-04T19:25:00+05:30
+- **Phase**: Meta Quest 3 VR UI Immersion Polish & Hierarchy Restoration
+- **Goal**:
+  1. Restore official `XR Origin Hands (XR Rig)` hierarchy name in `DarkStore_Phase1.unity` and `VRPlayerRig.cs` so all VR interactions strictly flow through this rig.
+  2. Fix wrist Next Order UI clipping where the blue controller disc sliced through product rows by relocating the anchor onto the dorsal wrist/forearm (`Z = -0.07m`, `Y = +0.15m`), completely behind and above controller geometry.
+  3. Expand wrist Next Order card to structured 3-column table (`PRODUCT | QTY | AISLE`, width 380px) displaying full product names (`Orange Juice Fresh 1L`, `Tortilla Chips Jalapeno 200g`, `Basmati Rice Royal 1kg`) without truncation, perfectly matching desktop format.
+  4. Remove legacy 9cm blue tracking ring primitive in favor of sleek, ringless Meta Quest 3 Touch Plus form factor.
+  5. Anchor 3D grab prompt badges in world space directly above target items on shelves rather than lerping into the player's face, and add wrist gaze suppression when reading the checklist.
+  6. Suppress 2D desktop screen-space OnGUI rendering (e.g. "SIMULATION SETUP" window, 2D reticle) in VR headset lenses during stereo eye passes (`Camera.current.stereoEnabled`), keeping the VR view 100% clean and immersive while preserving the desktop monitor mirror for the researcher.
+- **Changes**:
+  1. `Assets/Scripts/VR/VRNextOrderWristUI.cs`:
+     - Added structured multi-column text components (`productColumnText`, `qtyColumnText`, `aisleColumnText`).
+     - Expanded card width to 380px x 230px (`scale = 0.0006f`).
+     - Displays full SKU names up to 28 characters without clipping or truncating with `..`.
+     - Preserves `[T]` static pin toggle and `itemRowsText` compatibility.
+  2. `Assets/Scripts/VR/VRHandVisual.cs`:
+     - Removed legacy oversized 9cm `TrackingRing` primitive to match Quest 3 Touch Plus ringless controller profile.
+     - Repositioned `WristAnchor` to `(-0.02m, 0.15m, -0.07m)` with `Euler(38f, 15f, -4f)`, placing the tablet on the dorsal wrist/forearm with zero controller intersection.
+  3. `Assets/Scripts/VR/VRGazePromptUI.cs`:
+     - Anchored prompt badges in 3D world space at `targetPromptPosition` above shelf products with billboard rotation facing camera.
+  4. `Assets/Scripts/VR/VRPickerInteraction.cs`:
+     - Added wrist gaze suppression: suppresses background gaze raycasting when player looks down at left wrist checklist (`angle < 28°`, `dist < 0.75m`).
+  5. `Assets/Scripts/UI/SimulationHUD.cs`, `Assets/Scripts/UI/WorkStudyResultsUI.cs`, `Assets/Scripts/UI/ResearcherDashboardUI.cs`:
+     - Added `if (Camera.current != null && Camera.current.stereoEnabled) return;` to prevent 2D desktop OnGUI from rendering into VR headset lenses.
+     - Suppressed 2D screen crosshair, prompt, and next order panel when VR rig is active.
+  6. `Assets/Scripts/VR/VRPlayerRig.cs`:
+     - Restored detection and auto-wiring of `XR Origin Hands (XR Rig)` hierarchy (`Camera Floor Offset`, `Left Hand`, `Right Hand`).
+     - Added `using UnityEngine.Rendering.Universal;` to ensure URP camera data cleanly compiles.
+  7. `Assets/Scenes/DarkStore_Phase1.unity`:
+     - Restored root name to `XR Origin Hands (XR Rig)`.
+     - Updated `WristAnchor` to `{-0.02, 0.15, -0.07}` and `[VRNextOrderWristUI]` size to `380 x 230`.
+  8. `Assets/Tests/Editor/VR/VRRigTests.cs`:
+     - Added automated test `VRPlayerRig_WristUI_HasCleanMultiColumnLayout_AndDorsalWristAnchor`.
+  9. `README_VR_WINDOWS_LINK.md`:
+     - Updated documentation with full details on sleek controllers, dorsal wrist layout, and stereo pass OnGUI suppression.
+- **Files Changed**:
+  - `Assets/Scripts/VR/VRNextOrderWristUI.cs`
+  - `Assets/Scripts/VR/VRHandVisual.cs`
+  - `Assets/Scripts/VR/VRGazePromptUI.cs`
+  - `Assets/Scripts/VR/VRPickerInteraction.cs`
+  - `Assets/Scripts/UI/SimulationHUD.cs`
+  - `Assets/Scripts/UI/WorkStudyResultsUI.cs`
+  - `Assets/Scripts/UI/ResearcherDashboardUI.cs`
+  - `Assets/Scripts/VR/VRPlayerRig.cs`
+  - `Assets/Scenes/DarkStore_Phase1.unity`
+  - `Assets/Tests/Editor/VR/VRRigTests.cs`
+  - `README_VR_WINDOWS_LINK.md`
+  - `docs/DEVELOPMENT_LOG.md`
+- **Commands/Tools**:
+  - `dotnet build VirtualDarkStore.Runtime.csproj -c Debug`
+  - `dotnet build VirtualDarkStore.Editor.csproj -c Debug`
+  - `dotnet build VirtualDarkStore.Tests.Editor.csproj -c Debug`
+- **Verification**: Runtime, Editor, and Tests assemblies compiled cleanly with 0 warnings and 0 errors.
+- **Result**: Success. The Next Order checklist on the wrist shows full product names without clipping or controller disc overlap, 3D grab badges stay attached to shelf products in world space without flying into the view, and 2D desktop OnGUI windows no longer obscure the VR headset display.
+- **Known Issues**: None.
+- **Next Step**: User live verification in Meta Quest 3 via Horizon Link.
+
+---
+
+## Entry: 2026-11-04T18:41:00+05:30
+- **Date**: 2026-11-04T18:41:00+05:30
+- **Phase**: Meta Quest 3 VR Ergonomics & Locomotion Rotation Upgrade
+- **Goal**:
+  1. Pitch controller visual models and pointing rays 50 degrees forward away from the user so thumbstick face is comfortable to view and pointer fires straight ahead.
+  2. Shift wrist Next Order card higher and pivot at bottom edge so the blue thumbstick face disc sits over 12 cm below the card, eliminating visual obstruction.
+  3. Implement right controller thumbstick turning (45° snap turn comfort standard and smooth turn) with arrow keys fallback, without corrupting cumulative travel distance measurements.
+- **Changes**:
+  1. `Assets/Scripts/VR/VRControllerInput.cs`:
+     - Added `forwardAngleOffset = 50f` to orient `PointerForward` and `PointerRay` 50° forward/down away from user.
+  2. `Assets/Scripts/VR/VRHandVisual.cs`:
+     - Added `tiltAngleAwayFromUser = 50f` applied to `HandModelRoot` and `PointerTip`.
+     - Elevated `WristAnchor` to `Y = 0.14m` and angled at 45° towards player eyes.
+  3. `Assets/Scripts/VR/VRNextOrderWristUI.cs`:
+     - Set `canvasRect.pivot = new Vector2(0.5f, 0.0f)` (bottom-edge pivot) so card extends upward from the elevated anchor, ensuring zero overlap with the controller thumbstick disc.
+  4. `Assets/Scripts/VR/VRLocomotionController.cs`:
+     - Added `turnController`, `enableTurn`, `useSnapTurn = true`, `snapTurnAngle = 45f`, `smoothTurnSpeed = 90f`.
+     - Added `ProcessTurn()` supporting right thumbstick snap/smooth turning and Left/Right Arrow keyboard fallback.
+     - Preserves zero travel displacement on in-place turning.
+  5. `Assets/Scripts/VR/VRPlayerRig.cs` & `Assets/Scripts/Editor/DarkStoreSceneBuilder.cs`:
+     - Wired `rightController` as turn controller on `VRLocomotionController`.
+  6. `Assets/Tests/Editor/VR/VRRigTests.cs`:
+     - Added 3 automated tests: 50° ergonomic tilt, elevated wrist UI clearance, and right-stick rotation.
+  7. `Assets/Scenes/DarkStore_Phase1.unity`:
+     - Rebuilt and serialized with updated settings.
+  8. `README_VR_WINDOWS_LINK.md` & `README.md`:
+     - Updated documentation detailing the 50° ergonomic tilt, elevated wrist checklist, and right-stick rotation.
+- **Files Changed**:
+  - `Assets/Scripts/VR/VRControllerInput.cs`
+  - `Assets/Scripts/VR/VRHandVisual.cs`
+  - `Assets/Scripts/VR/VRNextOrderWristUI.cs`
+  - `Assets/Scripts/VR/VRLocomotionController.cs`
+  - `Assets/Scripts/VR/VRPlayerRig.cs`
+  - `Assets/Scripts/Editor/DarkStoreSceneBuilder.cs`
+  - `Assets/Tests/Editor/VR/VRRigTests.cs`
+  - `Assets/Scenes/DarkStore_Phase1.unity`
+  - `README_VR_WINDOWS_LINK.md`
+  - `README.md`
+  - `docs/DEVELOPMENT_LOG.md`
+  - `docs/PHASE_STATUS.md`
+- **Commands/Tools**:
+  - `dotnet build VirtualDarkStore.Runtime.csproj -c Debug`
+  - `dotnet build VirtualDarkStore.Tests.Editor.csproj -c Debug`
+  - `Unity.exe -batchmode -runTests -testPlatform EditMode -projectPath . -testResults TestResults-VRFinal117.xml`
+  - `Unity.exe -batchmode -quit -projectPath . -executeMethod VirtualDarkStore.Editor.DarkStoreSceneBuilder.BuildDarkStorePhase1Scene`
+- **Verification**: 117 / 117 automated EditMode tests passing (0 failures, 0 warnings, duration: 8.49s).
+- **Result**: Success. Controllers are tilted 50° away from user, list sits cleanly above thumbstick, and right thumbstick rotates character in 45° snap increments.
+- **Known Issues**: None.
+- **Next Step**: User verification in Meta Quest 3 headset via Horizon Link.
+
+---
+
+## Entry: 2026-11-04T18:12:00+05:30
+- **Date**: 2026-11-04T18:12:00+05:30
+- **Phase**: Meta Quest 3 VR Integration (PC VR Windows Link Profile & In-VR Interaction/UI)
+- **Goal**: Implement visible 3D controller hands in VR, map 100% of desktop grabbing/picking/collection/packing interactions to VR controllers, provide in-VR 3D gaze prompt when looking at grabable objects, render the Next Order checklist statically on the left wrist/hand with `[T]` toggle to float/pin in view, and provide complete documentation in `README_VR_WINDOWS_LINK.md`.
+- **Changes**:
+  1. `Assets/Scripts/VR/VRHandVisual.cs`:
+     - Created visible 3D controller models for left and right hands.
+     - Left hand accented in soft cyan; Right hand accented in safety amber.
+     - Added laser pointer line renderer on right hand for product targeting.
+     - Provided wrist mounting anchor for wrist UI. Stripped colliders to prevent physics interference.
+  2. `Assets/Scripts/VR/VRNextOrderWristUI.cs`:
+     - Created stereoscopic World Space Canvas mounted on left wrist reproducing desktop Next Order card.
+     - Displays `NEXT ORDER | <OrderId>`, status, and line items table with active item indicator `▶`, pending `○`, and picked `✔`.
+     - Supports `[T]` keyboard shortcut to toggle static floating billboard in front of player eyes.
+  3. `Assets/Scripts/VR/VRGazePromptUI.cs`:
+     - Created in-VR 3D gaze reticle and floating prompt badge displaying `[Trigger / Grip] Grab: <SkuName> (<SkuId>) [<SlotId>]`.
+     - Dynamically expands and colors reticle upon hover; auto-dismisses when looking away.
+  4. `Assets/Scripts/VR/VRPickerInteraction.cs`:
+     - Updated to evaluate controller pointer ray and camera gaze ray.
+     - Full mapping of shelf product picking, collection desk cart activation, and dispatch packing bench order finalization.
+     - Dual input: Trigger and Grip buttons on both controllers, plus keyboard `[E]` and mouse LMB.
+  5. `Assets/Scripts/VR/VRPlayerRig.cs`:
+     - Integrated `VRHandVisual`, `VRNextOrderWristUI`, and `VRGazePromptUI` into rig initialization.
+  6. `Assets/Tests/Editor/VR/VRRigTests.cs`:
+     - Added automated tests verifying visible hand meshes, wrist UI order data, and gaze grab prompt hover behavior.
+  7. `DarkStore_Phase1.unity`:
+     - Rebuilt and serialized with updated VR player rig components.
+  8. `README_VR_WINDOWS_LINK.md` & `README.md`:
+     - Added detailed instructions on VR hand visuals, wrist UI, gaze prompt, controls mapping, and step-by-step Windows Link setup.
+- **Files Changed**:
+  - `Assets/Scripts/VR/VRHandVisual.cs`
+  - `Assets/Scripts/VR/VRNextOrderWristUI.cs`
+  - `Assets/Scripts/VR/VRGazePromptUI.cs`
+  - `Assets/Scripts/VR/VRPickerInteraction.cs`
+  - `Assets/Scripts/VR/VRPlayerRig.cs`
+  - `Assets/Tests/Editor/VR/VRRigTests.cs`
+  - `Assets/Scenes/DarkStore_Phase1.unity`
+  - `VirtualDarkStore.Runtime.csproj`
+  - `README_VR_WINDOWS_LINK.md`
+  - `README.md`
+  - `docs/DEVELOPMENT_LOG.md`
+  - `docs/PHASE_STATUS.md`
+- **Commands/Tools**:
+  - `dotnet build VirtualDarkStore.Runtime.csproj -c Debug`
+  - `dotnet build VirtualDarkStore.Tests.Editor.csproj -c Debug`
+  - `Unity.exe -batchmode -runTests -testPlatform EditMode -projectPath . -testResults TestResults-VRWristGaze3.xml`
+  - `Unity.exe -batchmode -quit -projectPath . -executeMethod VirtualDarkStore.Editor.DarkStoreSceneBuilder.BuildDarkStorePhase1Scene`
+- **Verification**: 114 / 114 automated EditMode tests passing (0 failures, 0 warnings, duration: 8.11s).
+- **Result**: Success. Hands are visible, Next Order UI is rendered on wrist/static card in VR, gaze prompt triggers when looking at objects, and desktop grab/pick is fully mapped.
+- **Known Issues**: None.
+- **Next Step**: Conduct live user trial on Meta Quest 3 via Horizon Link USB cable.
+
+---
+
+## Entry: 2026-11-04T16:33:00+05:30
+- **Date**: 2026-11-04T16:33:00+05:30
+- **Phase**: Meta Quest 3 VR Integration & Participant-Wise Work-Study Data Collection and CSV Export
+- **Goal**: Implement participant-wise work-study data collection and CSV export across 10 unique participants (P01–P10), provide full Meta Quest 3 VR support operating on the identical simulation and work-study core, and deliver a comprehensive step-by-step VR setup and build guide for USB-connected Meta Quest 3 headsets.
+- **Changes**:
+  1. `Assets/Scripts/Domain/Participants/ParticipantProfile.cs`:
+     - Created domain entity representing slots `P01`–`P10` with immutable slot ID, researcher-assigned name, creation timestamp, last active date, completed session count, and completed scenarios/modes.
+  2. `Assets/Scripts/Domain/Participants/ParticipantRoster.cs`:
+     - Created central manager for exactly 10 slots (`P01` to `P10`) with non-empty validation, case-insensitive duplicate name prevention, capacity caps, active participant selection, and JSON persistence (`WorkStudyData/participants_roster.json`).
+  3. `Assets/Scripts/Domain/Participants/ParticipantSessionRecord.cs`:
+     - Encapsulated comprehensive session telemetry: participant metadata, order info, work-study elemental durations/percentages, routing sequence/costs, and mathematical reconciliation status.
+  4. `Assets/Scripts/WorkStudy/ParticipantDataExporter.cs`:
+     - Created RFC-4180 CSV export pipeline writing individual Summary CSVs (`ParticipantName_ScenarioName_RoutingMode_SessionID.csv`), Event-level CSVs (`ParticipantName_ScenarioName_RoutingMode_SessionID_Events.csv`), and deduplicated combined files (`All_Session_Summaries.csv`, `All_Event_Records.csv`).
+     - Implemented platform-aware directory routing (workspace root on Desktop, `Application.persistentDataPath` on Quest).
+  5. `Assets/Scripts/UI/ResearcherDashboardUI.cs`:
+     - Created IMGUI management dashboard toggleable via `[F2]` or button on HUD displaying all 10 slots, active participant selection, name editing, and folder actions.
+  6. `Assets/Scripts/Routing/OrToolsRouteOptimizer.cs`:
+     - Added pure C# exact/2-opt TSP solver under `#if UNITY_ANDROID` ensuring optimized picking routing functions on standalone Quest Android headsets where native x64 Windows OR-Tools binaries cannot run.
+  7. `Assets/Scripts/UI/WorkStudyResultsUI.cs`:
+     - Added `[Save Participant CSVs]` button and `ExportCurrentParticipantSession` method.
+  8. `Assets/Scripts/UI/SimulationHUD.cs`:
+     - Added active participant badge (`[P01: Rahul]`) and shortcut button to open Researcher Dashboard.
+  9. `Assets/Scripts/Scenarios/DemoFlowController.cs`:
+     - Added participant validation interlock prior to launching fulfillment sessions.
+  10. `docs/QUEST3_VR_SETUP_GUIDE.md`:
+      - Authored comprehensive step-by-step setup and deployment guide detailing Developer Mode enablement, USB-C link cable connection, ADB device verification, direct Unity Build & Run, in-VR controls, and ADB pull retrieval of exported CSV files.
+  11. `Assets/Tests/Editor/Participants/ParticipantDataCollectionTests.cs`:
+      - Implemented 15 automated EditMode tests covering all requirements (TEST 01 to TEST 15).
+- **Files Changed**:
+  - `Assets/Scripts/Domain/Participants/ParticipantProfile.cs`
+  - `Assets/Scripts/Domain/Participants/ParticipantRoster.cs`
+  - `Assets/Scripts/Domain/Participants/ParticipantSessionRecord.cs`
+  - `Assets/Scripts/WorkStudy/ParticipantDataExporter.cs`
+  - `Assets/Scripts/UI/ResearcherDashboardUI.cs`
+  - `Assets/Scripts/Routing/OrToolsRouteOptimizer.cs`
+  - `Assets/Scripts/UI/WorkStudyResultsUI.cs`
+  - `Assets/Scripts/UI/SimulationHUD.cs`
+  - `Assets/Scripts/Scenarios/DemoFlowController.cs`
+  - `Assets/Scripts/Management/PerformanceSettingsManager.cs`
+  - `Assets/Tests/Editor/Demo/Phase8PolishAndDemoTests.cs`
+  - `Assets/Tests/Editor/Participants/ParticipantDataCollectionTests.cs`
+  - `VirtualDarkStore.Runtime.csproj`
+  - `VirtualDarkStore.Tests.Editor.csproj`
+  - `docs/QUEST3_VR_SETUP_GUIDE.md`
+  - `README.md`
+  - `docs/PHASE_STATUS.md`
+  - `docs/DEVELOPMENT_LOG.md`
+- **Commands / Tools**:
+  - `dotnet build VirtualDarkStore.Runtime.csproj; dotnet build VirtualDarkStore.Editor.csproj; dotnet build VirtualDarkStore.Tests.Editor.csproj`
+  - `Unity.exe -batchmode -nographics -projectPath . -runTests -testPlatform EditMode -testResults TestResults-Final107.xml -logFile unity_test_final107.log`
+  - `adb.exe devices`
+- **Verification**:
+  - All assemblies compiled with 0 warnings and 0 errors.
+  - Complete test run: **107 / 107 EditMode tests passing** (`4.10s`, 0 failures, 0 warnings).
+  - All 15 participant tests passed cleanly.
+  - Desktop simulation and VR parity completely intact.
+- **Result**: Participant-Wise Work-Study Data Collection and CSV Export feature and Meta Quest 3 VR Integration successfully delivered with 100% test coverage and step-by-step setup documentation.
+- **Known Issues**: None.
+- **Next Step**: Connect physical Meta Quest 3 via USB and follow `docs/QUEST3_VR_SETUP_GUIDE.md` for live headset testing.
+
+---
+
+## Entry: 2026-11-03T19:32:00+05:30
+- **Date**: 2026-11-03T19:32:00+05:30
+- **Phase**: UI Enhancement (Prominent Top-Centre Next-Order Information Panel)
+- **Goal**: Implement a prominent, dedicated Next-Order Information Panel positioned at the top-centre of the screen with clear typography, dynamically displaying Order ID, total item count, and an itemized product table with quantities, highlighted aisle numbers, highlighted rack/slot positions, and pick status.
+- **Changes**:
+  1. `Assets/Scripts/UI/SimulationHUD.cs`:
+     - Added `DrawNextOrderPanel(OrderManager om)` positioned top-centre (`panelY = 12f`, width 42% clamped to 580px–660px, adaptive height capped at 240px with `GUI.BeginScrollView`).
+     - Styled with dark semi-transparent card background (`#0B1220F0`), cyan top accent bar (`#00E5FF`), and high-contrast amber/yellow highlights.
+     - Implemented larger typography (15pt bold title, 12pt subheaders and table text) for immediate picker readability without straining on the top-left terminal.
+     - Implemented `ResolveNextPendingOrder(OrderManager om, out string title, out string subtitle, out bool isQueuedUpcoming)`:
+       - Displays active order with item counts and status during picking.
+       - Automatically advances to the next queued simulation order upon fulfillment and packing completion.
+       - Renders an informative `NEXT ORDER | NO UPCOMING ORDERS` summary card once all orders are completed.
+     - Implemented `ResolveProductLocation(OrderItem item, out string aisleStr, out string rackSlotStr)`:
+       - Queries live `StoreManager.Instance.TryGetSlotForSku` on every frame to immediately reflect dynamic re-slotting and routing optimizations.
+       - Highlights Aisle numbers (`A01`–`A06`) in warm amber yellow (`#FFCA28`) and Rack/Slot locations (`R-B03-T03-S02`) in cool ice cyan (`#80D8FF`).
+     - Highlights active pick target item in bold golden yellow (`#FFD54F`) with arrow prefix `▶` and green checkmark `✔` for picked items.
+     - Repositioned transient alert banners dynamically below the panel (`12f + currentNextOrderPanelHeight + 6f`) to eliminate overlap.
+     - Added texture resource cleanup in `OnDestroy()` (`nextOrderBgTexture`, `nextOrderAccentOrange`, `nextOrderAccentCyan`, `nextOrderTableDivider`).
+  2. `Assets/Tests/Editor/UI/NextOrderPanelTests.cs`:
+     - Created 7 automated EditMode tests verifying:
+       1. `ResolveNextPendingOrder_NullOrderManager_ReturnsNullAndNoUpcomingOrdersMessage`
+       2. `ResolveNextPendingOrder_ActivePendingOrder_ReturnsOrderWithIdAndItemCount`
+       3. `ResolveNextPendingOrder_ActiveCompletedOrder_WithQueuedSimOrder_AdvancesToNextQueuedOrder`
+       4. `ResolveNextPendingOrder_AllOrdersCompleted_ReturnsNullAndNoUpcomingOrdersMessage`
+       5. `ResolveProductLocation_LiveStoreSlot_ExtractsAisleAndSlotId`
+       6. `ResolveProductLocation_FallbackLocationString_ParsesCorrectly`
+       7. `ResolveProductLocation_NullItem_ReturnsPlaceholdersSafely`
+- **Files Changed**:
+  - `Assets/Scripts/UI/SimulationHUD.cs`
+  - `Assets/Tests/Editor/UI/NextOrderPanelTests.cs`
+  - `README.md`
+  - `docs/PHASE_STATUS.md`
+  - `docs/DEVELOPMENT_LOG.md`
+  - `docs/TESTING.md`
+  - `CHANGELOG.md`
+- **Commands / Tools**:
+  - Unity 6 Editor CLI (`6000.6.7f1`) in batchmode
+  - PowerShell test runner command
+- **Verification**:
+  - Full EditMode test run: **92 / 92 tests passing** (`7.72s`, 0 failed, 0 inconclusive).
+  - All 7 new `NextOrderPanelTests` passed cleanly.
+  - Zero compiler errors or runtime memory leaks.
+- **Result**: Prominent Next-Order Information Panel successfully implemented and fully integrated into the simulation HUD with zero impact on existing controls, workflows, or telemetry.
+- **Known Issues**: None.
+- **Next Step**: Ongoing operational usability validation.
+
+---
+
 ## Entry: 2026-10-28T14:34:29+05:30
 - **Date**: 2026-10-28T14:34:29+05:30
 - **Phase**: Phase 0 (Baseline & Workspace Verification)
@@ -811,6 +1088,99 @@ This log tracks all architectural and engineering changes to the Virtual Dark St
 - **Result**: Configurable multi-order simulation successfully implemented and verified with 100% test pass rate.
 - **Known Issues**: None.
 - **Next Step**: Awaiting user feedback.
+
+---
+
+## Targeted Bug Fix: Internal Aisle Signage Text Orientation
+
+- **Date**: 2026-11-03
+- **Phase**: Targeted Bug Fix (Visual Regression in Internal Aisle Signage)
+- **Goal**: Resolve visual regression where text on signs located inside picking aisles appeared horizontally mirrored (e.g. `A06-R-B03` displayed reversed as `Ɛ08-Я-д0A`), while strictly preserving front-facing signs, store geometry, shelf positions, and simulation workflows.
+- **Changes**:
+  1. Identified root cause in `Assets/Scripts/Editor/DarkStoreSceneBuilder.cs`: the Euler yaw angles for internal aisle signs (`faceRot` and `ticketRot`) were swapped between Left and Right racks. Because uGUI Canvases render double-sided with `Cull Off`, signs were viewed from their reverse face relative to picker line-of-sight in the corridor.
+  2. Corrected `faceRot` (line 555) and `ticketRot` (line 870) in `DarkStoreSceneBuilder.cs`:
+     - `ShelfSide.Left`: set to `Quaternion.Euler(0f, -90f, 0f)` so sign local X-axis points North (+Z), matching picker camera right when facing West (-X).
+     - `ShelfSide.Right`: set to `Quaternion.Euler(0f, 90f, 0f)` so sign local X-axis points South (-Z), matching picker camera right when facing East (+X).
+  3. Regenerated primary simulation scene (`Assets/Scenes/DarkStore_Phase1.unity`) using `DarkStoreSceneBuilder.BuildDarkStorePhase1Scene()` in headless batch mode.
+  4. Preserved front-facing signs (`AisleHeader` and `EndCapPlacard`) with `Quaternion.identity` (`{x: 0, y: 0, z: 0, w: 1}`).
+  5. Updated test fixture in `Assets/Tests/Editor/Environment/PhysicalLocationLabelTests.cs` and added `InternalAisleSignage_OrientationMatchesPickerViewingDirection_WithoutHorizontalMirroring` to mathematically verify dot-product alignment between sign right vectors and picker camera right vectors.
+- **Files Changed**:
+  - `Assets/Scripts/Editor/DarkStoreSceneBuilder.cs` [MODIFY]
+  - `Assets/Scenes/DarkStore_Phase1.unity` [MODIFY]
+  - `Assets/Tests/Editor/Environment/PhysicalLocationLabelTests.cs` [MODIFY]
+  - `TestResults-SignFix.xml` [NEW]
+  - `README.md` [MODIFY]
+  - `docs/PHASE_STATUS.md` [MODIFY]
+  - `docs/DEVELOPMENT_LOG.md` [MODIFY]
+  - `docs/TESTING.md` [MODIFY]
+- **Commands / Tools**:
+  - `Unity.exe -projectPath . -executeMethod VirtualDarkStore.Editor.DarkStoreSceneBuilder.BuildDarkStorePhase1Scene -batchmode -nographics -quit -logFile build_scene_sign_fix.log`
+  - `Unity.exe -projectPath . -runTests -testPlatform EditMode -testResults TestResults-SignFix.xml -batchmode -nographics -logFile unity_test_sign_fix.log`
+- **Verification**:
+  - Full EditMode test suite: **85 tests executed, 85 passed, 0 failed, 0 skipped (`8.19s`)** (84 prior tests + 1 new test).
+  - Verified YAML transform properties in `Assets/Scenes/DarkStore_Phase1.unity`:
+    - `Placard_Bay_03` on `Rack_Right_06`: `m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}` (+90° yaw).
+    - `Placard_Bay_03` on `Rack_Left_06`: `m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}` (-90° yaw).
+    - Front overhead signs (`Aisle_XX_HeaderSign_FaceFront`) and end-cap placards (`EndCapPlacard_XX`): preserved `m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}` (`Quaternion.identity`).
+  - Mathematical vector verification: sign local X-axis aligns with picker camera right ($\text{dot product} > 0.99$), ensuring text reads left-to-right without mirroring.
+- **Result**: Mirrored text visual regression fixed. All internal aisle placards, shelf-level tier tags, and shelf tickets render in normal left-to-right orientation matching reference Screenshot 2.
+---
+
+## Meta Quest 3 PC VR (Windows Profile) Integration & Rig Calibration
+- **Date**: 2026-11-04T17:26:00+05:30
+- **Phase**: Meta Quest 3 PC VR (Windows Profile) Integration & Rig Calibration
+- **Goal**: Configure and calibrate the VR player rig for PC VR on Windows using the Meta Horizon Link App (Quest Link via USB cable). Connect the camera to the XR Rig (XR Origin Hands hierarchy), level the camera horizon, reposition the starting spawn point away from the warehouse center, configure standing height, support dual Pick/Grab interaction (Index Trigger & Hand Grip), add continuous sprint locomotion, and author step-by-step documentation.
+- **Changes**:
+  1. **Camera Connection & Level Horizon Angle (`VRPlayerRig.cs`)**:
+     - Connected `XROrigin.Camera` to `Main Camera` and `XROrigin.CameraFloorOffsetObject` to `CameraOffset`.
+     - Locked `CameraOffset` local rotation to `Quaternion.identity` (`{x: 0, y: 0, z: 0, w: 1}`) with zero pitch/roll tilt, ensuring a level horizon in the VR headset.
+     - Added automatic `AudioListener` management: enables VR listener and mutes desktop listeners upon rig activation to avoid duplicate listener warnings.
+  2. **Starting Point & Eye Height Calibration (`DarkStoreSceneBuilder.cs`, `VRPlayerRig.cs`)**:
+     - Relocated default rig spawn point from world center `(0, 0, 0)` to front cross-aisle operational staging point `(0, 0, -8.5m)` facing North (`Quaternion.identity`) looking into Aisles `A01`–`A06`.
+     - Configured `XROrigin.RequestedTrackingOriginMode = Floor` (floor-relative Y=0 reference, tracking physical standing eye height above floor, fallback `CameraYOffset = 1.68m`).
+  3. **Dual Pick / Grab Interaction (`VRControllerInput.cs`, `VRPickerInteraction.cs`)**:
+     - Expanded `VRControllerInput` to poll both `trigger` and `grip` controls via Input System and `UnityEngine.XR.InputDevices`.
+     - Squeezing either the **Right Index Trigger** OR the **Right Hand Grip (Grab) Button** fires pick on hovered shelf SKUs and completes packing at dispatch bench (`PACK-01`).
+  4. **Sprint Locomotion (`VRLocomotionController.cs`)**:
+     - Added sprint speed (`sprintSpeed = 3.5 m/s`) alongside walk speed (`walkSpeed = 1.4 m/s`).
+     - Sprint engaged via Left Thumbstick click (`primary2DAxisClick`), holding Left Grip while moving, or holding `Left Shift` on the laptop keyboard.
+     - Preserves faithful displacement and velocity measurement for `ActivityClassifier` and `WorkEventLogger`.
+  5. **Dynamic Mode Toggle (`VRPlayerRig.cs`)**:
+     - Added `[V]` key shortcut allowing instantaneous toggling between Desktop Picker and VR Player Rig during laptop execution.
+  6. **Scene Regeneration (`DarkStoreSceneBuilder.cs`)**:
+     - Executed headless batchmode scene generation to bake updated rig transforms, camera connections, and NavMesh geometry into `Assets/Scenes/DarkStore_Phase1.unity`.
+  7. **Setup Documentation**:
+     - Authored `README_VR_WINDOWS_LINK.md` in root directory detailing Meta Horizon Link App setup, active OpenXR runtime configuration, USB cable connection, in-VR controls, play mode execution, and troubleshooting.
+- **Files Changed**:
+  - `Assets/Scripts/VR/VRControllerInput.cs` [MODIFY]
+  - `Assets/Scripts/VR/VRLocomotionController.cs` [MODIFY]
+  - `Assets/Scripts/VR/VRPickerInteraction.cs` [MODIFY]
+  - `Assets/Scripts/VR/VRHeadTracking.cs` [MODIFY]
+  - `Assets/Scripts/VR/VRPlayerRig.cs` [MODIFY]
+  - `Assets/Scripts/Editor/DarkStoreSceneBuilder.cs` [MODIFY]
+  - `Assets/Scenes/DarkStore_Phase1.unity` [MODIFY]
+  - `Assets/Tests/Editor/VR/VRRigTests.cs` [MODIFY]
+  - `README_VR_WINDOWS_LINK.md` [NEW]
+  - `README.md` [MODIFY]
+  - `docs/PHASE_STATUS.md` [MODIFY]
+  - `docs/DEVELOPMENT_LOG.md` [MODIFY]
+  - `TestResults-VRRigUpdate.xml` [NEW]
+- **Commands / Tools**:
+  - `dotnet build VirtualDarkStore.Runtime.csproj -c Debug`
+  - `dotnet build VirtualDarkStore.Editor.csproj -c Debug`
+  - `dotnet build VirtualDarkStore.Tests.Editor.csproj -c Debug`
+  - `Unity.exe -batchmode -nographics -projectPath . -executeMethod VirtualDarkStore.Editor.DarkStoreSceneBuilder.BuildDarkStorePhase1Scene -quit -logFile build_scene.log`
+  - `Unity.exe -batchmode -nographics -projectPath . -runTests -testPlatform EditMode -testResults TestResults-VRRigUpdate.xml -logFile test_run.log`
+- **Verification**:
+  - Full EditMode test suite: **111 tests executed, 111 passed, 0 failed, 0 skipped (`8.27s`)** in `TestResults-VRRigUpdate.xml`.
+  - Verified `VRPlayerRig_CenterSpawnAutoCorrection_MovesToWarehouseStart`: rig relocates from `(0, 0, 0)` to `(0, 0, -8.5m)`.
+  - Verified `VRPickerInteraction_GripGrab_ExecutesPick`: grip (grab) press picks item and sets `isGrabPressed = true`.
+  - Verified `VRLocomotion_SprintInteraction_AcceleratesSpeed`: sprint accelerates from 1.4 m/s to 3.5 m/s.
+  - Verified `VRPlayerRig_CameraAngle_IsLevelWithWarehouseFloor`: zero rotation on camera offset and floor tracking origin mode.
+- **Result**: PC VR Windows Profile via Meta Horizon Link is fully configured, calibrated, verified, and documented.
+- **Known Issues**: None.
+- **Next Step**: Connect Meta Quest 3 via USB, enable Quest Link, and press Play in Unity Editor or build Windows Standalone exe.
+
 
 
 

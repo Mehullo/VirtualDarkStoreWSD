@@ -16,7 +16,7 @@ namespace VirtualDarkStore.VR
     {
         [Header("Camera & Tracking")]
         [SerializeField] private Camera hmdCamera;
-        [SerializeField] private float eyeHeight = 1.70f;
+        [SerializeField] private float eyeHeight = 1.68f;
 
         [Header("State")]
         [SerializeField] private bool isTracked = false;
@@ -81,6 +81,22 @@ namespace VirtualDarkStore.VR
                 }
             }
 #endif
+            // Fallback: UnityEngine.XR.InputDevices
+            var headDevice = UnityEngine.XR.InputDevices.GetDeviceAtXRNode(UnityEngine.XR.XRNode.CenterEye);
+            if (!headDevice.isValid) headDevice = UnityEngine.XR.InputDevices.GetDeviceAtXRNode(UnityEngine.XR.XRNode.Head);
+            if (headDevice.isValid)
+            {
+                isTracked = true;
+                if (headDevice.TryGetFeatureValue(UnityEngine.XR.CommonUsages.devicePosition, out Vector3 dPos)) headLocalPosition = dPos;
+                if (headDevice.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out Quaternion dRot)) headLocalRotation = dRot;
+                if (hmdCamera != null)
+                {
+                    hmdCamera.transform.localPosition = headLocalPosition;
+                    hmdCamera.transform.localRotation = headLocalRotation;
+                }
+                return;
+            }
+
             // Fallback for editor simulation or unattached HMD
             if (hmdCamera != null)
             {

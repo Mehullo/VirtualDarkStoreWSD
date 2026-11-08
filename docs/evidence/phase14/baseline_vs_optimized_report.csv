@@ -7,8 +7,8 @@ Waiting / Desk Time,s,1.50,1.50,0.00,0.0
 Packing & Deposit Time,s,1.90,1.90,0.00,0.0
 Order Completed Element,s,0.80,0.80,0.00,0.0
 Measured Picker Distance,m,96.38,73.18,-23.20,-24.1
-Algorithmic Route Cost (Solver Matrix),m,65.20,34.29,-30.91,-47.4
+Algorithmic Route Cost (Solver Matrix),m,65.20,36.76,-28.44,-43.6
 Successful Item Picks,count,4.00,4.00,0.00,0.0
-Distinct Shelf Bays Visited,count,4.00,4.00,0.00,0.0
+Distinct Shelf Bays Visited,count,5.00,4.00,-1.00,-20.0
 Inter-Aisle Transitions,count,3.00,2.00,-1.00,-33.3
 Aisle Backtracks (Revisited Aisle),count,1.00,0.00,-1.00,-100.0

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 #endif
 using VirtualDarkStore.Domain;
+using VirtualDarkStore.Domain.Participants;
 using VirtualDarkStore.Management;
 using VirtualDarkStore.Scenarios;
 using VirtualDarkStore.WorkStudy;
@@ -167,6 +168,57 @@ namespace VirtualDarkStore.UI
             return true;
         }
 
+        public bool ExportCurrentParticipantSession(out string summaryCsvPath, out string eventsCsvPath)
+        {
+            summaryCsvPath = null;
+            eventsCsvPath = null;
+            RefreshResults();
+
+            var roster = ParticipantRoster.Instance;
+            var participant = roster.ActiveParticipant;
+            if (participant == null)
+            {
+                exportStatusMessage = "Warning: No participant selected! Open [F2] Researcher Dashboard to select or register a participant.";
+                SimulationErrorHandler.ReportWarning("WorkStudyReport", exportStatusMessage);
+                return false;
+            }
+
+            var logger = WorkEventLogger.Instance;
+            var events = logger != null ? logger.LoggedEvents : Array.Empty<WorkEvent>();
+            var om = OrderManager.Instance;
+            var demo = DemoFlowController.Instance;
+
+            string scenarioName = demo != null && demo.SelectedScenario != null ? demo.SelectedScenario.scenarioName : "StandardScenario";
+            string routingMode = "Baseline";
+            if (demo != null && demo.SelectedScenario != null && demo.SelectedScenario.scenarioId.IndexOf("OPT", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                routingMode = "Optimized";
+            }
+            string interactionMode = demo != null ? demo.ActiveMode.ToString() : "Desktop";
+            string batchId = om != null && om.ActiveSimulation != null ? om.ActiveSimulation.SimulationId : string.Empty;
+            int? seed = om != null && om.ActiveSimulation != null && om.ActiveSimulation.Config != null ? (int?)om.ActiveSimulation.Config.Seed : null;
+
+            var record = ParticipantSessionRecord.Create(
+                participant,
+                scenarioName,
+                routingMode,
+                interactionMode,
+                om != null ? om.ActiveOrder : null,
+                currentResults,
+                events,
+                sessionId: null,
+                batchId: batchId,
+                seed: seed);
+
+            ParticipantDataExporter.ExportSessionBundle(record, events, null, out summaryCsvPath, out eventsCsvPath);
+            participant.RecordCompletedSession(scenarioName, routingMode);
+            roster.SaveToDisk();
+
+            exportStatusMessage = $"Saved Participant CSV: {Path.GetFileName(summaryCsvPath)}";
+            SimulationErrorHandler.ReportInfo("WorkStudyReport", exportStatusMessage);
+            return true;
+        }
+
         private void HandleOrderCompleted(Order order)
         {
             if (autoShowOnOrderCompleted)
@@ -250,6 +302,7 @@ namespace VirtualDarkStore.UI
 
         private void OnGUI()
         {
+            if (Camera.current != null && Camera.current.stereoEnabled) return;
             if (!isVisible) return;
 
             InitStyles();
@@ -327,6 +380,11 @@ namespace VirtualDarkStore.UI
             if (GUILayout.Button("Export Report (MD + CSV)", GUILayout.Width(175f), GUILayout.Height(22f)))
             {
                 ExportCurrentReport(out _, out _, out _);
+            }
+
+            if (GUILayout.Button("Save Participant CSVs", GUILayout.Width(160f), GUILayout.Height(22f)))
+            {
+                ExportCurrentParticipantSession(out _, out _);
             }
 
             if (GUILayout.Button("Step 7: Compare Scenarios [F3]", GUILayout.Width(195f), GUILayout.Height(22f)))

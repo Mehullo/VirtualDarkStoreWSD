@@ -41,7 +41,7 @@ namespace VirtualDarkStore.Management
             sb.AppendLine("| Parameter | Inspected Value | Target Budget (RTX 2050-Class) | Status |");
             sb.AppendLine("|---|---:|---:|---|");
             sb.AppendLine($"| SRP Batcher Enabled | `{SrpBatcherEnabled}` | `True` | {(SrpBatcherEnabled ? "PASS" : "WARN")} |");
-            sb.AppendLine($"| Total Mesh Renderers | `{TotalRenderersCount}` | `<= 300` | {(TotalRenderersCount <= 300 ? "PASS" : "WARN")} |");
+            sb.AppendLine($"| Total Mesh Renderers | `{TotalRenderersCount}` | `<= 350` | {(TotalRenderersCount <= 350 ? "PASS" : "WARN")} |");
             sb.AppendLine($"| Unique Shared Materials | `{UniqueSharedMaterialsCount}` | `<= 25` | {(UniqueSharedMaterialsCount <= 25 ? "PASS" : "WARN")} |");
             sb.AppendLine($"| GPU-Instanced Materials | `{InstancedMaterialsCount} / {UniqueSharedMaterialsCount}` | `100%` | {(InstancedMaterialsCount == UniqueSharedMaterialsCount ? "PASS" : "WARN")} |");
             sb.AppendLine($"| Realtime Lights | `{TotalLightsCount}` | `<= 12` | {(TotalLightsCount <= 12 ? "PASS" : "WARN")} |");
@@ -231,7 +231,7 @@ namespace VirtualDarkStore.Management
 
             report.IsWithinRtx2050Budget =
                 report.SrpBatcherEnabled &&
-                report.TotalRenderersCount <= 300 &&
+                report.TotalRenderersCount <= 350 &&
                 report.UniqueSharedMaterialsCount <= 25 &&
                 report.InstancedMaterialsCount == report.UniqueSharedMaterialsCount &&
                 report.ShadowCastingLightsCount <= 1 &&

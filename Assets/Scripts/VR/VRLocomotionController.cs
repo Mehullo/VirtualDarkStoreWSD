@@ -17,14 +17,27 @@ namespace VirtualDarkStore.VR
     {
         [Header("Locomotion Configuration")]
         [SerializeField] private VRLocomotionMode mode = VRLocomotionMode.ContinuousMove;
-        [SerializeField] private float moveSpeed = 1.4f; // Standard industrial walking speed (m/s)
+        [SerializeField] private float walkSpeed = 1.4f; // Standard industrial walking speed (m/s)
+        [SerializeField] private float sprintSpeed = 3.5f; // Rapid transit sprint speed (m/s)
+        [SerializeField] private float moveSpeed = 1.4f; // Current active speed
+        [SerializeField] private bool isSprinting = false;
         [SerializeField] private float maxTeleportDistance = 10.0f;
         [SerializeField] private LayerMask groundLayers = ~0;
 
         [Header("References")]
         [SerializeField] private VRControllerInput moveController; // Usually left hand for move
+        [SerializeField] private VRControllerInput turnController; // Right hand for rotation (VR best practice)
         [SerializeField] private Transform headTransform;
         [SerializeField] private CharacterController characterController;
+
+        [Header("Turn Configuration (Right Thumbstick)")]
+        [SerializeField] private bool enableTurn = true;
+        [SerializeField] private bool useSnapTurn = true; // Snap turn (comfort standard) vs smooth turn
+        [SerializeField] private float snapTurnAngle = 45.0f; // 45 degrees per snap
+        [SerializeField] private float smoothTurnSpeed = 90.0f; // degrees per second
+        [SerializeField] private float turnDeadzone = 0.5f;
+
+        private bool snapTurnDebounce = false;
 
         [Header("Runtime State")]
         [SerializeField] private Vector3 lastRecordedPosition = Vector3.zero;
@@ -34,12 +47,21 @@ namespace VirtualDarkStore.VR
 
         public VRLocomotionMode Mode => mode;
         public float MoveSpeed => moveSpeed;
+        public float WalkSpeed => walkSpeed;
+        public float SprintSpeed => sprintSpeed;
+        public bool IsSprinting => isSprinting;
+        public VRControllerInput TurnController => turnController;
+        public bool EnableTurn { get => enableTurn; set => enableTurn = value; }
+        public bool UseSnapTurn { get => useSnapTurn; set => useSnapTurn = value; }
+        public float SnapTurnAngle { get => snapTurnAngle; set => snapTurnAngle = value; }
+        public float SmoothTurnSpeed { get => smoothTurnSpeed; set => smoothTurnSpeed = value; }
         public float LastFrameDisplacement => lastFrameDisplacement;
         public float CurrentSpeed => currentSpeed;
         public float CumulativeTravelDistance => cumulativeTravelDistance;
 
         public event Action<Vector3, Vector3, float> OnTeleported; // from, to, distance
         public event Action<float, float> OnMoved; // displacement, speed
+        public event Action<float> OnTurned; // turned angle in degrees
 
         private void Awake()
         {
@@ -58,6 +80,8 @@ namespace VirtualDarkStore.VR
             {
                 ProcessContinuousMovement();
             }
+
+            ProcessTurn();
 
             Vector3 currentPos = transform.position;
             Vector3 horizontalDelta = new Vector3(currentPos.x - previousPos.x, 0f, currentPos.z - previousPos.z);
@@ -82,7 +106,40 @@ namespace VirtualDarkStore.VR
                 input = moveController.Thumbstick;
             }
 
-            if (input.sqrMagnitude < 0.01f) return;
+            if (input.sqrMagnitude < 0.01f)
+            {
+                isSprinting = false;
+                moveSpeed = walkSpeed;
+                return;
+            }
+
+            // Determine if sprint is engaged (left stick click, left grip hold, or desktop shift key)
+            bool sprintEngaged = false;
+            if (moveController != null && (moveController.IsThumbstickClicked || moveController.IsGripPressed))
+            {
+                sprintEngaged = true;
+            }
+#if ENABLE_INPUT_SYSTEM
+            if (UnityEngine.InputSystem.Keyboard.current != null &&
+                (UnityEngine.InputSystem.Keyboard.current.leftShiftKey.isPressed || UnityEngine.InputSystem.Keyboard.current.rightShiftKey.isPressed))
+            {
+                sprintEngaged = true;
+            }
+#endif
+            try
+            {
+                if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+                {
+                    sprintEngaged = true;
+                }
+            }
+            catch
+            {
+                // Fallback in case legacy axis is disabled
+            }
+
+            isSprinting = sprintEngaged;
+            moveSpeed = isSprinting ? sprintSpeed : walkSpeed;
 
             Vector3 forward = headTransform != null ? headTransform.forward : transform.forward;
             Vector3 right = headTransform != null ? headTransform.right : transform.right;
@@ -102,6 +159,85 @@ namespace VirtualDarkStore.VR
             {
                 transform.position += motion;
             }
+        }
+
+        private void ProcessTurn()
+        {
+            if (!enableTurn) return;
+
+            Vector2 turnInput = Vector2.zero;
+            if (turnController != null)
+            {
+                turnInput = turnController.Thumbstick;
+            }
+
+            // Keyboard testing fallback (Left/Right arrow keys)
+#if ENABLE_INPUT_SYSTEM
+            if (UnityEngine.InputSystem.Keyboard.current != null)
+            {
+                if (UnityEngine.InputSystem.Keyboard.current.leftArrowKey.isPressed) turnInput.x = -1f;
+                if (UnityEngine.InputSystem.Keyboard.current.rightArrowKey.isPressed) turnInput.x = 1f;
+            }
+#endif
+            try
+            {
+                if (Input.GetKey(KeyCode.LeftArrow)) turnInput.x = -1f;
+                if (Input.GetKey(KeyCode.RightArrow)) turnInput.x = 1f;
+            }
+            catch
+            {
+                // Fallback in case legacy axis is disabled
+            }
+
+            if (useSnapTurn)
+            {
+                if (Mathf.Abs(turnInput.x) > turnDeadzone)
+                {
+                    if (!snapTurnDebounce)
+                    {
+                        float turnDir = Mathf.Sign(turnInput.x);
+                        float angle = turnDir * snapTurnAngle;
+                        transform.Rotate(0f, angle, 0f, Space.World);
+                        snapTurnDebounce = true;
+                        OnTurned?.Invoke(angle);
+                    }
+                }
+                else if (Mathf.Abs(turnInput.x) < 0.2f)
+                {
+                    snapTurnDebounce = false;
+                }
+            }
+            else
+            {
+                if (Mathf.Abs(turnInput.x) > 0.1f)
+                {
+                    float angle = turnInput.x * smoothTurnSpeed * Time.deltaTime;
+                    transform.Rotate(0f, angle, 0f, Space.World);
+                    OnTurned?.Invoke(angle);
+                }
+            }
+        }
+
+        public void SimulateTurn(float turnAngle)
+        {
+            transform.Rotate(0f, turnAngle, 0f, Space.World);
+            OnTurned?.Invoke(turnAngle);
+        }
+
+        public void SetSprintSpeed(float speed)
+        {
+            sprintSpeed = speed;
+        }
+
+        public void SetWalkSpeed(float speed)
+        {
+            walkSpeed = speed;
+        }
+
+        public void SimulateSprint(bool sprinting)
+        {
+            isSprinting = sprinting;
+            moveSpeed = isSprinting ? sprintSpeed : walkSpeed;
         }
 
         /// <summary>
@@ -150,9 +286,10 @@ namespace VirtualDarkStore.VR
             mode = newMode;
         }
 
-        public void SetReferences(VRControllerInput controller, Transform head, CharacterController cc = null)
+        public void SetReferences(VRControllerInput controller, Transform head, CharacterController cc = null, VRControllerInput turnCtrl = null)
         {
             moveController = controller;
+            turnController = turnCtrl;
             headTransform = head;
             if (cc != null) characterController = cc;
         }

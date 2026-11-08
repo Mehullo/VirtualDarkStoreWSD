@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 #endif
 using VirtualDarkStore.Domain;
+using VirtualDarkStore.Environment;
 using VirtualDarkStore.Management;
 using VirtualDarkStore.Player;
 using VirtualDarkStore.Scenarios;
@@ -47,6 +48,11 @@ namespace VirtualDarkStore.UI
         private Color bannerColor = Color.white;
         private float bannerTimer = 0f;
 
+        [Header("Next Order Information Panel")]
+        [SerializeField] private bool showNextOrderPanel = true;
+        private float currentNextOrderPanelHeight = 0f;
+        private Vector2 nextOrderScrollPos = Vector2.zero;
+
         private GUIStyle headerStyle;
         private GUIStyle subHeaderStyle;
         private GUIStyle bodyStyle;
@@ -55,10 +61,37 @@ namespace VirtualDarkStore.UI
         private GUIStyle promptStyle;
         private GUIStyle bannerStyle;
         private GUIStyle bottomStyle;
+
+        private GUIStyle nextOrderHeaderStyle;
+        private GUIStyle nextOrderSubHeaderStyle;
+        private GUIStyle nextOrderTableHeaderStyle;
+        private GUIStyle nextOrderTableHeaderCenterStyle;
+        private GUIStyle nextOrderTableAisleHeaderStyle;
+        private GUIStyle nextOrderTableSlotHeaderStyle;
+        private GUIStyle nextOrderRowNormalStyle;
+        private GUIStyle nextOrderRowTargetStyle;
+        private GUIStyle nextOrderRowFulfilledStyle;
+        private GUIStyle nextOrderAisleValueStyle;
+        private GUIStyle nextOrderSlotValueStyle;
+        private GUIStyle nextOrderQtyCenterStyle;
+        private GUIStyle nextOrderStatusPickStyle;
+        private GUIStyle nextOrderStatusDoneStyle;
+        private GUIStyle nextOrderStatusWaitStyle;
+
         private Texture2D panelBackground;
         private Texture2D bannerBackground;
         private Texture2D crosshairTexture;
+        private Texture2D nextOrderBgTexture;
+        private Texture2D nextOrderAccentOrange;
+        private Texture2D nextOrderAccentCyan;
+        private Texture2D nextOrderTableDivider;
         private bool stylesInitialized = false;
+
+        public bool ShowNextOrderPanel
+        {
+            get => showNextOrderPanel;
+            set => showNextOrderPanel = value;
+        }
 
         public bool ShowDemoPanel
         {
@@ -428,35 +461,181 @@ namespace VirtualDarkStore.UI
                 alignment = TextAnchor.MiddleCenter
             };
 
+            // Dedicated Next Order Information Panel Styles (Top-Centre)
+            nextOrderBgTexture = MakeColorTexture(new Color(0.05f, 0.07f, 0.12f, 0.94f));
+            nextOrderAccentOrange = MakeColorTexture(new Color(0.95f, 0.60f, 0.15f, 0.95f)); // Amber/Safety Orange
+            nextOrderAccentCyan = MakeColorTexture(new Color(0.20f, 0.75f, 1.0f, 0.95f)); // Bright Cyan
+            nextOrderTableDivider = MakeColorTexture(new Color(0.20f, 0.28f, 0.38f, 0.70f)); // Subtle steel blue
+
+            nextOrderHeaderStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 15,
+                fontStyle = FontStyle.Bold,
+                normal = { textColor = new Color(0.35f, 0.85f, 1.0f) },
+                alignment = TextAnchor.UpperLeft
+            };
+
+            nextOrderSubHeaderStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 12,
+                fontStyle = FontStyle.Bold,
+                normal = { textColor = new Color(1.0f, 0.88f, 0.25f) },
+                alignment = TextAnchor.UpperLeft
+            };
+
+            nextOrderTableHeaderStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 11,
+                fontStyle = FontStyle.Bold,
+                normal = { textColor = new Color(0.72f, 0.78f, 0.85f) },
+                alignment = TextAnchor.MiddleLeft
+            };
+
+            nextOrderTableHeaderCenterStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 11,
+                fontStyle = FontStyle.Bold,
+                normal = { textColor = new Color(0.72f, 0.78f, 0.85f) },
+                alignment = TextAnchor.MiddleCenter
+            };
+
+            nextOrderTableAisleHeaderStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 11,
+                fontStyle = FontStyle.Bold,
+                normal = { textColor = new Color(1.0f, 0.88f, 0.25f) },
+                alignment = TextAnchor.MiddleCenter
+            };
+
+            nextOrderTableSlotHeaderStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 11,
+                fontStyle = FontStyle.Bold,
+                normal = { textColor = new Color(0.40f, 0.85f, 1.0f) },
+                alignment = TextAnchor.MiddleCenter
+            };
+
+            nextOrderRowNormalStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 12,
+                normal = { textColor = new Color(0.90f, 0.93f, 0.96f) },
+                alignment = TextAnchor.MiddleLeft
+            };
+
+            nextOrderRowTargetStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 12,
+                fontStyle = FontStyle.Bold,
+                normal = { textColor = new Color(1.0f, 0.95f, 0.40f) },
+                alignment = TextAnchor.MiddleLeft
+            };
+
+            nextOrderRowFulfilledStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 12,
+                normal = { textColor = new Color(0.45f, 0.88f, 0.55f) },
+                alignment = TextAnchor.MiddleLeft
+            };
+
+            nextOrderAisleValueStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 12,
+                fontStyle = FontStyle.Bold,
+                normal = { textColor = new Color(1.0f, 0.90f, 0.25f) },
+                alignment = TextAnchor.MiddleCenter
+            };
+
+            nextOrderSlotValueStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 12,
+                fontStyle = FontStyle.Bold,
+                normal = { textColor = new Color(0.40f, 0.85f, 1.0f) },
+                alignment = TextAnchor.MiddleCenter
+            };
+
+            nextOrderQtyCenterStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 12,
+                normal = { textColor = Color.white },
+                alignment = TextAnchor.MiddleCenter
+            };
+
+            nextOrderStatusPickStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 10,
+                fontStyle = FontStyle.Bold,
+                normal = { textColor = new Color(1.0f, 0.90f, 0.30f) },
+                alignment = TextAnchor.MiddleCenter
+            };
+
+            nextOrderStatusDoneStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 10,
+                fontStyle = FontStyle.Bold,
+                normal = { textColor = new Color(0.45f, 0.90f, 0.55f) },
+                alignment = TextAnchor.MiddleCenter
+            };
+
+            nextOrderStatusWaitStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 10,
+                normal = { textColor = new Color(0.60f, 0.65f, 0.72f) },
+                alignment = TextAnchor.MiddleCenter
+            };
+
             stylesInitialized = true;
         }
 
         private void OnGUI()
         {
+            // Never render 2D desktop screen-space OnGUI into the VR headset lenses
+            if (Camera.current != null && Camera.current.stereoEnabled)
+            {
+                return;
+            }
+
             InitStyles();
 
             var om = OrderManager.Instance;
             ResolveReferences();
 
-            // 1. Draw Reticle in Center Screen
-            DrawCrosshair();
+            bool isVrActive = vrPlayerRig != null && vrPlayerRig.gameObject.activeInHierarchy;
 
-            // 2. Draw Interaction Prompt below Reticle
-            DrawInteractionPrompt();
+            // 1. Draw Reticle in Center Screen (Desktop only; VR uses 3D in-VR reticle)
+            if (!isVrActive)
+            {
+                DrawCrosshair();
+            }
+
+            // 2. Draw Interaction Prompt below Reticle (Desktop only; VR uses 3D in-VR badge)
+            if (!isVrActive)
+            {
+                DrawInteractionPrompt();
+            }
 
             // 3. Draw Active Order Terminal (Top-Left)
             DrawOrderTerminal(om);
 
-            // 4. Draw 7-Step Final Demo Workflow Panel (Top-Right)
+            // 4. Draw Dedicated Next Order Information Panel (Top-Center; on VR this is rendered on the wrist tablet)
+            if (showNextOrderPanel && !isVrActive)
+            {
+                DrawNextOrderPanel(om);
+            }
+            else
+            {
+                currentNextOrderPanelHeight = 0f;
+            }
+
+            // 5. Draw 7-Step Final Demo Workflow Panel (Top-Right, toggled with [F1])
             if (showDemoPanel)
             {
                 DrawDemoWorkflowPanel(om);
             }
 
-            // 5. Draw Feedback Banner (Top-Center)
+            // 6. Draw Feedback Banner (Top-Center, below Next Order Panel)
             DrawBanner();
 
-            // 6. Draw Bottom Controls Guide
+            // 7. Draw Bottom Controls Guide
             DrawBottomBar();
         }
 
@@ -534,10 +713,12 @@ namespace VirtualDarkStore.UI
             GUILayout.BeginArea(new Rect(24f, 22f, panelWidth - 20f, panelHeight - 16f));
 
             var demo = DemoFlowController.Instance;
+            var activePart = VirtualDarkStore.Domain.Participants.ParticipantRoster.Instance.ActiveParticipant;
+            string partBadge = activePart != null ? $"{activePart.SlotId}:{activePart.ParticipantName}" : "NO PARTICIPANT [F2]";
             string modeBadge = (vrPlayerRig != null && vrPlayerRig.gameObject.activeInHierarchy) ? "VR RIG" : "DESKTOP";
             string scnBadge = (demo != null && demo.SelectedScenario != null) ? demo.SelectedScenario.scenarioId : "DEFAULT";
 
-            GUILayout.Label($"DARK STORE TERMINAL [{modeBadge} | {scnBadge}]", headerStyle);
+            GUILayout.Label($"DARK STORE TERMINAL [{modeBadge} | {scnBadge} | {partBadge}]", headerStyle);
 
             var classifier = ActivityClassifier.Instance;
             var logger = WorkEventLogger.Instance;
@@ -635,7 +816,19 @@ namespace VirtualDarkStore.UI
             GUI.DrawTexture(new Rect(x, y, panelWidth, panelHeight), panelBackground);
             GUILayout.BeginArea(new Rect(x + 12f, y + 10f, panelWidth - 24f, panelHeight - 20f));
 
+            GUILayout.BeginHorizontal();
             GUILayout.Label($"FINAL DEMO WORKFLOW (Step {(int)demo.CurrentStep}/7) [F1]", headerStyle);
+            if (GUILayout.Button("Participants [F2]", GUILayout.Width(115f)))
+            {
+                var dash = ResearcherDashboardUI.Instance;
+                if (dash == null)
+                {
+                    var dashObj = new GameObject("[ResearcherDashboardUI]");
+                    dash = dashObj.AddComponent<ResearcherDashboardUI>();
+                }
+                dash.ToggleVisibility();
+            }
+            GUILayout.EndHorizontal();
             GUILayout.Space(4);
 
             // Step 1: Select Scenario
@@ -801,13 +994,232 @@ namespace VirtualDarkStore.UI
             float width = 620f;
             float height = 42f;
             float x = (Screen.width - width) * 0.5f;
-            float y = 16f;
+            float y = (currentNextOrderPanelHeight > 0f) ? (12f + currentNextOrderPanelHeight + 6f) : 16f;
 
             Rect bannerRect = new Rect(x, y, width, height);
             GUI.DrawTexture(bannerRect, bannerBackground);
 
             bannerStyle.normal.textColor = bannerColor;
             GUI.Label(bannerRect, activeBannerMessage, bannerStyle);
+        }
+
+        /// <summary>
+        /// Dedicated Prominent Next-Order Information Panel positioned at the top-centre of the screen.
+        /// Displays Order ID, total item count, and a structured product table with SKU names, quantities,
+        /// and dynamically resolved aisle and rack/slot positions.
+        /// </summary>
+        private void DrawNextOrderPanel(OrderManager om)
+        {
+            var nextOrder = ResolveNextPendingOrder(om, out string title, out string subtitle, out bool isQueued);
+
+            float panelWidth = Mathf.Clamp(Screen.width * 0.42f, 580f, 660f);
+            float panelX = (Screen.width - panelWidth) * 0.5f;
+            float panelY = 12f;
+
+            if (nextOrder == null || nextOrder.Items == null || nextOrder.Items.Count == 0)
+            {
+                // Compact "No Upcoming Orders" card
+                float emptyHeight = 64f;
+                currentNextOrderPanelHeight = emptyHeight;
+                Rect cardRect = new Rect(panelX, panelY, panelWidth, emptyHeight);
+                GUI.DrawTexture(cardRect, nextOrderBgTexture);
+                GUI.DrawTexture(new Rect(panelX, panelY, panelWidth, 3f), nextOrderAccentCyan);
+
+                GUILayout.BeginArea(new Rect(panelX + 16f, panelY + 10f, panelWidth - 32f, emptyHeight - 16f));
+                GUILayout.Label(title, nextOrderHeaderStyle);
+                GUILayout.Label(subtitle, nextOrderSubHeaderStyle);
+                GUILayout.EndArea();
+                return;
+            }
+
+            int itemCount = nextOrder.Items.Count;
+            float calculatedHeight = 92f + itemCount * 22f;
+            float panelHeight = Mathf.Min(240f, calculatedHeight);
+            currentNextOrderPanelHeight = panelHeight;
+
+            Rect fullPanelRect = new Rect(panelX, panelY, panelWidth, panelHeight);
+            GUI.DrawTexture(fullPanelRect, nextOrderBgTexture);
+
+            // Prominent top accent line: Orange for active picking order, Cyan for queued/upcoming order
+            Texture2D accentTexture = isQueued ? nextOrderAccentCyan : nextOrderAccentOrange;
+            GUI.DrawTexture(new Rect(panelX, panelY, panelWidth, 3f), accentTexture);
+
+            GUILayout.BeginArea(new Rect(panelX + 16f, panelY + 10f, panelWidth - 32f, panelHeight - 16f));
+
+            // 1. Order ID Header
+            GUILayout.Label(title, nextOrderHeaderStyle);
+
+            // 2. Subheader (Total Items & Queue Info)
+            GUILayout.Label(subtitle, nextOrderSubHeaderStyle);
+
+            GUILayout.Space(4);
+
+            // 3. Table Column Headers
+            float tableInnerWidth = panelWidth - 32f;
+            float colAisleWidth = 65f;
+            float colSlotWidth = 135f;
+            float colQtyWidth = 40f;
+            float colStatusWidth = 55f;
+            float colProductWidth = tableInnerWidth - (colAisleWidth + colSlotWidth + colQtyWidth + colStatusWidth + 18f);
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("PRODUCT", nextOrderTableHeaderStyle, GUILayout.Width(colProductWidth));
+            GUILayout.Label("QTY", nextOrderTableHeaderCenterStyle, GUILayout.Width(colQtyWidth));
+            GUILayout.Label("AISLE", nextOrderTableAisleHeaderStyle, GUILayout.Width(colAisleWidth));
+            GUILayout.Label("RACK / SLOT", nextOrderTableSlotHeaderStyle, GUILayout.Width(colSlotWidth));
+            GUILayout.Label("STATUS", nextOrderTableHeaderCenterStyle, GUILayout.Width(colStatusWidth));
+            GUILayout.EndHorizontal();
+
+            // Table header underline divider
+            if (nextOrderTableDivider != null)
+            {
+                Rect divRect = GUILayoutUtility.GetRect(tableInnerWidth, 1f);
+                GUI.DrawTexture(divRect, nextOrderTableDivider);
+            }
+            GUILayout.Space(2);
+
+            // 4. Product Rows with ScrollView
+            float tableAreaHeight = panelHeight - 88f;
+            nextOrderScrollPos = GUILayout.BeginScrollView(nextOrderScrollPos, GUILayout.Height(tableAreaHeight));
+
+            for (int i = 0; i < nextOrder.Items.Count; i++)
+            {
+                var it = nextOrder.Items[i];
+                ResolveProductLocation(it, out string aisleStr, out string rackSlotStr);
+
+                bool isCurrentTarget = (om != null && nextOrder == om.ActiveOrder && i == nextOrder.CurrentItemIndex && nextOrder.Status == OrderStatus.InProgress);
+                bool isFulfilled = it.IsFulfilled;
+
+                GUIStyle rowProductStyle = isCurrentTarget ? nextOrderRowTargetStyle : (isFulfilled ? nextOrderRowFulfilledStyle : nextOrderRowNormalStyle);
+                string prefix = isFulfilled ? "✓" : (isCurrentTarget ? "▶" : "○");
+                string statusText = isFulfilled ? "DONE" : (isCurrentTarget ? "PICK" : "WAIT");
+                GUIStyle statusStyle = isFulfilled ? nextOrderStatusDoneStyle : (isCurrentTarget ? nextOrderStatusPickStyle : nextOrderStatusWaitStyle);
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label($"{prefix} {it.SkuName}", rowProductStyle, GUILayout.Width(colProductWidth));
+                GUILayout.Label($"{it.RequiredQuantity}", nextOrderQtyCenterStyle, GUILayout.Width(colQtyWidth));
+                GUILayout.Label(aisleStr, nextOrderAisleValueStyle, GUILayout.Width(colAisleWidth));
+                GUILayout.Label(rackSlotStr, nextOrderSlotValueStyle, GUILayout.Width(colSlotWidth));
+                GUILayout.Label(statusText, statusStyle, GUILayout.Width(colStatusWidth));
+                GUILayout.EndHorizontal();
+            }
+
+            GUILayout.EndScrollView();
+            GUILayout.EndArea();
+        }
+
+        /// <summary>
+        /// Dynamically resolves the upcoming/pending order to present on the prominent Next Order panel.
+        /// Surfaces active order details during picking progression, advances to queued simulation orders
+        /// upon packing completion, and reports "No Upcoming Orders" when finished.
+        /// </summary>
+        public static Order ResolveNextPendingOrder(OrderManager om, out string title, out string subtitle, out bool isQueuedUpcoming)
+        {
+            title = "NEXT ORDER | NO UPCOMING ORDERS";
+            subtitle = "No orders currently pending or dispatched.";
+            isQueuedUpcoming = false;
+
+            if (om == null)
+            {
+                subtitle = "OrderManager is not active.";
+                return null;
+            }
+
+            // Case 1: Order is currently active (being fulfilled or ready for packing)
+            if (om.ActiveOrder != null && om.ActiveOrder.Status != OrderStatus.Completed)
+            {
+                var active = om.ActiveOrder;
+                title = $"NEXT ORDER | {active.OrderId}";
+
+                if (om.HasActiveSimulation && om.ActiveSimulation != null)
+                {
+                    var sim = om.ActiveSimulation;
+                    int orderNum = sim.CurrentOrderIndex + 1;
+                    subtitle = $"TOTAL ITEMS: {active.TotalItemCount}  •  SIMULATION: ORDER {orderNum} OF {sim.TotalOrdersCount}";
+                    if (sim.HasNextOrder)
+                    {
+                        subtitle += $"  (Queue: {sim.Orders[sim.CurrentOrderIndex + 1].OrderId})";
+                    }
+                }
+                else
+                {
+                    subtitle = $"TOTAL ITEMS: {active.TotalItemCount}  •  STATUS: {active.Status.ToString().ToUpper()}";
+                }
+                return active;
+            }
+
+            // Case 2: Multi-Order Simulation is active, active order is completed, but next order exists in queue
+            if (om.HasActiveSimulation && om.ActiveSimulation != null)
+            {
+                var sim = om.ActiveSimulation;
+                if (sim.HasNextOrder)
+                {
+                    int nextIdx = sim.CurrentOrderIndex + 1;
+                    var queued = sim.Orders[nextIdx];
+                    title = $"NEXT ORDER | {queued.OrderId}";
+                    subtitle = $"TOTAL ITEMS: {queued.TotalItemCount}  •  UPCOMING: ORDER {nextIdx + 1} OF {sim.TotalOrdersCount}";
+                    isQueuedUpcoming = true;
+                    return queued;
+                }
+                else
+                {
+                    title = "NEXT ORDER | NO UPCOMING ORDERS";
+                    subtitle = $"Simulation {sim.SimulationId} Completed — All {sim.TotalOrdersCount} Orders Fulfilled.";
+                    return null;
+                }
+            }
+
+            // Case 3: No active order and no simulation
+            title = "NEXT ORDER | NO UPCOMING ORDERS";
+            subtitle = om.CompletedOrdersCount > 0
+                ? $"All orders fulfilled ({om.CompletedOrdersCount} completed). Press [G] or use Demo Panel [F1] to dispatch."
+                : "Press [G] or use Demo Panel [F1] to dispatch an order.";
+            return null;
+        }
+
+        /// <summary>
+        /// Dynamically resolves the aisle and rack/slot string for a product item, honoring live StoreManager slot assignments
+        /// (which automatically reflect optimized layout or relocation changes) and falling back to parsed StoreLocation data.
+        /// </summary>
+        public static void ResolveProductLocation(OrderItem item, out string aisleStr, out string rackSlotStr)
+        {
+            aisleStr = "---";
+            rackSlotStr = "UNASSIGNED";
+
+            if (item == null) return;
+
+            // 1. Check StoreManager first for live slot mapping (reflects dynamic layout / routing)
+            var store = StoreManager.Instance;
+            if (store != null && store.TryGetSlotForSku(item.SkuId, out ShelfSlot liveSlot) && liveSlot != null)
+            {
+                aisleStr = $"A{liveSlot.AisleNumber:D2}";
+                char sideChar = liveSlot.Side == ShelfSide.Left ? 'L' : 'R';
+                rackSlotStr = $"{sideChar}-B{liveSlot.BayIndex:D2}-T{liveSlot.TierLevel:D2}-S{liveSlot.SlotIndex:D2}";
+                return;
+            }
+
+            // 2. Parse from item.TargetSlotId
+            if (!string.IsNullOrEmpty(item.TargetSlotId))
+            {
+                if (StoreLocation.TryParse(item.TargetSlotId, out StoreLocation loc, out _))
+                {
+                    aisleStr = $"A{loc.AisleNumber:D2}";
+                    char sideChar = loc.Side == ShelfSide.Left ? 'L' : 'R';
+                    rackSlotStr = $"{sideChar}-B{loc.BayIndex:D2}-T{loc.TierLevel:D2}-S{loc.SlotIndex:D2}";
+                    return;
+                }
+
+                // If TargetSlotId has format like A01-R-B03-T03-S02
+                string raw = item.TargetSlotId.Trim();
+                if (raw.StartsWith("A") && raw.Length > 4 && raw[3] == '-')
+                {
+                    aisleStr = raw.Substring(0, 3);
+                    rackSlotStr = raw.Substring(4);
+                    return;
+                }
+
+                rackSlotStr = raw;
+            }
         }
 
         private void DrawBottomBar()
@@ -835,6 +1247,10 @@ namespace VirtualDarkStore.UI
             if (panelBackground != null) Destroy(panelBackground);
             if (bannerBackground != null) Destroy(bannerBackground);
             if (crosshairTexture != null) Destroy(crosshairTexture);
+            if (nextOrderBgTexture != null) Destroy(nextOrderBgTexture);
+            if (nextOrderAccentOrange != null) Destroy(nextOrderAccentOrange);
+            if (nextOrderAccentCyan != null) Destroy(nextOrderAccentCyan);
+            if (nextOrderTableDivider != null) Destroy(nextOrderTableDivider);
         }
     }
 }

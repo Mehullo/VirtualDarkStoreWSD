@@ -93,7 +93,7 @@ namespace VirtualDarkStore.Tests.Environment
                 "Placard_A03_L_B02",
                 testRoot.transform,
                 new Vector3(1f, 2f, 3f),
-                Quaternion.Euler(0f, 90f, 0f),
+                Quaternion.Euler(0f, -90f, 0f),
                 LocationLabelType.BayRack,
                 expectedBayId,
                 "BAY 02 • LEFT",
@@ -235,6 +235,70 @@ namespace VirtualDarkStore.Tests.Environment
                 $"Picker prompt '{picker.CurrentPrompt}' must include the exact slot ID '{slotId}'.");
             Assert.IsTrue(picker.CurrentPrompt.Contains(skuId));
             Assert.IsTrue(picker.CurrentPrompt.Contains(skuName));
+        }
+
+        [Test]
+        public void InternalAisleSignage_OrientationMatchesPickerViewingDirection_WithoutHorizontalMirroring()
+        {
+            // Verify Left Rack internal label orientation (-90 deg yaw)
+            var leftSign = PhysicalLocationLabel.CreateLabelObject(
+                "Test_LeftSign",
+                testRoot.transform,
+                new Vector3(-1.2f, 2.0f, 0f),
+                Quaternion.Euler(0f, -90f, 0f),
+                LocationLabelType.BayRack,
+                "A01-L-B01",
+                "BAY 01 • LEFT",
+                "A01-L-B01",
+                side: ShelfSide.Left);
+
+            // A picker looking at the Left rack from corridor center faces -X
+            Vector3 pickerToLeftGaze = new Vector3(-1f, 0f, 0f);
+            Vector3 pickerCameraRightForLeft = Vector3.Cross(Vector3.up, pickerToLeftGaze); // (0, 0, 1) (+Z)
+            Vector3 leftLabelRight = leftSign.transform.right;
+
+            // Label right vector must align with camera right vector (+Z) so text flows left-to-right
+            Assert.Greater(Vector3.Dot(leftLabelRight, pickerCameraRightForLeft), 0.99f,
+                "Left rack sign's local right vector must align with picker camera right (+Z) to prevent horizontal mirroring.");
+
+            // Verify Right Rack internal label orientation (+90 deg yaw)
+            var rightSign = PhysicalLocationLabel.CreateLabelObject(
+                "Test_RightSign",
+                testRoot.transform,
+                new Vector3(1.2f, 2.0f, 0f),
+                Quaternion.Euler(0f, 90f, 0f),
+                LocationLabelType.BayRack,
+                "A01-R-B01",
+                "BAY 01 • RIGHT",
+                "A01-R-B01",
+                side: ShelfSide.Right);
+
+            // A picker looking at the Right rack from corridor center faces +X
+            Vector3 pickerToRightGaze = new Vector3(1f, 0f, 0f);
+            Vector3 pickerCameraRightForRight = Vector3.Cross(Vector3.up, pickerToRightGaze); // (0, 0, -1) (-Z)
+            Vector3 rightLabelRight = rightSign.transform.right;
+
+            // Label right vector must align with camera right vector (-Z) so text flows left-to-right
+            Assert.Greater(Vector3.Dot(rightLabelRight, pickerCameraRightForRight), 0.99f,
+                "Right rack sign's local right vector must align with picker camera right (-Z) to prevent horizontal mirroring.");
+
+            // Verify Front-facing sign preserves Quaternion.identity and aligns with picker looking North (+Z)
+            var frontSign = PhysicalLocationLabel.CreateLabelObject(
+                "Test_FrontSign",
+                testRoot.transform,
+                new Vector3(0f, 2.5f, -4f),
+                Quaternion.identity,
+                LocationLabelType.AisleHeader,
+                "AISLE A01",
+                "PICKING CORRIDOR",
+                "A01");
+
+            Vector3 pickerToFrontGaze = new Vector3(0f, 0f, 1f);
+            Vector3 pickerCameraRightForFront = Vector3.Cross(Vector3.up, pickerToFrontGaze); // (1, 0, 0) (+X)
+            Vector3 frontLabelRight = frontSign.transform.right;
+
+            Assert.Greater(Vector3.Dot(frontLabelRight, pickerCameraRightForFront), 0.99f,
+                "Front-facing sign must preserve Quaternion.identity and align with camera right (+X).");
         }
     }
 }

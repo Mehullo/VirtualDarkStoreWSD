@@ -23,6 +23,11 @@ Status of project phases for the Virtual Dark Store Work-Study & Simulation Plat
 | **Visual & Usability** | Physical Location Labels & Store Signage | **COMPLETED** | 2026-11-02 |
 | **Visual & Usability** | Shelf Population (144 SKUs Across All Usable Racks) | **COMPLETED** | 2026-11-02 |
 | **Simulation Enhancement** | Configurable Multi-Order Simulation | **COMPLETED** | 2026-11-02 |
+| **Bug Fix** | Internal Aisle Signage Text Orientation Fix | **COMPLETED** | 2026-11-03 |
+| **UI Enhancement** | Prominent Next-Order Information Panel | **COMPLETED** | 2026-11-03 |
+| **Data Collection** | Participant-Wise Work-Study Data Collection & CSV Export | **COMPLETED** | 2026-11-04 |
+| **VR Integration** | Meta Quest 3 VR Integration & Deployment Setup | **COMPLETED** | 2026-11-04 |
+| **VR Ergonomics & UI** | Quest 3 Immersion Polish, Dorsal Wrist UI & Hierarchy Restoration | **COMPLETED** | 2026-11-04 |
 
 ---
 
@@ -316,6 +321,64 @@ Status of project phases for the Virtual Dark Store Work-Study & Simulation Plat
   - Multi-Order Simulation Runner (`Assets/Scripts/Scenarios/OperationalCycleRunner.cs`, `MultiOrderSimulationResult.cs`):
     - `RunMultiOrderSimulation`: Runs multi-order batches headlessly with simulated picker motion, compiling individual order telemetry and mathematically reconciled aggregate work-study reports.
   - Automated Verification: **84 / 84 EditMode Tests Passing** (7 new tests in `MultiOrderSimulationTests.cs` covering Cases 1–6 + 77 existing tests, 0 failures, 0 warnings).
+
+### Bug Fix: Internal Aisle Signage Text Orientation
+- **Goal**: Correct horizontal text mirroring regression on signs located inside picking aisles (`A06-R-B03` and related bay/tier placards), while strictly maintaining front-facing sign orientation, store geometry, shelf positions, and all simulation/telemetry features.
+- **Status**: **COMPLETED** (2026-11-03)
+- **Delivered**:
+  - Corrected `DarkStoreSceneBuilder.cs` rotation logic for internal aisle signage (`faceRot` and `ticketRot`):
+    - Left racks set to `Quaternion.Euler(0f, -90f, 0f)` (-90° yaw).
+    - Right racks set to `Quaternion.Euler(0f, 90f, 0f)` (+90° yaw).
+  - Regenerated and baked primary scene `Assets/Scenes/DarkStore_Phase1.unity`.
+  - Preserved front-facing signs with `Quaternion.identity`.
+  - Added test case `InternalAisleSignage_OrientationMatchesPickerViewingDirection_WithoutHorizontalMirroring` in `PhysicalLocationLabelTests.cs`.
+  - Automated Verification: **85 / 85 EditMode Tests Passing** (`8.19s`, 0 failures, 0 warnings).
+
+### UI Enhancement: Prominent Top-Centre Next-Order Information Panel
+- **Goal**: Implement a prominent, dedicated Next-Order Information Panel positioned at the top-centre of the screen with clear typography, dynamically displaying Order ID, total item count, and an itemized table with product name, quantity, highlighted aisle, highlighted rack/slot position, and pick status.
+- **Status**: **COMPLETED** (2026-11-03)
+- **Delivered**:
+  - Implemented `DrawNextOrderPanel`, `ResolveNextPendingOrder`, and `ResolveProductLocation` in `Assets/Scripts/UI/SimulationHUD.cs`.
+  - Top-centre horizontal positioning (`y = 12f`, width 42% clamped between 580px and 660px) with dark semi-transparent card background (`#0B1220F0`) and high-contrast amber/cyan headers.
+  - Dynamically extracts and highlights Aisle number (`A01`–`A06` in amber yellow) and Rack/Slot identifier (`R-B03-T03-S02` in ice cyan) directly from live `StoreManager` physical slots.
+  - Active pick target row highlighted in golden yellow (`#FFD54F`) with arrow indicator `▶` for instant picker orientation.
+  - Automatically advances to the next pending/queued order upon order fulfillment and packing completion.
+  - Gracefully displays a clean `NEXT ORDER | NO UPCOMING ORDERS` summary card when all orders are finished.
+  - Created automated EditMode unit test suite `Assets/Tests/Editor/UI/NextOrderPanelTests.cs` (7 test cases covering active order formatting, queue progression, completion summary, live slot extraction, and fallback location parsing).
+  - Automated Verification: **92 / 92 EditMode Tests Passing** (`7.72s`, 0 failures, 0 warnings).
+
+### Data Collection: Participant-Wise Work-Study Data Collection & CSV Export
+- **Goal**: Support structured, independent data collection across 10 unique participants (P01–P10) executing baseline and optimized dark-store fulfillment scenarios in desktop and VR, exporting standardized RFC-4180 summary and event-level CSV files without overwriting previous sessions or fabricating metrics.
+- **Status**: **COMPLETED** (2026-11-04)
+- **Delivered**:
+  - `ParticipantProfile`: Stable slot models (`P01` to `P10`) tracking name, registration timestamp, completed session counts, scenarios, and routing modes.
+  - `ParticipantRoster`: Fixed 10-slot manager enforcing case-insensitive name uniqueness, non-empty validation, persistent JSON storage (`WorkStudyData/participants_roster.json`), and safe name editing.
+  - `ParticipantSessionRecord`: Complete session telemetry model capturing participant metadata, order metrics, work-study elemental durations/percentages, and routing performance.
+  - `ParticipantDataExporter`: Standardized RFC-4180 CSV export pipeline writing individual Summary CSVs, granular Event-level CSVs, and deduplicated combined files (`All_Session_Summaries.csv` and `All_Event_Records.csv`).
+  - `ResearcherDashboardUI`: In-game dashboard (`[F2]`) displaying slot status, active participant selection, name editing, and folder actions.
+  - `WorkStudyResultsUI`: Added `[Save Participant CSVs]` action exporting current session datasets.
+  - `SimulationHUD`: Integrated active participant badge (`[P01: Rahul]`) and direct shortcut to Researcher Dashboard.
+  - Automated EditMode unit tests: 15 comprehensive test cases in `Assets/Tests/Editor/Participants/ParticipantDataCollectionTests.cs` covering capacity limits, duplicates, separate folders, event logs, combined files, complex names, and persistence.
+  - Automated Verification: **107 / 107 EditMode Tests Passing** (`4.10s`, 0 failures, 0 warnings).
+
+### VR Integration: Meta Quest 3 VR Integration & Deployment Setup
+- **Goal**: Full Meta Quest 3 VR support operating on the identical store environment, 144-SKU inventory, order management, baseline/optimized routing, and work-study telemetry core as desktop.
+- **Status**: **COMPLETED** (2026-11-04)
+- **Delivered**:
+  - OpenXR configuration with `MetaQuestTouchPlusControllerProfile` and Vulkan graphics API.
+  - Integrated `VRPlayerRig`: 6-DoF head tracking (`VRHeadTracking`), continuous locomotion (`VRLocomotionController`), pointing raycast and pick interaction (`VRPickerInteraction`), and controller input (`VRControllerInput`).
+  - Pure C# exact/2-opt TSP solver in `OrToolsRouteOptimizer.cs` ensuring optimized picking routes function on standalone Android Quest headsets where native x64 Windows OR-Tools binaries are unavailable.
+  - Windows Profile PC VR Link Integration: Connected and auto-wired `Main Camera` to `XROrigin.Camera` and `CameraFloorOffsetObject` with `UniversalAdditionalCameraData`, level horizon alignment (`Quaternion.identity`), and eye height calibration (`1.68m`).
+  - Auto-repositioned rig starting point from warehouse center `(0, 0, 0)` to front cross-aisle operational staging point `(0, 0, -8.5m)` facing North (`Quaternion.identity`).
+  - **Visible 3D Controller Hands with Ergonomic 50° Tilt**: Created `VRHandVisual` rendering responsive 3D controllers for left (cyan) and right (amber) hands with pointing laser ray on the right hand. Pitched **50° forward / away from the user** so pointer fires straight ahead into shelves and eliminates wrist twisting.
+  - **Elevated Wrist-Mounted Next Order Checklist (Zero Controller Overlap)**: Created `VRNextOrderWristUI` as a World Space Canvas mounted above the left wrist (`Y = +0.14m`, bottom-edge pivot) replicating the exact Next Order Card. Sits over 12 cm clear above the thumbstick indicator disc, completely resolving text obstruction. Includes `[T]` shortcut to float statically in front of player eyes.
+  - **3D In-VR Gaze Grab Prompt**: Created `VRGazePromptUI` projecting an amber reticle and 3D badge `[Trigger / Grip] Grab: <Product Name>` whenever looking directly at interactable products or stations.
+  - **Full Desktop-to-VR Interaction Mapping**: Mapped all desktop grabbing/picking/collection/packing actions to VR controllers (Trigger & Grip) and keyboard/mouse (`[E]`, LMB).
+  - **Right Controller Thumbstick Character Rotation**: Implemented 45° snap turn (VR comfort standard) and smooth turn on Right Controller Thumbstick, with Left/Right Arrow keyboard fallback. Does not accumulate spurious travel distance.
+  - Sprint Locomotion in VR: Left Thumbstick click, Left Grip hold, or desktop Left Shift accelerates speed from 1.4 m/s to 3.5 m/s while preserving displacement measurement.
+  - Shortcut `[V]` to toggle between Desktop and VR rigs dynamically on desktop/laptop.
+  - Step-by-step setup and build documentation: `README_VR_WINDOWS_LINK.md` for Windows Profile via Meta Horizon Link, and `docs/QUEST3_VR_SETUP_GUIDE.md` for standalone Android USB deployment.
+  - Automated Verification: **117 / 117 EditMode Tests Passing** (`8.49s`, 0 failures, 0 warnings).
 
 
 

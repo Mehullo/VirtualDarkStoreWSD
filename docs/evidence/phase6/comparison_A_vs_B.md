@@ -2,9 +2,9 @@
 
 > All values are MEASURED SIMULATION RESULTS from recorded virtual-picker runs in this simulation. They are not predictions and not real-world measurements.
 
-- A: **Scenario A: catalogue-number sequence** (`SCN-A`), recorded 2026-11-02T21:06:42.500+05:30
+- A: **Scenario A: catalogue-number sequence** (`SCN-A`), recorded 2026-11-04T18:37:53.127+05:30
   - SKU sequence: SKU-0003 → SKU-0030 → SKU-0045 → SKU-0066
-- B: **Scenario B: alternate sequence** (`SCN-B`), recorded 2026-11-02T21:06:42.524+05:30
+- B: **Scenario B: alternate sequence** (`SCN-B`), recorded 2026-11-04T18:37:53.142+05:30
   - SKU sequence: SKU-0003 → SKU-0045 → SKU-0030 → SKU-0066
 - Equivalent starting conditions: **YES**
 - Factor varied between A and B: pick/visit sequence

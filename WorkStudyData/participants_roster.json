@@ -1,0 +1,95 @@
+﻿{
+    "slots": [
+        {
+            "slotId": "P01",
+            "participantName": "Participant 01",
+            "registeredAtIso": "2026-11-04T16:26:09+05:30",
+            "lastSessionAtIso": "",
+            "completedSessionsCount": 0,
+            "completedScenarios": [],
+            "completedRoutingModes": []
+        },
+        {
+            "slotId": "P02",
+            "participantName": "",
+            "registeredAtIso": "2026-11-04T16:26:09+05:30",
+            "lastSessionAtIso": "",
+            "completedSessionsCount": 0,
+            "completedScenarios": [],
+            "completedRoutingModes": []
+        },
+        {
+            "slotId": "P03",
+            "participantName": "",
+            "registeredAtIso": "2026-11-04T16:26:09+05:30",
+            "lastSessionAtIso": "",
+            "completedSessionsCount": 0,
+            "completedScenarios": [],
+            "completedRoutingModes": []
+        },
+        {
+            "slotId": "P04",
+            "participantName": "",
+            "registeredAtIso": "2026-11-04T16:26:09+05:30",
+            "lastSessionAtIso": "",
+            "completedSessionsCount": 0,
+            "completedScenarios": [],
+            "completedRoutingModes": []
+        },
+        {
+            "slotId": "P05",
+            "participantName": "",
+            "registeredAtIso": "2026-11-04T16:26:09+05:30",
+            "lastSessionAtIso": "",
+            "completedSessionsCount": 0,
+            "completedScenarios": [],
+            "completedRoutingModes": []
+        },
+        {
+            "slotId": "P06",
+            "participantName": "",
+            "registeredAtIso": "2026-11-04T16:26:09+05:30",
+            "lastSessionAtIso": "",
+            "completedSessionsCount": 0,
+            "completedScenarios": [],
+            "completedRoutingModes": []
+        },
+        {
+            "slotId": "P07",
+            "participantName": "",
+            "registeredAtIso": "2026-11-04T16:26:09+05:30",
+            "lastSessionAtIso": "",
+            "completedSessionsCount": 0,
+            "completedScenarios": [],
+            "completedRoutingModes": []
+        },
+        {
+            "slotId": "P08",
+            "participantName": "",
+            "registeredAtIso": "2026-11-04T16:26:09+05:30",
+            "lastSessionAtIso": "",
+            "completedSessionsCount": 0,
+            "completedScenarios": [],
+            "completedRoutingModes": []
+        },
+        {
+            "slotId": "P09",
+            "participantName": "",
+            "registeredAtIso": "2026-11-04T16:26:09+05:30",
+            "lastSessionAtIso": "",
+            "completedSessionsCount": 0,
+            "completedScenarios": [],
+            "completedRoutingModes": []
+        },
+        {
+            "slotId": "P10",
+            "participantName": "",
+            "registeredAtIso": "2026-11-04T16:26:09+05:30",
+            "lastSessionAtIso": "",
+            "completedSessionsCount": 0,
+            "completedScenarios": [],
+            "completedRoutingModes": []
+        }
+    ],
+    "activeSlotIndex": 0
+}
